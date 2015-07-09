@@ -2,31 +2,57 @@ var win = Ti.UI.createWindow({
 	backgroundColor:'white'
 });
 var mf = require('sc.mapsforge');
+
 var mapView = mf.createMapsforgeView({
  "scalebar": true,
- "minZoom": 4, //Min zoom level for map view
+ "minZoom": 5, //Min zoom level for map view
  "maxZoom": 20, //Max zoom level for map view
  "centerLatlng": [-43.524551, 172.58346], //locke
  "zoomLevel": 12, //Bogus initial zoom level
  "debug": false });
+ 
+/*
+mapView.addEventListner('clicked', function(e) {
+    alert('clicked('+e.lat + ','+e.lng+")");
+});
+mapView.addEventListner('longclicked', function(e) {
+    alert('longclicked('+e.lat + ','+e.lng+")");
+});*/
 win.add(mapView);
 win.open();
 Ti.API.info('mapView: ' + JSON.stringify(mapView));
+
+Ti.App.addEventListener('clicked', function(e) {
+  alert('clicked('+e.lat+','+e.lng+')');
+  /*mapView.createMarker({
+	"iconPath": "/images/marker_tap.png",
+	"latlng": [e.lat, e.lng]
+  });*/
+});
+Ti.App.addEventListener('longclicked', function(e) {
+  alert('longclicked('+e.lat+','+e.lng+')');
+});
 //mapView.centerLatlng = [-43.524551, 172.58346];
 //mapView.zoomLevel = 12;
-mapView.addLayer({
+/*mapView.addLayer({
 	"name": "osm",
 	"url": "http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	"subdomains": ["a", "b"],
-	"parallelRequests": 2,
+	"parallelRequests": 4,
 	"maxZoom": "20",
 	"minZoom": "4"
+});
+*/
+ mapView.addLayer({
+	"name": "osm",
+	"path": "osmdroid/maps/nz.map",
 });
 
 var actionBar = win.activity.actionBar;
 if(typeof actionBar != 'undefined'){
 	actionBar.hide();
 }
+
 
 //Ti.include('marker.js');
 /*
@@ -41,9 +67,7 @@ var polyline = mapView.createPolyline({
 	"strokeWidth": 5
 });
 //Ti.API.info('Created polyline: ' + JSON.stringify(polyline));
-//..and change its color to red...
 polyline.color = "red";
-//...and then update the layer.
 polyline = mapView.updateLayer(polyline);
 //Note, that your previous reference is invalid and has
 //to be replaced with the new one returned from updateLayer()
@@ -62,13 +86,6 @@ mapView.createPolygon({
 	"strokeColor": "black",
 	"strokeWidth": 5}
 );
-
-//Draw a marker
-mapView.createMarker({
-	"iconPath": "http://www.google.com/mapfiles/marker.png",
-	"latlng": [-43.524551, 172.58346]
-});
-	
 //Draw a marker at the same position as above but with offset
 mapView.createMarker({
 	"iconPath": "http://www.google.com/mapfiles/dd-start.png",
@@ -76,8 +93,8 @@ mapView.createMarker({
 	"hOffset": 5,
 	"vOffset": 4
 	});
-*/
-/*
+
+
 //Draw a sized marker (of the Zuck) Original icon is 100x99 pixels
 //temporary broken: since read from file to inputstream method not implemented in module: sc.mapsforge
 mapView.createMarker({

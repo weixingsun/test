@@ -7,10 +7,11 @@ if(Titanium.Network.networkType == Titanium.Network.NETWORK_NONE){
             });
             alertDialog.show();
 }else{
-	var alertDialog = Titanium.UI.createAlertDialog({
+	/* var alertDialog = Titanium.UI.createAlertDialog({
               title: 'Good!',
               message: 'Your device is online.',
               buttonNames: ['OK']
             });
             alertDialog.show();
+            */
 }
