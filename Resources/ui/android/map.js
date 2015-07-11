@@ -1,8 +1,7 @@
 var win = Ti.UI.createWindow({
 	backgroundColor:'white'
 });
-var mf = require('sc.mapsforge');
-
+var mf = require('ti.mapsforge');
 var mapView = mf.createMapsforgeView({
  "scalebar": true,
  "minZoom": 5, //Min zoom level for map view
@@ -96,7 +95,7 @@ mapView.createMarker({
 
 
 //Draw a sized marker (of the Zuck) Original icon is 100x99 pixels
-//temporary broken: since read from file to inputstream method not implemented in module: sc.mapsforge
+//temporary broken: since read from file to inputstream method not implemented in module: ti.mapsforge
 mapView.createMarker({
 	"iconPath": "https://fbcdn-profile-a.akamaihd.net/hprofile-ak-prn2/202896_4_1782288297_s.jpg",
 	"latlng": [-43.529551, 172.63346],
