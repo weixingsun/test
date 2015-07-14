@@ -35,6 +35,7 @@ Ti.App.addEventListener('longclicked', function(e) {
 	var from = [-43.524551, 172.58346];
 	var to = [e.lat,e.lng];
 	navi(from,to);
+	removePrevDestMarker();
 	marker(to);
 });
 //mapView.centerLatlng = [-43.524551, 172.58346];
