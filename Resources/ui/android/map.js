@@ -1,3 +1,9 @@
+var ALL = {
+	Marker:{"dest":0},
+	Gps:{"lat":0,"lng":0,"heading":0,"accuracy":0,"speed":0},
+	Line:{"route":0}
+};
+
 var win = Ti.UI.createWindow({
 	backgroundColor:'white'
 });
@@ -38,7 +44,7 @@ Ti.App.addEventListener('longclicked', function(e) {
 	//platform/android/res/drawable/marker_tap.png
 	var resid = Ti.App.Android.R.drawable.marker_tap;
 	mapView.createMarker({
-	"iconPath": "R/assets/Resources/images/marker_tap.png",
+	"iconPath": "R/drawable/marker_tap.png",
 	"latlng": [e.lat, e.lng]
   });
 });

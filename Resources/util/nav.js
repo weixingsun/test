@@ -17,7 +17,7 @@ function navi(from,to){
 	};
 	mf.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
-			var pre_line = all_things_dictionary.PolyLine["route"];
+			var pre_line = ALL.PolyLine["route"];
 			if(pre_line!==0){
 				mapView.removeLayer(pre_line);
 			}
@@ -26,9 +26,9 @@ function navi(from,to){
 				"color": "blue",
 				"strokeWidth": 10
 				});
-			all_things_dictionary.PolyLine["route"]=line.id;
+			ALL.PolyLine["route"]=line.id;
 			Ti.API.info("test: nodes.size()="+data.nodes.length+",node0.sign="+data.nodes[0].sign+",node0.name="+data.nodes[0].name+",node0.pts="+data.nodes[0].pts);
-			all_things_dictionary.Nodes=data.nodes;
+			ALL.Nodes=data.nodes;
 		}
 	});
 }
