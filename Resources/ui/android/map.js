@@ -17,14 +17,7 @@ var mapView = mf.createMapsforgeView({
  "centerLatlng": [-43.524551, 172.58346], //locke
  "zoomLevel": 12, //Bogus initial zoom level
  "debug": false });
- 
-/*
-mapView.addEventListner('clicked', function(e) {
-    alert('clicked('+e.lat + ','+e.lng+")");
-});
-mapView.addEventListner('longclicked', function(e) {
-    alert('longclicked('+e.lat + ','+e.lng+")");
-});*/
+
 win.add(mapView);
 win.open();
 Ti.API.info('mapView: ' + JSON.stringify(mapView));
@@ -42,12 +35,7 @@ Ti.App.addEventListener('longclicked', function(e) {
 	var from = [-43.524551, 172.58346];
 	var to = [e.lat,e.lng];
 	navi(from,to);
-	//platform/android/res/drawable/marker_tap.png
-	var resid = Ti.App.Android.R.drawable.marker_tap;
-	mapView.createMarker({
-	"iconPath": resid,
-	"latlng": [e.lat, e.lng]
-  });
+	marker(to);
 });
 //mapView.centerLatlng = [-43.524551, 172.58346];
 //mapView.zoomLevel = 12;
@@ -70,7 +58,20 @@ if(typeof actionBar != 'undefined'){
 	actionBar.hide();
 }
 
-
+function removePrevDestMarker(){
+	var pre_marker = ALL.Marker["dest"];
+	if(pre_marker!==0){
+		mapView.removeLayer(pre_marker);
+	}
+}
+function marker(to){
+	//platform/android/res/drawable/marker_tap.png
+	var dest = mapView.createMarker({
+		"iconPath": Ti.App.Android.R.drawable.marker_tap,
+		"latlng": to
+    });
+    ALL.Marker["dest"]=dest.id;
+}
 function navi(from,to){
 	var args = {
 	 "weighting": "fastest",	//fast/short
@@ -91,7 +92,7 @@ function navi(from,to){
 				"strokeWidth": 10
 				});
 			ALL.Line["route"]=line.id;
-			Ti.API.info("test: nodes.size()="+data.nodes.length+",node0.sign="+data.nodes[0].sign+",node0.name="+data.nodes[0].name+",node0.pts="+data.nodes[0].pts);
+			//Ti.API.info("test: nodes.size()="+data.nodes.length+",node0.sign="+data.nodes[0].sign+",node0.name="+data.nodes[0].name+",node0.pts="+data.nodes[0].pts);
 			ALL.Nodes=data.nodes;
 		}
 	});
