@@ -2,6 +2,7 @@ var win = Ti.UI.createWindow({
 	backgroundColor:'white'
 });
 var mf = require('ti.mapsforge');
+mf.load("/osmdroid/maps/nz/");
 var mapView = mf.createMapsforgeView({
  "scalebar": true,
  "minZoom": 5, //Min zoom level for map view
@@ -22,14 +23,24 @@ win.open();
 Ti.API.info('mapView: ' + JSON.stringify(mapView));
 
 Ti.App.addEventListener('clicked', function(e) {
-  alert('clicked('+e.lat+','+e.lng+')');
+	var resid = Ti.App.Android.R.drawable.marker_tap;
+	alert('clicked('+e.lat+','+e.lng+')');
   /*mapView.createMarker({
 	"iconPath": "/images/marker_tap.png",
 	"latlng": [e.lat, e.lng]
   });*/
 });
 Ti.App.addEventListener('longclicked', function(e) {
-  alert('longclicked('+e.lat+','+e.lng+')');
+	Ti.API.info('longclicked('+e.lat+','+e.lng+')');
+	var from = [-43.524551, 172.58346];
+	var to = [e.lat,e.lng];
+	navi(from,to);
+	//platform/android/res/drawable/marker_tap.png
+	var resid = Ti.App.Android.R.drawable.marker_tap;
+	mapView.createMarker({
+	"iconPath": "R/assets/Resources/images/marker_tap.png",
+	"latlng": [e.lat, e.lng]
+  });
 });
 //mapView.centerLatlng = [-43.524551, 172.58346];
 //mapView.zoomLevel = 12;
@@ -44,7 +55,7 @@ Ti.App.addEventListener('longclicked', function(e) {
 */
  mapView.addLayer({
 	"name": "osm",
-	"path": "osmdroid/maps/nz.map",
+	"path": "osmdroid/maps/nz/nz.map",
 });
 
 var actionBar = win.activity.actionBar;
@@ -52,6 +63,32 @@ if(typeof actionBar != 'undefined'){
 	actionBar.hide();
 }
 
+
+function navi(from,to){
+	var args = {
+	 "weighting": "fastest",	//fast/short
+	 "vehicle":   "car",		//walk/bicycle/bus
+	 "from": from, //locke
+	 "to":   to, //home
+	 "debug": false
+	};
+	mf.getRouteAsyncCallback(args,function(data){
+		if(data.error==0){
+			var pre_line = all_things_dictionary.PolyLine["route"];
+			if(pre_line!==0){
+				mapView.removeLayer(pre_line);
+			}
+			var line = mapView.createPolyline({
+				"latlngs": data.pts,
+				"color": "blue",
+				"strokeWidth": 10
+				});
+			all_things_dictionary.PolyLine["route"]=line.id;
+			Ti.API.info("test: nodes.size()="+data.nodes.length+",node0.sign="+data.nodes[0].sign+",node0.name="+data.nodes[0].name+",node0.pts="+data.nodes[0].pts);
+			all_things_dictionary.Nodes=data.nodes;
+		}
+	});
+}
 
 //Ti.include('marker.js');
 /*
@@ -92,7 +129,6 @@ mapView.createMarker({
 	"hOffset": 5,
 	"vOffset": 4
 	});
-
 
 //Draw a sized marker (of the Zuck) Original icon is 100x99 pixels
 //temporary broken: since read from file to inputstream method not implemented in module: ti.mapsforge
