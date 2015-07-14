@@ -1,7 +1,8 @@
 var ALL = {
 	Marker:{"dest":0},
 	Gps:{"lat":0,"lng":0,"heading":0,"accuracy":0,"speed":0},
-	Line:{"route":0}
+	Line:{"route":0},
+	Nodes:{}
 };
 
 var win = Ti.UI.createWindow({
@@ -44,7 +45,7 @@ Ti.App.addEventListener('longclicked', function(e) {
 	//platform/android/res/drawable/marker_tap.png
 	var resid = Ti.App.Android.R.drawable.marker_tap;
 	mapView.createMarker({
-	"iconPath": "R/drawable/marker_tap.png",
+	"iconPath": resid,
 	"latlng": [e.lat, e.lng]
   });
 });
@@ -80,7 +81,7 @@ function navi(from,to){
 	};
 	mf.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
-			var pre_line = all_things_dictionary.PolyLine["route"];
+			var pre_line = ALL.Line["route"];
 			if(pre_line!==0){
 				mapView.removeLayer(pre_line);
 			}
@@ -89,9 +90,9 @@ function navi(from,to){
 				"color": "blue",
 				"strokeWidth": 10
 				});
-			all_things_dictionary.PolyLine["route"]=line.id;
+			ALL.Line["route"]=line.id;
 			Ti.API.info("test: nodes.size()="+data.nodes.length+",node0.sign="+data.nodes[0].sign+",node0.name="+data.nodes[0].name+",node0.pts="+data.nodes[0].pts);
-			all_things_dictionary.Nodes=data.nodes;
+			ALL.Nodes=data.nodes;
 		}
 	});
 }
