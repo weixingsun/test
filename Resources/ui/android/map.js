@@ -2,10 +2,8 @@ var ALL = initVar();
 var win = initWindow();
 var mf = initModule();
 var map = initMap(win,mf);
+initMapListener(win,mf,map);
 initNav(mf);
-addListeners();
-addOfflineMapLayer(map);
-hideBar(win);
 
 function initWindow(){
 	return Ti.UI.createWindow();
@@ -38,10 +36,8 @@ function initMap(win,module){
 	 "debug": false });
 	//mapView.centerLatlng = [-43.524551, 172.58346];
 	//mapView.zoomLevel = 12;
-	//Ti.API.info('mapView: ' + JSON.stringify(mapView));
 	win.add(mapView);
 	win.open();
-	Ti.API.info('mapView: ' + JSON.stringify(mapView));
 	return mapView;
 }
 function addOfflineMapLayer(map){
@@ -50,11 +46,19 @@ function addOfflineMapLayer(map){
 		"path": "osmdroid/maps/nz/nz.map",
 	});
 }
-function initNav(mf){
+function initNav(module){
 	//load graphhopper folder
-	mf.load("/osmdroid/maps/nz/");
+	module.load("/osmdroid/maps/nz/");
 }
-function addListeners(){
+function initMapListener(win,module,map){
+	Ti.App.addEventListener('viewCreated', function(e) {
+		Ti.API.info('mapCreated: received by js' );
+		addOfflineMapLayer(map);
+		hideBar(win);
+		addActionListeners(module,map);
+	});
+}
+function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var resid = Ti.App.Android.R.drawable.marker_tap;
 		var point=[e.lat,e.lng];
@@ -66,27 +70,27 @@ function addListeners(){
 		Ti.API.info('longclicked('+e.lat+','+e.lng+')');
 		var from = [-43.524551, 172.58346];
 		var to = [e.lat,e.lng];
-		navi(from,to);
-		removePrevDestMarker();
-		addMarker(to);
+		navi(module,map,from,to);
+		removePrevDestMarker(map);
+		addMarker(map,to);
 	});
 }
 
-function removePrevDestMarker(){
+function removePrevDestMarker(map){
 	var pre_marker = ALL.Marker["dest"];
 	if(pre_marker!==0){
-		mapView.removeLayer(pre_marker);
+		map.removeLayer(pre_marker);
 	}
 }
-function addMarker(to){
+function addMarker(map,to){
 	//platform/android/res/drawable/marker_tap.png
-	var dest = mapView.createMarker({
+	var dest = map.createMarker({
 		"iconPath": Ti.App.Android.R.drawable.marker_tap,
 		"latlng": to
     });
     ALL.Marker["dest"]=dest.id;
 }
-function navi(from,to){
+function navi(module,map,from,to){
 	var args = {
 	 "weighting": "fastest",	//fast/short
 	 "vehicle":   "car",		//walk/bicycle/bus
@@ -94,13 +98,13 @@ function navi(from,to){
 	 "to":   to, //home
 	 "debug": false
 	};
-	mf.getRouteAsyncCallback(args,function(data){
+	module.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
 			var pre_line = ALL.Line["route"];
 			if(pre_line!==0){
-				mapView.removeLayer(pre_line);
+				map.removeLayer(pre_line);
 			}
-			var line = mapView.createPolyline({
+			var line = map.createPolyline({
 				"latlngs": data.pts,
 				"color": "blue",
 				"strokeWidth": 10
