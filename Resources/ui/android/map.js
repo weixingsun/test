@@ -1,10 +1,23 @@
 var ALL = initVar();
 var win = initWindow();
+initWindowEvent(win);
 var mf = initModule();
 var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
-
+function initWindowEvent(win){
+	win.addEventListener('focus', function() {
+		//Ti.API.info('win1 got focus');
+		hideBar(win);
+	});
+}
+function hideBar(win){
+	var actionBar = win.activity.actionBar;
+	Ti.API.info('actionBar:'+actionBar );
+	if(typeof actionBar !== 'undefined'){
+		actionBar.hide();
+	}
+}
 function initWindow(){
 	return Ti.UI.createWindow();
 }
@@ -19,12 +32,6 @@ function initVar(){
 		Nodes:{}
 	};
 	return ALL;
-}
-function hideBar(win){
-	var actionBar = win.activity.actionBar;
-	if(typeof actionBar !== 'undefined'){
-		actionBar.hide();
-	}
 }
 function initMap(win,module){
 	var mapView = module.createMapsforgeView({
@@ -50,11 +57,12 @@ function initNav(module){
 	//load graphhopper folder
 	module.load("/osmdroid/maps/nz/");
 }
+
 function initMapListener(win,module,map){
 	Ti.App.addEventListener('viewCreated', function(e) {
 		Ti.API.info('mapCreated: received by js' );
 		addOfflineMapLayer(map);
-		hideBar(win);
+		//hideBar(win);
 		addActionListeners(module,map);
 	});
 }
@@ -62,6 +70,7 @@ function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var resid = Ti.App.Android.R.drawable.marker_tap;
 		var point=[e.lat,e.lng];
+		Ti.API.info('clicked' +point);
 	    //var poiPoint = findPOI(point,radius);
 	    //addMarker(poiPoint);
 	    //openPopup();
