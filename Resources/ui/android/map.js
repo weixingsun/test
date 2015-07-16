@@ -54,7 +54,6 @@ function addOfflineMapLayer(map){
 	});
 }
 function initNav(module){
-	//load graphhopper folder
 	module.load("/osmdroid/maps/nz/");
 }
 
@@ -62,7 +61,6 @@ function initMapListener(win,module,map){
 	Ti.App.addEventListener('viewCreated', function(e) {
 		Ti.API.info('mapCreated: received by js' );
 		addOfflineMapLayer(map);
-		//hideBar(win);
 		addActionListeners(module,map);
 	});
 }
@@ -77,11 +75,16 @@ function addActionListeners(module,map){
 	});
 	Ti.App.addEventListener('longclicked', function(e) {
 		Ti.API.info('longclicked('+e.lat+','+e.lng+')');
-		var from = [-43.524551, 172.58346];
-		var to = [e.lat,e.lng];
-		navi(module,map,from,to);
-		removePrevDestMarker(map);
-		addMarker(map,to);
+		if(ALL.Gps["lat"]==0 || ALL.Gps["lng"]==0){
+			Ti.API.info('GPS not available');
+		}else{
+			var from = [ALL.Gps["lat"], ALL.Gps["lng"]];
+			var to = [e.lat,e.lng];
+			navi(module,map,from,to);
+			removePrevDestMarker(map);
+			addMarker(map,to);
+			addNodeMarkers();
+		}
 	});
 }
 
@@ -94,11 +97,19 @@ function removePrevDestMarker(map){
 function addMarker(map,to){
 	//platform/android/res/drawable/marker_tap.png
 	var dest = map.createMarker({
-		"iconPath": Ti.App.Android.R.drawable.marker_tap,
+		"iconPath": Ti.App.Android.R.drawable.marker_tap_long,
 		"latlng": to
     });
     ALL.Marker["dest"]=dest.id;
 }
+function addNodeMarkers(){
+	var size = ALL.Nodes.length;
+	for (node in ALL.Nodes){
+		node.pts;
+		node.sign;
+	}
+}
+
 function navi(module,map,from,to){
 	var args = {
 	 "weighting": "fastest",	//fast/short
