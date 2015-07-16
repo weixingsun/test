@@ -4,4 +4,3 @@ if(Ti.Platform.osname = "android"){
 	//Ti.include('ui/ios/map.js');
 }
 Ti.include('util/net.js');
-Ti.include('util/gps.js');

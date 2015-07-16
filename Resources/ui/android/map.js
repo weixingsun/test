@@ -5,6 +5,9 @@ var mf = initModule();
 var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
+
+Ti.include('../../util/gps.js');
+
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
 		//Ti.API.info('win1 got focus');
