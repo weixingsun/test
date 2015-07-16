@@ -6,7 +6,6 @@ var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
 
-Ti.include('../../util/gps.js');
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
@@ -66,6 +65,7 @@ function initMapListener(win,module,map){
 		Ti.API.info('mapCreated: received by js' );
 		addOfflineMapLayer(map);
 		addActionListeners(module,map);
+		initGPS();
 	});
 }
 function addActionListeners(module,map){

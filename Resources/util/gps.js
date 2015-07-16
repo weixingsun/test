@@ -46,17 +46,20 @@ function removeHandler() {
     }
 };
 
-Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
-Ti.Geolocation.distanceFilter = 100; //drop event accuracy >100m
-//Titanium.Geolocation.frequency = 2000;
-Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
-if (Ti.Geolocation.locationServicesEnabled) {
-	Ti.API.info("setup gps handler 1");
-    addHandler();
-    //var activity = Ti.Android.currentActivity;
-    //activity.addEventListener('destroy', removeHandler);
-    //activity.addEventListener('pause', removeHandler);
-    //activity.addEventListener('resume', addHandler);
-} else {
-    alert('Please enable location services');
+function initGPS(){
+	Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
+	Ti.Geolocation.distanceFilter = 100; //drop event accuracy >100m
+	//Titanium.Geolocation.frequency = 2000;
+	Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
+	if (Ti.Geolocation.locationServicesEnabled) {
+		Ti.API.info("setup gps handler 1");
+	    addHandler();
+	    //var activity = Ti.Android.currentActivity;
+	    //activity.addEventListener('destroy', removeHandler);
+	    //activity.addEventListener('pause', removeHandler);
+	    //activity.addEventListener('resume', addHandler);
+	} else {
+	    alert('Please enable location services');
+	}
 }
+
