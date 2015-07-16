@@ -7,7 +7,7 @@ var locationAdded = false;
 
 function handleLocation(e) {
     if (!e.error) {
-        Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
+        //Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
 	    ALL.Gps["lng"] = e.coords.longitude;
 	    ALL.Gps["lat"] = e.coords.latitude;
 	    ALL.Gps["heading"] = e.coords.heading;
@@ -19,6 +19,7 @@ function handleLocation(e) {
 	    //setTimeout(function(){ },100);
     }
 };
+
 function addHandler() {
     if (!locationAdded) {
         Ti.Geolocation.addEventListener('location', handleLocation);
@@ -33,7 +34,8 @@ function removeHandler() {
 };
 
 Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
-//Ti.Geolocation.distanceFilter = 10; //drop event accuracy >10m 
+//Ti.Geolocation.distanceFilter = 10; //drop event accuracy >10m
+//Titanium.Geolocation.frequency = 2000;
 Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
 if (Ti.Geolocation.locationServicesEnabled) {
     addHandler();
