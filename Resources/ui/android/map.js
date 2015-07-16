@@ -29,7 +29,7 @@ function initModule(){
 
 function initVar(){
 	var ALL = {
-		Marker:{"me":0,"dest":0},
+		Marker:{"mySpot":0,"myCircle":0,"dest":0},
 		Gps:{"lat":0,"lng":0,"heading":0,"accuracy":0,"speed":0},
 		Line:{"route":0},
 		Nodes:{}

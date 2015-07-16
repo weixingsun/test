@@ -17,17 +17,23 @@ function handleLocation(e) {
 	    //var timestamp = e.coords.timestamp;
 	    //var altitudeAccuracy = e.coords.altitudeAccuracy;
 	    //setTimeout(function(){ },100);
-	    if(ALL.Marker["me"] !== 0){
-	    	map.removeLayer(ALL.Marker["me"]);
+	    if(ALL.Marker["myCircle"] !== 0){
+	    	map.removeLayer(ALL.Marker["myCircle"]);
+	    	map.removeLayer(ALL.Marker["mySpot"]);
 	    }
-	    Ti.API.info("accuracy="+e.coords.accuracy);
-	    
-	    var me = map.createCircle({
-			"latlng": [e.coords.latitude, e.coords.longitude],
+	    //Ti.API.info("accuracy="+e.coords.accuracy);
+	    var me = [e.coords.latitude,e.coords.longitude];
+	    var myCircle = map.createCircle({
+			"latlng": me,
 			"colorHex": "#440000FF",
 			"radius": e.coords.accuracy //This is meters!
 		});
-		ALL.Marker["me"]=me.id;
+		var mySpot = map.createMarker({
+			"iconPath": Ti.App.Android.R.drawable.spot_blue,
+			"latlng": me
+	    });
+		ALL.Marker["mySpot"]=mySpot.id;
+		ALL.Marker["myCircle"]=myCircle.id;
     }
 };
 
