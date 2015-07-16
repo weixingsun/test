@@ -16,7 +16,7 @@ function initWindowEvent(win){
 }
 function hideBar(win){
 	var actionBar = win.activity.actionBar;
-	Ti.API.info('actionBar:'+actionBar );
+	//Ti.API.info('actionBar:'+actionBar );
 	if(typeof actionBar !== 'undefined'){
 		actionBar.hide();
 	}
@@ -27,9 +27,10 @@ function initWindow(){
 function initModule(){
 	return require('ti.mapsforge');
 }
+
 function initVar(){
 	var ALL = {
-		Marker:{"dest":0},
+		Marker:{"me":0,"dest":0},
 		Gps:{"lat":0,"lng":0,"heading":0,"accuracy":0,"speed":0},
 		Line:{"route":0},
 		Nodes:{}
@@ -92,9 +93,8 @@ function addActionListeners(module,map){
 }
 
 function removePrevDestMarker(map){
-	var pre_marker = ALL.Marker["dest"];
-	if(pre_marker!==0){
-		map.removeLayer(pre_marker);
+	if(ALL.Marker["dest"] !==0){
+		map.removeLayer(ALL.Marker["dest"]);
 	}
 }
 function addMarker(map,to){

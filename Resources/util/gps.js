@@ -17,32 +17,46 @@ function handleLocation(e) {
 	    //var timestamp = e.coords.timestamp;
 	    //var altitudeAccuracy = e.coords.altitudeAccuracy;
 	    //setTimeout(function(){ },100);
+	    if(ALL.Marker["me"] !== 0){
+	    	map.removeLayer(ALL.Marker["me"]);
+	    }
+	    Ti.API.info("accuracy="+e.coords.accuracy);
+	    
+	    var me = map.createCircle({
+			"latlng": [e.coords.latitude, e.coords.longitude],
+			"colorHex": "#440000FF",
+			"radius": e.coords.accuracy //This is meters!
+		});
+		ALL.Marker["me"]=me.id;
     }
 };
 
 function addHandler() {
     if (!locationAdded) {
+		Ti.API.info("setup gps handler 2");
         Ti.Geolocation.addEventListener('location', handleLocation);
         locationAdded = true;
     }
 };
 function removeHandler() {
     if (locationAdded) {
+		Ti.API.info("removeHandler gps");
         Ti.Geolocation.removeEventListener('location', handleLocation);
         locationAdded = false;
     }
 };
 
 Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
-//Ti.Geolocation.distanceFilter = 10; //drop event accuracy >10m
+Ti.Geolocation.distanceFilter = 100; //drop event accuracy >100m
 //Titanium.Geolocation.frequency = 2000;
 Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
 if (Ti.Geolocation.locationServicesEnabled) {
+	Ti.API.info("setup gps handler 1");
     addHandler();
-    var activity = Ti.Android.currentActivity;
-    activity.addEventListener('destroy', removeHandler);
-    activity.addEventListener('pause', removeHandler);
-    activity.addEventListener('resume', addHandler);
+    //var activity = Ti.Android.currentActivity;
+    //activity.addEventListener('destroy', removeHandler);
+    //activity.addEventListener('pause', removeHandler);
+    //activity.addEventListener('resume', addHandler);
 } else {
     alert('Please enable location services');
 }
