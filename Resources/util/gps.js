@@ -1,25 +1,22 @@
-//ALL.Gps:{"lat":0,"lng":0,"heading":0,"accuracy":0,"speed":0}
-//Ti.App.Properties.setString('PosType','gps');
-//Ti.App.Properties.setObject();
-//Ti.App.Properties.setList();
-
 var locationAdded = false;
 
 function handleLocation(e) {
     if (!e.error) {
         //Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
-	    ALL.Gps["lng"] = e.coords.longitude;
-	    ALL.Gps["lat"] = e.coords.latitude;
-	    ALL.Gps["heading"] = e.coords.heading;
-	    ALL.Gps["accuracy"] = e.coords.accuracy;
-	    ALL.Gps["speed"] = e.coords.speed;
+	    Ti.App.Properties.setDouble("lng",e.coords.longitude);
+	    Ti.App.Properties.setDouble("lat",e.coords.latitude);
+	    Ti.App.Properties.setInt("heading",e.coords.heading);
+	    Ti.App.Properties.setInt("accuracy",e.coords.accuracy);
+	    Ti.App.Properties.setInt("speed",e.coords.speed);
 	    //var altitude = e.coords.altitude;
 	    //var timestamp = e.coords.timestamp;
 	    //var altitudeAccuracy = e.coords.altitudeAccuracy;
 	    //setTimeout(function(){ },100);
-	    if(ALL.Marker["myCircle"] !== 0){
-	    	map.removeLayer(ALL.Marker["myCircle"]);
-	    	map.removeLayer(ALL.Marker["mySpot"]);
+	    if(Ti.App.Properties.getInt("myCircle") !== 0){
+	    	map.removeLayer(Ti.App.Properties.getInt("myCircle"));
+	    }
+	    if(Ti.App.Properties.getInt("mySpot") !== 0){
+	    	map.removeLayer(Ti.App.Properties.getInt("mySpot"));
 	    }
 	    //Ti.API.info("accuracy="+e.coords.accuracy);
 	    var me = [e.coords.latitude,e.coords.longitude];
@@ -29,11 +26,11 @@ function handleLocation(e) {
 			"radius": e.coords.accuracy //This is meters!
 		});
 		var mySpot = map.createMarker({
-			"iconPath": Ti.App.Android.R.drawable.spot_blue,
+			"iconPath": Ti.App.Android.R.drawable.me_point_blue_1,
 			"latlng": me
 	    });
-		ALL.Marker["mySpot"]=mySpot.id;
-		ALL.Marker["myCircle"]=myCircle.id;
+	    Ti.App.Properties.setInt("mySpot",mySpot.id);
+	    Ti.App.Properties.setInt("myCircle",myCircle.id);
     }
 };
 

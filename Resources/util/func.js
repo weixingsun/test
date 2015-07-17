@@ -1,5 +1,5 @@
 function test(){
-	/*
+/*
 Ti.App.Properties.setList('all_things',all_things_dictionary);
 var arr = Ti.App.Properties.getList('all_things');
 arr.PolyLine["route"].value = 'it works!';
