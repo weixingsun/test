@@ -1,3 +1,4 @@
+initVars();
 var win = initWindow();
 initWindowEvent(win);
 var mf = initModule();
@@ -151,6 +152,7 @@ function navi(module,map,from,to){
 			Ti.App.Properties.setInt('route',line.id);
 			Ti.App.Properties.setString('Nodes',JSON.stringify(data.nodes));
 			addNodeMarkers();
+			Ti.App.Properties.setInt("MODE",1);
 		}else{
 			Ti.API.info("navi error:"+data.error);
 		}

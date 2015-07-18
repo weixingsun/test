@@ -17,11 +17,12 @@ function handleLocation(e) {
 	    //////////////////////////////////////////////////////navi
 	    var strme = JSON.stringify(me);
 	    var strNodes = Ti.App.Properties.getString('Nodes');
-		Ti.API.info("handleGPS--strNodes");///////////////////////
 	    if(strNodes.length<1) return;
+	    var mode = Ti.App.Properties.getInt("MODE");
+	    if(mode==0) return;
+		//Ti.API.info("handleGPS--point="+strNodes);///////////////////////
 	    var nodes = JSON.parse(strNodes);
 	    var inWhichStep = -1;
-		Ti.API.info("handleGPS--2");//////////////////////////////
 	    for (var i = 0; i < nodes.length; i++){
 	      var strNodePts = JSON.stringify(nodes[i].pts);
 	      var isIn = checkStep(strme,strNodePts);
