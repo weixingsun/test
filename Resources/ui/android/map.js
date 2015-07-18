@@ -5,7 +5,12 @@ var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
 
-
+function initVars(){
+	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
+	Ti.App.Properties.setString('Nodes','');
+	Ti.App.Properties.setInt("myCircle",0);
+	Ti.App.Properties.setInt("mySpot",0);
+}
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
 		//Ti.API.info('win1 got focus');
@@ -25,7 +30,6 @@ function initWindow(){
 function initModule(){
 	return require('ti.mapsforge');
 }
-
 
 function initMap(win,module){
 	var mapView = module.createMapsforgeView({
@@ -117,7 +121,7 @@ function addNodeMarkers(){
 	    var p = nodes[i].pts[0];
 	    var pp = [p[1],p[0]];
 	    var id=Ti.App.Android.R.drawable.point_red;
-	    Ti.API.info("point="+pp);
+	    //Ti.API.info("point="+pp);
 	    var mkid=addMarker(map,pp,id);
 	    //Ti.API.info(nodes[i].sign);
 	    //Ti.API.info(nodes[i].name);
@@ -129,10 +133,9 @@ function addNodeMarkers(){
 function navi(module,map,from,to){
 	var args = {
 	 "weighting": "fastest",	//fast/short
-	 "vehicle":   "car",		//walk/bicycle/bus
-	 "from": from, //locke
-	 "to":   to, //home
-	 "debug": false
+	 "vehicle":   "car",		//car/foot/bicycle/bus
+	 "from": from,
+	 "to":   to
 	};
 	module.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
