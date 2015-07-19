@@ -8,9 +8,18 @@ initNav(mf);
 
 function initVars(){
 	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
-	Ti.App.Properties.setString('Nodes','');
+	setNodes('');
 	Ti.App.Properties.setInt("myCircle",0);
 	Ti.App.Properties.setInt("mySpot",0);
+	Ti.App.Properties.setInt("dest",0);
+	Ti.App.Properties.setInt('route',0);
+	Ti.App.Properties.setString('RouteMarkers','');
+}
+function getNodes(){
+	return Ti.App.Properties.getString('Nodes');
+}
+function setNodes(value){
+	Ti.App.Properties.setString('Nodes',value);
 }
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
@@ -33,12 +42,14 @@ function initModule(){
 }
 
 function initMap(win,module){
+	var lon = Ti.App.Properties.getDouble("lng");
+	var lat = Ti.App.Properties.getDouble("lat");
 	var mapView = module.createMapsforgeView({
 	 "scalebar": true,
 	 "minZoom": 5, //Min zoom level for map view
 	 "maxZoom": 20, //Max zoom level for map view
-	 "centerLatlng": [-43.524551, 172.58346], //locke
-	 "zoomLevel": 14, //Bogus initial zoom level
+	 "centerLatlng": [lat, lon], //locke
+	 "zoomLevel": 16, //Bogus initial zoom level
 	 "debug": false });
 	//mapView.centerLatlng = [-43.524551, 172.58346];
 	//mapView.zoomLevel = 12;
@@ -94,11 +105,10 @@ function removePrevDestMarker(map){
 		map.removeLayer(Ti.App.Properties.getInt("dest"));
 	}
 	var nodeMarkers = Ti.App.Properties.getString("RouteMarkers");
-	if(nodeMarkers !==0){
-		var nodes = JSON.parse(nodeMarkers);
-		for (var i = 0; i < nodes.length; i++){
-			map.removeLayer(nodes[i]);
-		}
+	if(nodeMarkers.length<1) return;
+	var nodes = JSON.parse(nodeMarkers);
+	for (var i = 0; i < nodes.length; i++){
+		map.removeLayer(nodes[i]);
 	}
 }
 function addMarker(map,to,id){
@@ -111,21 +121,15 @@ function addMarker(map,to,id){
     return mk.id;
 }
 function addNodeMarkers(){
-	var strNodes = Ti.App.Properties.getString('Nodes');
+	var strNodes = getNodes();
 	var nodes = JSON.parse(strNodes);
-	/*for (var node in nodes){	//not working
-		Ti.API.info("node:"+node);
-		Ti.API.info("node.pts:"+node.pts);
-	}*/
+	/*for (var node in nodes){}	//not working */
 	var nodeMarkerIds = [];
 	for (var i = 0; i < nodes.length; i++){
 	    var p = nodes[i].pts[0];
 	    var pp = [p[1],p[0]];
 	    var id=Ti.App.Android.R.drawable.point_red;
-	    //Ti.API.info("point="+pp);
 	    var mkid=addMarker(map,pp,id);
-	    //Ti.API.info(nodes[i].sign);
-	    //Ti.API.info(nodes[i].name);
 		nodeMarkerIds.push(mkid);
 	}
 	Ti.App.Properties.setString('RouteMarkers',JSON.stringify(nodeMarkerIds));
@@ -134,7 +138,7 @@ function addNodeMarkers(){
 function navi(module,map,from,to){
 	var args = {
 	 "weighting": "fastest",	//fast/short
-	 "vehicle":   "car",		//car/foot/bicycle/bus
+	 "vehicle":   "foot",		//car/foot/bicycle/bus
 	 "from": from,
 	 "to":   to
 	};
@@ -152,7 +156,9 @@ function navi(module,map,from,to){
 			Ti.App.Properties.setInt('route',line.id);
 			Ti.App.Properties.setString('Nodes',JSON.stringify(data.nodes));
 			addNodeMarkers();
+			Ti.API.info("getRouteAsyncCallback().addNodeMarkers() done");
 			Ti.App.Properties.setInt("MODE",1);
+			win.setKeepScreenOn(true);
 		}else{
 			Ti.API.info("navi error:"+data.error);
 		}
