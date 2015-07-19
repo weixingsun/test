@@ -31,9 +31,10 @@ function handleLocation(e) {
 		if(typeof nextNode !=='undefined'){
 			var nextPoint = nextNode.pts[0];
 		    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
-		    showToast(stepId,dist2next);
+		    showToast(stepId,nextNode,dist2next);
 		}else{
 			//redraw route
+			showToast(-1,-1,-1);
 		}
     }
 };
@@ -49,7 +50,6 @@ function findNextNode(currId,me){
 		nextNode = nodes[currId+1];
 		Ti.API.info("nextPoint="+JSON.stringify(nextNode.pts[0]));
 	}
-	//var nextNode = nodes[currId+1];nextNode.sign;nextNode.name;
 	return nextNode;
 }
 
@@ -58,16 +58,7 @@ function findMyStep(me,range){
     var strNodes = getNodes();
 	//strNodes=[[172.584333,-43.523472],[172.584716,-43.523578]]
     var nodes = JSON.parse(strNodes);
-    var inWhichStep=findMyStepId(strme, nodes, range);
-    /*
-    if(d0>range){
-	    inWhichStep=findMyStepId(strme, strNodes, range);
-    }else{
-    	inWhichStep=0;	//close to starting point
-    }
-    Ti.API.info("findMyStep()d0="+d0+",range="+range+", step="+inWhichStep);
-    */
-    return inWhichStep;
+    return findMyStepId(strme, nodes, range);
 }
 function findMyStepId(strme, nodes, range){
 	//var nodes = JSON.parse(strNodes);
@@ -82,12 +73,12 @@ function findMyStepId(strme, nodes, range){
     }
     return inWhichStep;
 }
-function showToast(inWhichStep,dist){
+function showToast(inWhichStep,nextNode,dist){
 	var msg = '';
 	if(inWhichStep>-1){
-		msg=dist+'m to step 0, in step '+ inWhichStep;
-	}else{
-		msg=dist+'m to step 0, not in any step';
+		msg='in '+dist+'m, turn ' +nextNode.sign+ +', on '+nextNode.name+', in step '+ inWhichStep;
+	}else if(dist>0){
+		msg='not in any step';
 	}
 	var toast = Titanium.UI.createNotification({
 		duration: Ti.UI.NOTIFICATION_DURATION_SHORT,
