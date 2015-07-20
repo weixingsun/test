@@ -1,5 +1,7 @@
 var locationAdded = false;
-var GPS_RANGE = 50;
+var GPS_RANGE_MIN = 60;
+//var GPS_RANGE_MIN = 30;
+var GPS_RANGE_MAX = 200;
 
 function handleLocation(e) {
     if (!e.error) {
@@ -20,13 +22,16 @@ function handleLocation(e) {
 	    	return;
 	    }
 	    var nextNode,stepId;
+	    var strNodes = getNodes();
+		//strNodes=[[172.584333,-43.523472],[172.584716,-43.523578]]
+	    var nodes = JSON.parse(strNodes);
 	    try {
-		    var range = (e.coords.accuracy*2 > GPS_RANGE) ? GPS_RANGE : e.coords.accuracy*2;
-		    stepId = findMyStep(me, range);
-		    nextNode = findNextNode(stepId,me);
+		    var range = (e.coords.accuracy < GPS_RANGE_MIN) ? GPS_RANGE_MIN : e.coords.accuracy;
+		    stepId = findMyStepId(nodes, me, range);
+		    nextNode = findNextNode(nodes,stepId);
 		    //throw "err_content"; err="err_content"
 		}catch(err) {
-    		Ti.API.info("handleLocation():"+strNodes+", "+err.message);
+    		Ti.API.info("handleLocation()err:"+err.message+", "+strNodes);
 		}
 		if(typeof nextNode !=='undefined'){
 			var nextPoint = nextNode.pts[0];
@@ -34,34 +39,31 @@ function handleLocation(e) {
 		    showToast(stepId,nextNode,dist2next);
 		}else{
 			//redraw route
-			showToast(-1,-1,-1);
+			//var nextPoint = nextNode.pts[0];
+		    //var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
+			//showToast(-1,-1,-1);
+			var toast = Titanium.UI.createNotification({
+				duration: Ti.UI.NOTIFICATION_DURATION_SHORT,
+				message: 'redraw route?'
+			});
+			toast.show();
 		}
     }
 };
-function findNextNode(currId,me){
-	var strNodes = getNodes();
-	var nodes = JSON.parse(strNodes);
-	var p0 = nodes[0].pts[0];
-	var d0 = distance(me[0],me[1],p0[1],p0[0]); //to starting point
-	var nextNode;
-	if(currId<0){
-		if(d0<GPS_RANGE) return nodes[0];
-	}else if(currId+1<nodes.length){
-		nextNode = nodes[currId+1];
-		Ti.API.info("nextPoint="+JSON.stringify(nextNode.pts[0]));
+function findNextNode(nodes,currId){
+	//if(currId<0){		//if no nodeId
+	//	return nodes[0];
+	//}else 
+	if(currId+1<nodes.length){
+		return nodes[currId+1];
+	}else{//last node
+		return nodes[currId];
 	}
-	return nextNode;
 }
 
-function findMyStep(me,range){
-	var strme = JSON.stringify(me);
-    var strNodes = getNodes();
-	//strNodes=[[172.584333,-43.523472],[172.584716,-43.523578]]
-    var nodes = JSON.parse(strNodes);
-    return findMyStepId(strme, nodes, range);
-}
-function findMyStepId(strme, nodes, range){
+function findMyStepId(nodes, me, range){
 	//var nodes = JSON.parse(strNodes);
+	var strme = JSON.stringify(me);
 	var inWhichStep = -1;
 	for (var i = 0; i < nodes.length; i++){
       var strNodePts = JSON.stringify(nodes[i].pts);
@@ -76,8 +78,13 @@ function findMyStepId(strme, nodes, range){
 function showToast(inWhichStep,nextNode,dist){
 	var msg = '';
 	if(inWhichStep>-1){
-		msg='in '+dist+'m, turn ' +nextNode.sign+ +', on '+nextNode.name+', in step '+ inWhichStep;
+		var strdict = Ti.App.Properties.getString('GH_TURN_DICT');
+		var dict = JSON.parse(strdict);
+		var turn = dict[''+nextNode.sign];
+		msg='in '+dist+'m, turn ' +turn+', on '+nextNode.name+', in step '+ inWhichStep;
 	}else if(dist>0){
+		msg='dist='+dist+',but not in any step';
+	}else{
 		msg='not in any step';
 	}
 	var toast = Titanium.UI.createNotification({
