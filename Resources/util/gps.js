@@ -20,6 +20,8 @@ function handleLocation(e) {
 	    var mode = Ti.App.Properties.getInt("MODE");
 	    if(strNodes.length<1 || mode==0){
 	    	return;
+	    }else{
+	    	map.centerLatlng = me;
 	    }
 	    var nextNode,stepId;
 	    var strNodes = getNodes();
