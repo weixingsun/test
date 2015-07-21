@@ -1,1 +1,1 @@
-(Ti.Platform.osname="android")&&Ti.include("ui/android/map.js"),Ti.include("util/net.js"),Ti.include("util/gps.js");
+Ti.include("util/vars.js"),Ti.include("util/views.js"),Ti.include("util/net.js"),Ti.include("util/gps.js"),(Ti.Platform.osname="android")&&Ti.include("ui/android/map.js");

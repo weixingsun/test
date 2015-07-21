@@ -1,3 +1,4 @@
+
 initVars();
 var win = initWindow();
 initWindowEvent(win);
@@ -5,39 +6,14 @@ var mf = initModule();
 var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
+appEventListeners();
 
-function initVars(){
-	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
-	setNodes('');
-	Ti.App.Properties.setInt("myCircle",0);
-	Ti.App.Properties.setInt("mySpot",0);
-	Ti.App.Properties.setInt("dest",0);
-	Ti.App.Properties.setInt('route',0);
-	Ti.App.Properties.setString('RouteMarkers','');
-	var GH_TURN_DICT={
-		"-3":"turn_sharp_left",
-		"-2":"turn_left",
-		"-1":"turn_slight_left",
-		"0":"continue",
-		"1":"turn_slight_right",
-		"2":"turn_right",
-		"3":"turn_sharp_right",
-		"4":"finish",
-		"5":"reached_via",
-		"6":"use_roundabout"
-	};
-	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT));
-}
-function getNodes(){
-	return Ti.App.Properties.getString('Nodes');
-}
-function setNodes(value){
-	Ti.App.Properties.setString('Nodes',value);
-}
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
 		//Ti.API.info('win1 got focus');
 		hideBar(win);
+		var pop = createPopView();
+		Ti.App.Properties.setObject('pop',pop);
 	});
 }
 function hideBar(win){
@@ -88,6 +64,16 @@ function initMapListener(win,module,map){
 		initGPS();
 	});
 }
+function hidePopView(){
+	var pop = AllViews["pop"];
+	if(typeof pop !== 'undefined')
+		pop.hide();
+}
+function showPopView(){
+	var pop = AllViews["pop"];
+	if(typeof pop !== 'undefined')
+		pop.show();
+}
 function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var resid = Ti.App.Android.R.drawable.marker_tap;
@@ -96,6 +82,12 @@ function addActionListeners(module,map){
 	    //var p = findPOI(point,radius);
 	    //addMarker(map,p,id);
 	    //openPopup();
+	    var pop = AllViews["pop"]; //Ti.App.Properties.getObject('pop');
+	    if(pop.visible)  {
+	       hidePopView();
+	   } else {
+	       showPopView();
+	   }
 	});
 	Ti.App.addEventListener('longclicked', function(e) {
 		var from = [Ti.App.Properties.getDouble("lat"),Ti.App.Properties.getDouble("lng")];
@@ -176,4 +168,37 @@ function navi(module,map,from,to){
 			Ti.API.info("navi error:"+data.error);
 		}
 	});
+}
+
+function appEventListeners(){
+	var activity = Ti.Android.currentActivity;
+	activity.addEventListener('create', function() {
+	    Ti.API.info('*** Create Event Called ***');
+	});
+	activity.addEventListener('start', function() {
+	    Ti.API.info('*** Start Event Called ***');
+	});
+	activity.addEventListener('stop', function() {
+	    Ti.API.info('*** Stop Event Called ***');
+	    hidePopView();
+	});
+	activity.addEventListener('resume', function() {
+	    Ti.API.info('*** Resume Event Called ***');
+	});
+	activity.addEventListener('pause', function() {
+	    Ti.API.info('*** Pause Event Called ***');
+	    hidePopView();
+	});
+	activity.addEventListener('destroy', function() {
+	    Ti.API.info('*** Destroy Event Called ***');
+	});
+	
+	var bc = Ti.Android.createBroadcastReceiver({
+	    onReceived: function() {
+	        Ti.API.info('Handling broadcast ACTION_SCREEN_OFF.');
+	    	hidePopView();
+	    }
+	});
+	 
+	Ti.Android.registerBroadcastReceiver(bc, [Ti.Android.ACTION_SCREEN_OFF]);
 }
