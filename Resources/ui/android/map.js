@@ -7,12 +7,13 @@ var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
 appEventListeners();
+createSearchBar();
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
 		//Ti.API.info('win1 got focus');
 		hideBar(win);
-		var pop = createPopView();
+		var pop = createPlaceView();
 		Ti.App.Properties.setObject('pop',pop);
 	});
 }
@@ -199,6 +200,5 @@ function appEventListeners(){
 	    	hidePopView();
 	    }
 	});
-	 
 	Ti.Android.registerBroadcastReceiver(bc, [Ti.Android.ACTION_SCREEN_OFF]);
 }

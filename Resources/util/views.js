@@ -1,8 +1,8 @@
-function createPopView(){
+function createPlaceView(){
 	//backgroundColor : rgba(255,0,0,0.5)	//ios
 	//backgroundColor : rgba(255,0,0,127)	//android
 	var popDownView = Ti.UI.createView({
-	    backgroundColor: 'rgba(64,64,64,200)',
+	    backgroundColor: 'rgba(128,128,128,200)',
 	    width:'100%',
 	    height:'20%',
 	    layout: 'horizontal',
@@ -31,11 +31,30 @@ function createColumns(popDownView){
 	popDownView.add(column1);
 	popDownView.add(column2);
 }
-//Titanium.UI.createSearchBar();
 function createImages(view,id){
 	var img = Titanium.UI.createImageView({
 			image:id,
 			width : 64
 		});
 	view.add(img);
+}
+function createSearchBar(){
+    var searchBar = Titanium.UI.createSearchBar({
+        barColor:'#9d9d9d',
+        showCancel:true,
+        hintText:'Click to Search',
+    	top:5,
+    });
+    searchBar.addEventListener('change', function(e){
+        e.value;
+    });
+    searchBar.addEventListener('return', function(e){
+        searchBar.blur();
+    });
+    searchBar.addEventListener('cancel', function(e){
+        searchBar.blur();
+    });
+}
+function createSearchBar2(){
+	
 }
