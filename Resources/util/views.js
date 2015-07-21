@@ -44,14 +44,17 @@ function createTopColumns(rowView){
         width : 20+"%"
     });
 	var carId=Ti.App.Android.R.drawable.sedan_128;
-	var img_car = createImages(column3,carId);
+	var img_car = createCarImage(column3,carId);
     
-	createNameLabel(column1,name);
+	createNameLabel(column1);
 	rowView.add(column1);
 	rowView.add(column2);
 	rowView.add(column3);
 }
-function createNameLabel(column,name){
+function createNameLabel(column){
+    var dest_lat = Ti.App.Properties.getDouble("dest_lat");
+	var dest_lng = Ti.App.Properties.getDouble("dest_lng");
+	var name = '['+dest_lat+','+dest_lng+']';
 	var label = Ti.UI.createLabel({
 	  color: '#900',
 	  font: { fontSize:20 },
@@ -86,12 +89,25 @@ function createBottomColumns(popDownView){
 	var img_parking = createImages(column3,parking);
     img_close.addEventListener('click', function(e){
     	e.source.parent.parent.parent.hide();
+    	removePrevDestMarker(map);
+    	var pre_line = Ti.App.Properties.getInt('route');
+		if(pre_line!==0){
+			map.removeLayer(pre_line);
+		}
     });
 	popDownView.add(column1);
 	popDownView.add(column2);
 	popDownView.add(column3);
 }
 function createImages(view,id){
+	var img = Titanium.UI.createImageView({
+			image:id,
+			//width : 64
+		});
+	view.add(img);
+	return img;
+}
+function createCarImage(view,id){
 	var img = Titanium.UI.createImageView({
 			image:id,
 			//width : 64
@@ -107,7 +123,6 @@ function createImages(view,id){
 	    Ti.API.info("mf="+mf+",map="+map+",from="+from+",to="+to);
 	    navi(mf,map,from,to);
 	    });
-	return img;
 }
 function createAndroidSearchBar(){
 	var searchBar = Ti.UI.Android.createSearchView({
