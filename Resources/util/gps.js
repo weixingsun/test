@@ -6,10 +6,10 @@ var GPS_RANGE_MAX = 200;
 function handleLocation(e) {
     if (!e.error) {
         //Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
-	    Ti.App.Properties.setDouble("lng",e.coords.longitude);
-	    Ti.App.Properties.setDouble("lat",e.coords.latitude);
+	    Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);
+	    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);
 	    Ti.App.Properties.setInt("heading",e.coords.heading);
-	    Ti.App.Properties.setInt("accuracy",e.coords.accuracy);
+	    //Ti.App.Properties.setInt("gps_accuracy",e.coords.accuracy);
 	    Ti.App.Properties.setInt("speed",e.coords.speed);
 	    //var altitude = e.coords.altitude;
 	    //var timestamp = e.coords.timestamp;
@@ -153,7 +153,7 @@ function removeHandler() {
 function initGPS(){
 	Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
 	Ti.Geolocation.distanceFilter = 100; //drop event accuracy >100m
-	//Titanium.Geolocation.frequency = 2000;
+	Titanium.Geolocation.frequency = 1500; //1.5s
 	Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
 	if (Ti.Geolocation.locationServicesEnabled) {
 		Ti.API.info("setup gps handler 1");

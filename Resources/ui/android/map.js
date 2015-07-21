@@ -7,7 +7,7 @@ var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
 appEventListeners();
-createSearchBar1();
+createAndroidSearchBar();
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
@@ -32,8 +32,8 @@ function initModule(){
 }
 
 function initMap(win,module){
-	var lon = Ti.App.Properties.getDouble("lng");
-	var lat = Ti.App.Properties.getDouble("lat");
+	var lon = Ti.App.Properties.getDouble("gps_lng",0);
+	var lat = Ti.App.Properties.getDouble("gps_lat",0);
 	var mapView = module.createMapsforgeView({
 	 "scalebar": true,
 	 "minZoom": 5, //Min zoom level for map view
@@ -81,31 +81,32 @@ function addActionListeners(module,map){
 		var point=[e.lat,e.lng];
 		Ti.API.info('clicked:' +point);
 	    //var p = findPOI(point,radius);
-	    //addMarker(map,p,id);
-	    //openPopup();
-	    var pop = AllViews["pop"]; //Ti.App.Properties.getObject('pop');
-	    if(pop.visible)  {
-	       hidePopView();
-	   } else {
-	       showPopView();
-	   }
+	    //var pop = AllViews["pop"]; //Ti.App.Properties.getObject('pop');
+	    //showPopView();
+	    findDestMarker(point);
 	});
 	Ti.App.addEventListener('longclicked', function(e) {
-		var from = [Ti.App.Properties.getDouble("lat"),Ti.App.Properties.getDouble("lng")];
+		var from = [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
 		var to = [e.lat,e.lng];
 		Ti.API.info('longclicked:'+to);
 		if(from[0]==0 || from[1]==0){
 			Ti.API.info('GPS not available');
 		}else{
-			navi(module,map,from,to);
+			//navi(module,map,from,to);
+   			Ti.App.Properties.setDouble("dest_lat",e.lat);
+	    	Ti.App.Properties.setDouble("dest_lng",e.lng);
 			removePrevDestMarker(map);
 			var id=Ti.App.Android.R.drawable.marker_tap_long;
 			var mkid = addMarker(map,to,id);
 			Ti.App.Properties.setInt("dest",mkid);
+			showPopView();
 		}
 	});
 }
 
+function findDestMarker(point){
+	
+};
 function removePrevDestMarker(map){
 	if(Ti.App.Properties.getInt("dest") !==0){
 		map.removeLayer(Ti.App.Properties.getInt("dest"));
@@ -124,6 +125,9 @@ function addMarker(map,to,id){
 		"iconPath": id,
 		"latlng": to
     });
+    //mk.addEventListener('click', function(e){
+    	//showPopView();
+    //});
     return mk.id;
 }
 function addNodeMarkers(){
