@@ -38,12 +38,12 @@ function createImages(view,id){
 		});
 	view.add(img);
 }
-function createSearchBar(){
+function createSearchBar1(){
     var searchBar = Titanium.UI.createSearchBar({
-        barColor:'#9d9d9d',
-        showCancel:true,
-        hintText:'Click to Search',
-    	top:5,
+	    barColor:'#000', 
+	    showCancel:true,
+	    height:43,
+	    top:0,
     });
     searchBar.addEventListener('change', function(e){
         e.value;
@@ -54,6 +54,7 @@ function createSearchBar(){
     searchBar.addEventListener('cancel', function(e){
         searchBar.blur();
     });
+    Ti.API.info("searchbar created");
 }
 function createSearchBar2(){
 	

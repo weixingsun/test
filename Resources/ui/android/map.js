@@ -7,7 +7,7 @@ var map = initMap(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
 appEventListeners();
-createSearchBar();
+createSearchBar1();
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
