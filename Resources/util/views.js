@@ -94,6 +94,7 @@ function createBottomColumns(popDownView){
 		if(pre_line!==0){
 			map.removeLayer(pre_line);
 		}
+		Ti.App.Properties.setInt("MODE",0);
     });
 	popDownView.add(column1);
 	popDownView.add(column2);
