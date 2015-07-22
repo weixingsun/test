@@ -1,5 +1,7 @@
 Ti.include('util/vars.js');
 Ti.include('util/views.js');
+Ti.include('util/routeview.js');
+Ti.include('util/placeview.js');
 Ti.include('util/net.js');
 Ti.include('util/gps.js');
 Ti.include('util/event.js');
