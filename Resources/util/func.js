@@ -90,24 +90,7 @@ function GetLastKnownGPS(){
 	});
 }
 
-function reverseGeoNet(latitude,longitude){
-	Ti.Geolocation.reverseGeocoder(latitude,longitude,function(evt){
-        if (evt.success) {
-            var places = evt.places;
-            if (places && places.length) {
-                //reverseGeo.text = places[0].address;
-                var place = places[0].address;
-                //alert("Current location "+place);
-            } else {
-                //reverseGeo.text = "No address found";
-                alert("No address found");
-            }
-            Ti.API.info("reverse geolocation result = "+JSON.stringify(evt));
-        }
-        else {
-        }
-    });
-}
+
 if (Ti.Geolocation.locationServicesEnabled) {
     Ti.Geolocation.purpose = 'Get Current Heading';
     // make a single request for the current heading

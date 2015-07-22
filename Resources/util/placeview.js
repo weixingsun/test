@@ -3,7 +3,8 @@ function hidePopView(){
 	if(typeof pop !== 'undefined')
 		pop.hide();
 }
-function showPopView(){
+function showPopView(coord){
+	getLongpressAddress(coord[0],coord[1], getLongpressAddressCallback);
 	var pop = AllViews["pop"];
 	if(typeof pop !== 'undefined')
 		pop.show();
@@ -61,7 +62,7 @@ function createNameLabel(column){
 	var dest_lng = Ti.App.Properties.getDouble("dest_lng");
 	var name = '['+dest_lat+','+dest_lng+']';
 	var label = Ti.UI.createLabel({
-	  color: '#900',
+	  color: '#000',
 	  font: { fontSize:20 },
 	  shadowColor: '#aaa',
 	  shadowOffset: {x:5, y:5},

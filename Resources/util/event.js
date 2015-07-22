@@ -48,14 +48,14 @@ function addActionListeners(module,map){
 		if(from[0]==0 || from[1]==0){
 			Ti.API.info('GPS not available');
 		}else{
-			//navi(module,map,from,to);
    			Ti.App.Properties.setDouble("dest_lat",e.lat);
 	    	Ti.App.Properties.setDouble("dest_lng",e.lng);
-			removePrevDestMarker(map);
+			removePrevAll(map);
 			var id=Ti.App.Android.R.drawable.marker_tap_long;
 			var mkid = addMarker(map,to,id);
 			Ti.App.Properties.setInt("dest",mkid);
-			showPopView();
+			var coord = [e.lat,e.lng];
+			showPopView(coord);
 		}
 	});
 }
