@@ -21,6 +21,12 @@ function addNodeMarkers(){
 	}
 	Ti.App.Properties.setString('RouteMarkers',JSON.stringify(nodeMarkerIds));
 }
+function removePrevAll(){
+	removePrevLine();
+	removePrevDestMarker();
+	removePrevNodeMarkers();
+}
+
 function removePrevLine(){
 	var pre_line = Ti.App.Properties.getInt('route');
 	if(pre_line!==0){

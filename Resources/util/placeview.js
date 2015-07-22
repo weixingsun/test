@@ -97,7 +97,7 @@ function createBottomColumns(popDownView){
 	var img_parking = createImages(column3,parking);
     img_close.addEventListener('click', function(e){
     	e.source.parent.parent.parent.hide();
-    	removePrevDestMarker(map);
+    	removePrevAll();
     	var pre_line = Ti.App.Properties.getInt('route');
 		if(pre_line!==0){
 			map.removeLayer(pre_line);
