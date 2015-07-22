@@ -14,7 +14,7 @@ function createPlaceView(){
 	createRows(popDownView);
 	//setTimeout(function() {}, 10);
 	win.add(popDownView);
-	AllViews[popDownView.id] = popDownView;
+	AllViews["pop"] = popDownView;
 	return popDownView;
 }
 function createRows(popDownView){
@@ -35,21 +35,17 @@ function createRows(popDownView){
 }
 function createTopColumns(rowView){
 	var column1 = Ti.UI.createView({
-        width : 50+"%"
+        width : 80+"%"
     });
     var column2 = Ti.UI.createView({
-        width : 30+"%"
-    });
-    var column3 = Ti.UI.createView({
         width : 20+"%"
     });
 	var carId=Ti.App.Android.R.drawable.sedan_128;
-	var img_car = createCarImage(column3,carId);
+	var img_car = createCarImage(column2,carId);
     
 	createNameLabel(column1);
 	rowView.add(column1);
 	rowView.add(column2);
-	rowView.add(column3);
 }
 function createNameLabel(column){
     var dest_lat = Ti.App.Properties.getDouble("dest_lat");
@@ -64,9 +60,12 @@ function createNameLabel(column){
 	  text: name,
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  top: 10,
+	  left: 5,
+	  parent: column,
 	  width: Ti.UI.SIZE, height: Ti.UI.SIZE
 	});
 	column.add(label);
+	AllViews["place_name"] = label;
 }
 function createBottomColumns(popDownView){
 	var column1 = Ti.UI.createView({
@@ -115,15 +114,22 @@ function createCarImage(view,id){
 		});
 	view.add(img);
     img.addEventListener('click', function(e){
-	    var dest_lat = Ti.App.Properties.getDouble("dest_lat");
-		var dest_lng = Ti.App.Properties.getDouble("dest_lng");
-	    var gps_lat = Ti.App.Properties.getDouble("gps_lat");
-	    var gps_lng = Ti.App.Properties.getDouble("gps_lng");
-	    var from = [gps_lat,gps_lng];
-	    var to = [dest_lat,dest_lng];
+	    var from = [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
+	    var to = [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
 	    Ti.API.info("mf="+mf+",map="+map+",from="+from+",to="+to);
 	    navi(mf,map,from,to);
 	    });
+	img.addEventListener('longclick',function(e){
+		var bys = JSON.parse(Ti.App.Properties.getString('bys'));
+		var by = Ti.App.Properties.getString('by');
+		var index = bys.indexOf(by);
+		var nextby = index==bys.length-1?bys[0]:bys[index+1];
+		Ti.API.info('nextBy='+nextby);
+		Ti.App.Properties.setString('by',nextby);
+		
+	});
+	AllViews["car_img"] = img;
+	return img;
 }
 function createAndroidSearchBar(){
 	var searchBar = Ti.UI.Android.createSearchView({

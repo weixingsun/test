@@ -3,7 +3,8 @@ var GPS_RANGE_MIN = 60;
 //var GPS_RANGE_MIN = 30;
 var GPS_RANGE_MAX = 200;
 
-function handleLocation(e) {
+//function handleLocation(e) {
+var locationCallback = function(e) {
     if (!e.error) {
         //Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
 	    Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);
@@ -17,12 +18,14 @@ function handleLocation(e) {
 	    var me = [e.coords.latitude,e.coords.longitude];
 	    addMyLocMarker(me,e.coords.accuracy);
 		var strNodes = getNodes();
+    	Ti.API.info("handleLocation()done with location, start deal with route");
 	    var mode = Ti.App.Properties.getInt("MODE");
 	    if(strNodes.length<1 || mode==0){
 	    	return;
 	    }else{
 	    	map.centerLatlng = me;
 	    }
+    	
 	    var nextNode,stepId;
 	    var strNodes = getNodes();
 		//strNodes=[[172.584333,-43.523472],[172.584716,-43.523578]]
@@ -135,29 +138,45 @@ function addMyLocMarker(me,accuracy){
 	    Ti.App.Properties.setInt("myCircle",myCircle.id);
 	}
 }
-function addHandler() {
-    if (!locationAdded) {
-		Ti.API.info("setup gps handler 2");
-        Ti.Geolocation.addEventListener('location', handleLocation);
-        locationAdded = true;
-    }
-};
 function removeHandler() {
-    if (locationAdded) {
 		Ti.API.info("removeHandler gps");
-        Ti.Geolocation.removeEventListener('location', handleLocation);
-        locationAdded = false;
-    }
+        Ti.Geolocation.Android.removeEventListener('location', locationCallback);
 };
 
 function initGPS(){
-	Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
-	Ti.Geolocation.distanceFilter = 100; //drop event accuracy >100m
-	Titanium.Geolocation.frequency = 1500; //1.5s
-	Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
+	//Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
+	//Ti.Geolocation.distanceFilter = 50; //drop event accuracy >50m
+	//Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
+	Ti.Geolocation.Android.manualMode = true;
+    var gpsProvider = Ti.Geolocation.Android.createLocationProvider({
+        name: Ti.Geolocation.PROVIDER_GPS,
+        minUpdateTime: 2,
+        minUpdateDistance: 50
+    });
+    Ti.Geolocation.Android.addLocationProvider(gpsProvider);
+    var gpsRule = Ti.Geolocation.Android.createLocationRule({
+        provider: Ti.Geolocation.PROVIDER_GPS,
+        accuracy: 50, // in meters
+        maxAge: (1000 * 10),
+        minAge: (1000 * 1)
+    });
+    Ti.Geolocation.Android.addLocationRule(gpsRule);
+    var providerNetwork = Ti.Geolocation.Android.createLocationProvider({
+	     name: Ti.Geolocation.PROVIDER_NETWORK,
+	     //minUpdateDistance: 0.0,
+	     //minUpdateTime: 0
+	});
+	Ti.Geolocation.Android.addLocationProvider(providerNetwork);
+	var networkRule = Ti.Geolocation.Android.createLocationRule({
+		  provider: Ti.Geolocation.PROVIDER_NETWORK,
+		  accuracy: 50,
+		  maxAge: 10*1000,
+		  minAge: 1*1000,
+	});
+	Ti.Geolocation.Android.addLocationRule(networkRule);
 	if (Ti.Geolocation.locationServicesEnabled) {
-		Ti.API.info("setup gps handler 1");
-	    addHandler();
+		Ti.API.info("gps enabled");
+    	Ti.Geolocation.addEventListener('location',locationCallback);
 	    //var activity = Ti.Android.currentActivity;
 	    //activity.addEventListener('destroy', removeHandler);
 	    //activity.addEventListener('pause', removeHandler);
