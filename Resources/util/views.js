@@ -42,7 +42,6 @@ function createTopColumns(rowView){
     });
 	var carId=Ti.App.Android.R.drawable.sedan_128;
 	var img_car = createCarImage(column2,carId);
-    
 	createNameLabel(column1);
 	rowView.add(column1);
 	rowView.add(column2);
@@ -123,10 +122,13 @@ function createCarImage(view,id){
 		var bys = JSON.parse(Ti.App.Properties.getString('bys'));
 		var by = Ti.App.Properties.getString('by');
 		var index = bys.indexOf(by);
-		var nextby = index==bys.length-1?bys[0]:bys[index+1];
+		var nextindex = index==bys.length-1?0:index+1;
+		var nextby = bys[nextindex];
 		Ti.API.info('nextBy='+nextby);
 		Ti.App.Properties.setString('by',nextby);
-		
+    	var icons = JSON.parse(Ti.App.Properties.getString('by_icons'));
+    	var nexticon = icons[nextindex];
+    	e.source.image = nexticon;
 	});
 	AllViews["car_img"] = img;
 	return img;

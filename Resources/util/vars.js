@@ -7,7 +7,6 @@ function initVars(){
 	Ti.App.Properties.setInt('route',0);
 	Ti.App.Properties.setString('RouteMarkers','');
 	Ti.App.Properties.setString('by','car');
-	Ti.App.Properties.setString('by','car');
 	var GH_TURN_DICT={
 		"-3":"turn_sharp_left",
 		"-2":"turn_left",

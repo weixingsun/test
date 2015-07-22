@@ -157,8 +157,8 @@ function initGPS(){
     var gpsRule = Ti.Geolocation.Android.createLocationRule({
         provider: Ti.Geolocation.PROVIDER_GPS,
         accuracy: 50, // in meters
-        maxAge: (1000 * 10),
-        minAge: (1000 * 1)
+        maxAge: (1000 * 30),
+        minAge: (1000 * 2)
     });
     Ti.Geolocation.Android.addLocationRule(gpsRule);
     var providerNetwork = Ti.Geolocation.Android.createLocationProvider({
@@ -170,8 +170,8 @@ function initGPS(){
 	var networkRule = Ti.Geolocation.Android.createLocationRule({
 		  provider: Ti.Geolocation.PROVIDER_NETWORK,
 		  accuracy: 50,
-		  maxAge: 10*1000,
-		  minAge: 1*1000,
+		  maxAge: 30*1000,
+		  minAge: 2*1000,
 	});
 	Ti.Geolocation.Android.addLocationRule(networkRule);
 	if (Ti.Geolocation.locationServicesEnabled) {
