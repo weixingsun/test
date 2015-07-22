@@ -1,12 +1,13 @@
 function hidePopView(){
 	var pop = AllViews["pop"];
-	if(typeof pop !== 'undefined')
+	if(typeof pop !== 'undefined' && pop!==0)
 		pop.hide();
 }
 function showPopView(coord){
-	getLongpressAddress(coord[0],coord[1], getLongpressAddressCallback);
+	//getAddressOSM(coord[0],coord[1], getAddressCallback);
+	getAddressGoogle(coord[0],coord[1],getAddressCallback);
 	var pop = AllViews["pop"];
-	if(typeof pop !== 'undefined')
+	if(typeof pop !== 'undefined' && pop!==0)
 		pop.show();
 }
 function createPlaceView(){
@@ -46,22 +47,31 @@ function createRows(popDownView){
 }
 function createTopColumns(rowView){
 	var column1 = Ti.UI.createView({
-        width : 80+"%"
+        width : 80+"%",
+	    layout: 'vertical',
+    });
+	var row1 = Ti.UI.createView({
+        height : 60+"%",
+    });
+    var row2 = Ti.UI.createView({
+        height : 40+"%",
     });
     var column2 = Ti.UI.createView({
         width : 20+"%"
     });
 	var carId=Ti.App.Android.R.drawable.sedan_128;
 	var img_car = createCarImage(column2,carId);
-	createNameLabel(column1);
+	createAdressLabel(row1,row2);
+	column1.add(row1);
+	column1.add(row2);
 	rowView.add(column1);
 	rowView.add(column2);
 }
-function createNameLabel(column){
+function createAdressLabel(row1,row2){
     var dest_lat = Ti.App.Properties.getDouble("dest_lat");
 	var dest_lng = Ti.App.Properties.getDouble("dest_lng");
 	var name = '['+dest_lat+','+dest_lng+']';
-	var label = Ti.UI.createLabel({
+	var label1 = Ti.UI.createLabel({
 	  color: '#000',
 	  font: { fontSize:20 },
 	  shadowColor: '#aaa',
@@ -69,13 +79,28 @@ function createNameLabel(column){
 	  shadowRadius: 3,
 	  text: name,
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
-	  top: 10,
-	  left: 5,
-	  parent: column,
+	  bottom: 2,
+	  left: 20,
+	  parent: row1,
 	  width: Ti.UI.SIZE, height: Ti.UI.SIZE
 	});
-	column.add(label);
-	AllViews["place_name"] = label;
+	row1.add(label1);
+	var label2 = Ti.UI.createLabel({
+	  color: '#333',
+	  font: { fontSize:15 },
+	  shadowColor: '#aaa',
+	  shadowOffset: {x:5, y:5},
+	  shadowRadius: 3,
+	  text: '',
+	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
+	  top: 2,
+	  left: 25,
+	  parent: row2,
+	  width: Ti.UI.SIZE, height: Ti.UI.SIZE
+	});
+	row2.add(label2);
+	AllViews["place_name1"] = label1;
+	AllViews["place_name2"] = label2;
 }
 function createBottomColumns(popDownView){
 	var column1 = Ti.UI.createView({
