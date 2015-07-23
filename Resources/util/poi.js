@@ -73,7 +73,8 @@ function getAddressGoogle(lat,lng, callback){
 }
 //forward geocoding google
 function searchAddressGoogle(name,country_code){
-	var url = "http://maps.google.com/maps/api/geocode/json?region="+country_code+"&sensor=true&address="+name.replace(' ', '+');
+	//region="+country_code+"&
+	var url = "http://maps.google.com/maps/api/geocode/json?sensor=true&address="+name.replace(' ', '+')+','+country_code;
 	var xhrGeocode = Ti.Network.createHTTPClient();
 	xhrGeocode.setTimeout(120000);
 	xhrGeocode.onerror = function (e) {
