@@ -45,7 +45,7 @@ function addActionListeners(module,map){
 		var point=[e.lat,e.lng];
 		Ti.API.info('clicked:' +point);
 	    //var p = findPOI(point,radius);
-	    //var pop = AllViews["pop"]; //Ti.App.Properties.getObject('pop');
+	    //var pop = AllViews["pop"];
 	    //showPopView();
 	    findDestMarker(point);
 	});
@@ -56,8 +56,7 @@ function addActionListeners(module,map){
 		if(from[0]==0 || from[1]==0){
 			Ti.API.info('GPS not available');
 		}else{
-   			Ti.App.Properties.setDouble("dest_lat",e.lat);
-	    	Ti.App.Properties.setDouble("dest_lng",e.lng);
+   			setDestinatePos(e);
 			removePrevAll(map);
 			var id=Ti.App.Android.R.drawable.marker_tap_long;
 			var mkid = addMarker(map,to,id);

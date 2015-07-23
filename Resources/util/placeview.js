@@ -68,16 +68,13 @@ function createTopColumns(rowView){
 	rowView.add(column2);
 }
 function createAdressLabel(row1,row2){
-    var dest_lat = Ti.App.Properties.getDouble("dest_lat");
-	var dest_lng = Ti.App.Properties.getDouble("dest_lng");
-	var name = '['+dest_lat+','+dest_lng+']';
 	var label1 = Ti.UI.createLabel({
 	  color: '#000',
 	  font: { fontSize:20 },
 	  shadowColor: '#aaa',
 	  shadowOffset: {x:5, y:5},
 	  shadowRadius: 3,
-	  text: name,
+	  text: 'Unnamed',
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  bottom: 2,
 	  left: 20,
@@ -91,7 +88,7 @@ function createAdressLabel(row1,row2){
 	  shadowColor: '#aaa',
 	  shadowOffset: {x:5, y:5},
 	  shadowRadius: 3,
-	  text: '',
+	  text: JSON.stringify(getDestinatePos()),
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  top: 2,
 	  left: 25,
@@ -150,7 +147,7 @@ function createCarImage(view,id){
 	view.add(img);
     img.addEventListener('click', function(e){
 	    var from = getCurrentPos();
-	    var to = [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
+	    var to = getDestinatePos();
 	    Ti.API.info("mf="+mf+",map="+map+",from="+from+",to="+to);
 	    navi(mf,map,from,to);
 	    });

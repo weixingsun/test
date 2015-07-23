@@ -6,6 +6,13 @@ var GPS_RANGE_MAX = 200;
 function getCurrentPos(){
 	return [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
 }
+function getDestinatePos(){
+	return [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
+}
+function setDestinatePos(e){
+	Ti.App.Properties.setDouble("dest_lat",e.lat);
+	Ti.App.Properties.setDouble("dest_lng",e.lng);
+}
 //function handleLocation(e) {
 var locationCallback = function(e) {
     if (!e.error) {
