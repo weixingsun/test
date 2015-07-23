@@ -11,9 +11,11 @@ function createAndroidSearchBar(){
 	});
     searchBar.addEventListener('change', function(e){
         Ti.API.info("search:"+e.source.value);
+        searchAddressGoogle(e.source.value,'nz');
+        
     });
 	searchBar.addEventListener('return', function(e){
-        searchBar.blur();
+        //searchBar.blur();//'return search:'
     });
     win.add(searchBar);
 }

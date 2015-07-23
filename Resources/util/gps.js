@@ -3,6 +3,9 @@ var GPS_RANGE_MIN = 60;
 //var GPS_RANGE_MIN = 30;
 var GPS_RANGE_MAX = 200;
 
+function getCurrentPos(){
+	return [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
+}
 //function handleLocation(e) {
 var locationCallback = function(e) {
     if (!e.error) {

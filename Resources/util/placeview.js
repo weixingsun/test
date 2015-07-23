@@ -149,7 +149,7 @@ function createCarImage(view,id){
 		});
 	view.add(img);
     img.addEventListener('click', function(e){
-	    var from = [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
+	    var from = getCurrentPos();
 	    var to = [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
 	    Ti.API.info("mf="+mf+",map="+map+",from="+from+",to="+to);
 	    navi(mf,map,from,to);

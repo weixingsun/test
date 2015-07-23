@@ -12,7 +12,7 @@ var getAddressCallback = function(e) {
     AllViews["place_name1"].text = e[0];
     AllViews["place_name2"].text = e[1];
 };
-
+//reverse geocoding google
 function getAddressGoogle(lat,lng, callback){
 	var addrUrl = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng="+lat+","+lng;
 	/* web-service call */
@@ -70,4 +70,26 @@ function getAddressGoogle(lat,lng, callback){
 	        showAlert('','Unable to find Address');
 	    }
 	};
+}
+//forward geocoding google
+function searchAddressGoogle(name,country_code){
+	var url = "http://maps.google.com/maps/api/geocode/json?region="+country_code+"&sensor=true&address="+name.replace(' ', '+');
+	var xhrGeocode = Ti.Network.createHTTPClient();
+	xhrGeocode.setTimeout(120000);
+	xhrGeocode.onerror = function (e) {
+	  alert('Error occurred'+e);
+	};
+	 
+	xhrGeocode.onload = function (e) {
+	  var response = JSON.parse(this.responseText);
+	  if (response.status == 'OK' && response.results != undefined && response.results.length > 0) {
+	    myLat = response.results[0].geometry.location.lat;
+	    myLon = response.results[0].geometry.location.lng;
+	    //ShowMap();
+	    Ti.API.info('['+myLat+','+myLon+']');
+	  }
+	};
+	xhrGeocode.open("GET", url);
+	xhrGeocode.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
+	xhrGeocode.send();
 }

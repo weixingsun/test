@@ -22,13 +22,21 @@ function appEventListeners(){
 	    Ti.API.info('*** Destroy Event Called ***');
 	});
 	
-	var bc = Ti.Android.createBroadcastReceiver({
+	var dspoff = Ti.Android.createBroadcastReceiver({
 	    onReceived: function() {
 	        Ti.API.info('Handling broadcast ACTION_SCREEN_OFF.');
-	    	hidePopView();
+	    	//hidePopView();
 	    }
 	});
-	Ti.Android.registerBroadcastReceiver(bc, [Ti.Android.ACTION_SCREEN_OFF]);
+	Ti.Android.registerBroadcastReceiver(dspoff, [Ti.Android.ACTION_SCREEN_OFF]);
+	
+	var dspon = Ti.Android.createBroadcastReceiver({
+	    onReceived: function() {
+	        Ti.API.info('Handling broadcast ACTION_SCREEN_ON.');
+	    	map.centerLatlng = getCurrentPos();
+	    }
+	});
+	Ti.Android.registerBroadcastReceiver(dspon, [Ti.Android.ACTION_SCREEN_ON]);
 }
 
 function addActionListeners(module,map){
@@ -42,7 +50,7 @@ function addActionListeners(module,map){
 	    findDestMarker(point);
 	});
 	Ti.App.addEventListener('longclicked', function(e) {
-		var from = [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
+		var from = getCurrentPos();
 		var to = [e.lat,e.lng];
 		Ti.API.info('longclicked:'+to);
 		if(from[0]==0 || from[1]==0){
