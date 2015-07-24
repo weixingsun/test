@@ -10,6 +10,8 @@ function createSuggestList(list){
 		    top : '50dp',
 		    left:10,
 			width:'80%',
+			height : Ti.UI.SIZE,
+	    	backgroundColor:'rgba(64,64,64,64)',
 		    templates : {
 		        'plain' : template
 		    },
@@ -19,7 +21,7 @@ function createSuggestList(list){
 			//var pt = e.itemId;	//'[0,0]'
 			if (e.bindId == 'rowtitle' || e.bindId == 'pic'){
 				var item = e.section.getItemAt(e.itemIndex);
-        		Ti.API.info("clicked :"+JSON.stringify(item));
+        		//Ti.API.info("clicked :"+JSON.stringify(item));
 				if(typeof item.rowtitle.id !== 'undefined'){
 					changeDestination(JSON.parse(item.rowtitle.id));
 				}
@@ -47,10 +49,11 @@ function createSuggestList(list){
 	        },
 	        dist:{
 	        	text : distance1,
-	    		color: 'gray',
+	    		color: 'black',
 	        },
 	        properties:{
-	    		backgroundColor:'rgba(192,192,192,192)',
+	    		backgroundColor:'rgba(128,128,128,128)',
+	    		height : '50dp',
 	    	},
     	};
     	addressData.push(newitem);
@@ -76,13 +79,15 @@ function createSearchListItemTemplate(){
         type : 'Ti.UI.Label',
         bindId : 'rowtitle',
         properties : {
-            left : '40dp'
+            left : '10dp',
+			font: { fontSize:14 },
         }
     },{
         type : 'Ti.UI.Label',
         bindId : 'dist',
         properties : {
-            right : '10dp'
+            right : '10dp',
+			font: { fontSize:14 },
         }
     },
     ]};
@@ -118,17 +123,22 @@ function createAndroidSearchBar(){
 	    backgroundColor: 'rgba(128,128,128,128)',
 	    color: "black",
         width : '80%',
+	    height : '52dp',
 	    top:0,
 	    left:10,
 	});
+	var searchThread;
     var funReturn = function (e) {
-	    Ti.API.info(JSON.stringify(e));
-	    //e.source.getParent().backgroundColor = 'blue';
-	    if(e.source.value.length>1){
-        	searchAddressGoogle(e.source.value,'nz');
-        }else{
-        	hideSuggestList();
-        }
+    	clearTimeout(searchThread);
+	    searchThread = setTimeout( function() {
+	        //Ti.API.info(JSON.stringify(e));
+		    if(e.source.value.length>1){
+	        	searchAddressGoogle(e.source.value,'nz');
+	        }else{
+	        	hideSuggestList();
+	        }
+	    },1000);
+	    
 	};
 	searchBar.addEventListener('change',funReturn);
 	searchBar.addEventListener("submit", funReturn);

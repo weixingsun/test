@@ -36,7 +36,7 @@ function getAddressGoogle(lat,lng, callback){
 	};
 }
 function getInfoFromGoogleJson(value){
-    Ti.API.info("value : "+JSON.stringify(value));
+    //Ti.API.info("value : "+JSON.stringify(value));
 	var number,street,area,city,state,zip,country;
 	for(var i=0; i < value.length; i++) {
 		switch (value[i].types[0]){
@@ -77,7 +77,7 @@ function getInfoFromGoogleJson(value){
     return {"number":number,"street":street,"area":area,"city":city,"state":state,"zip":zip,"country":country};
 }
 function getInfoFromGoogleJsonSimple(value){
-    Ti.API.info("value : "+JSON.stringify(value));
+    //Ti.API.info("value : "+JSON.stringify(value));
     var line1 = [];
     var line2 = [];
     var line2Array = ["administrative_area_level_2","administrative_area_level_1", "postal_code","country"];//"locality"=city
