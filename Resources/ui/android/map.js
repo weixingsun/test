@@ -48,6 +48,9 @@ function initMap(win,module){
 	win.open();
 	return mapView;
 }
+function move(to){
+	map.centerLatlng = to;
+}
 function addOfflineMapLayer(map){
 	map.addLayer({
 		"name": "osm",

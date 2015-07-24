@@ -11,7 +11,7 @@ function createSuggestList(list){
 			height:Ti.UI.SIZE,
 		});
 		searchList.addEventListener('itemclick', function(e) {
-			var pt = e.itemId;	//[0,0]
+			var pt = e.itemId;	//'[0,0]'
         	Ti.API.info("clicked on :"+pt);
         	changeDestination(JSON.parse(pt));
         	hideSuggestList();

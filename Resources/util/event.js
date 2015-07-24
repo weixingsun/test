@@ -46,6 +46,7 @@ function changeDestination(point){
 	Ti.App.Properties.setInt("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);
+	move(point);
 }
 function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
