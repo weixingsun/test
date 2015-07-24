@@ -1,14 +1,18 @@
 function hidePopView(){
 	var pop = AllViews["pop"];
-	if(typeof pop !== 'undefined' && pop!==0)
+	if(typeof pop !== 'undefined' && pop!==0){
+		Ti.API.info('hide pop view');
 		pop.hide();
+	}
 }
 function showPopView(coord){
 	//getAddressOSM(coord[0],coord[1], getAddressCallback);
 	getAddressGoogle(coord[0],coord[1],getAddressCallback);
 	var pop = AllViews["pop"];
-	if(typeof pop !== 'undefined' && pop!==0)
+	if(typeof pop !== 'undefined' && pop!==0){
 		pop.show();
+		Ti.API.info('show pop view');
+	}
 }
 function createPlaceView(){
 	//backgroundColor : rgba(255,0,0,0.5)	//ios

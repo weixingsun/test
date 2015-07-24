@@ -34,7 +34,7 @@ var locationCallback = function(e) {
 	    if(strNodes.length<1 || mode==0){
 	    	return;
 	    }else{
-	    	map.centerLatlng = me;
+	    	animateTo(me);
 	    }
     	
 	    var nextNode,stepId;

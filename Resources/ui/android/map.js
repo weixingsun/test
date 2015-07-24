@@ -51,6 +51,11 @@ function initMap(win,module){
 function move(to){
 	map.centerLatlng = to;
 }
+
+function animateTo(to){
+	map.animateTo(to);
+}
+
 function addOfflineMapLayer(map){
 	map.addLayer({
 		"name": "osm",
