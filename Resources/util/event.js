@@ -56,7 +56,9 @@ function addActionListeners(module,map){
 	    //var p = findPOI(point,radius);
 	    //var pop = AllViews["pop"];
 	    //showPopView();
-	    findDestMarker(point);
+	    findSavedMarker(point);
+	    hideSuggestList();
+	    hideKeyboard();
 	});
 	Ti.App.addEventListener('longclicked', function(e) {
 		var from = getCurrentPos();

@@ -8,6 +8,7 @@ Ti.include('util/event.js');
 Ti.include('util/nav.js');
 Ti.include('util/poi.js');
 Ti.include('util/audio.js');
+Ti.include('util/saved.js');
 if(Ti.Platform.osname = "android"){
 	Ti.include('ui/android/map.js');
 }else{

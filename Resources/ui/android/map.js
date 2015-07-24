@@ -69,8 +69,3 @@ function initMapListener(win,module,map){
 		initGPS();
 	});
 }
-
-function findDestMarker(point){
-	
-};
-
