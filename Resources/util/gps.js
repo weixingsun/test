@@ -10,7 +10,6 @@ function getDestinatePos(){
 	return [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
 }
 function setDestinatePos(p){
-	//var p = JSON.parse(str);
 	Ti.App.Properties.setDouble("dest_lat",p[0]);
 	Ti.App.Properties.setDouble("dest_lng",p[1]);
 }

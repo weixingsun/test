@@ -1,7 +1,8 @@
 function hidePopView(){
 	var pop = AllViews["pop"];
+	Ti.API.info('start to hide pop view');
 	if(typeof pop !== 'undefined' && pop!==0){
-		Ti.API.info('hide pop view');
+		Ti.API.info('hided pop view');
 		pop.hide();
 	}
 }

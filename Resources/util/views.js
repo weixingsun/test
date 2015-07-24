@@ -32,6 +32,10 @@ function createSuggestList(list){
     var googleSection = Ti.UI.createListSection({headerTitle:"Online",width: Ti.UI.FILL,});
     var addressData= [];
     for (var i=0;i<list.length;i++){
+    	var start = JSON.parse(list[i].point);
+    	var to = getCurrentPos();
+    	var dist = distance(start[0], start[1], to[0], to[1]);
+    	var distance1 = dist>999?(dist/1000).toFixed(1) + " km":dist+' m';
     	var newitem ={
     		pic : {
     			image : Ti.App.Android.R.drawable.place_32.png,	//'place_32.png',
@@ -42,7 +46,7 @@ function createSuggestList(list){
 	    		color:'black',
 	        },
 	        dist:{
-	        	text : 'dist:',
+	        	text : distance1,
 	    		color: 'gray',
 	        },
 	        properties:{
