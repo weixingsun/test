@@ -1,0 +1,1 @@
+function play(i){{var e=Ti.Filesystem.resRawDirectory;Ti.Filesystem.getFile(e,i)}}

@@ -9,14 +9,14 @@ function appEventListeners(){
 	});
 	activity.addEventListener('stop', function() {
 	    Ti.API.info('*** Stop Event Called ***');
-	    hidePopView();
+	    //hidePopView();
 	});
 	activity.addEventListener('resume', function() {
 	    Ti.API.info('*** Resume Event Called ***');
 	});
 	activity.addEventListener('pause', function() {
 	    Ti.API.info('*** Pause Event Called ***');
-	    hidePopView();
+	    //hidePopView();
 	});
 	activity.addEventListener('destroy', function() {
 	    Ti.API.info('*** Destroy Event Called ***');
@@ -38,7 +38,15 @@ function appEventListeners(){
 	});
 	Ti.Android.registerBroadcastReceiver(dspon, [Ti.Android.ACTION_SCREEN_ON]);
 }
-
+function changeDestination(point){
+	setDestinatePos(point);
+	removePrevDestMarker();
+	var id=Ti.App.Android.R.drawable.marker_tap_long;
+	var mkid = addMarker(map,point,id);
+	Ti.App.Properties.setInt("dest_marker",mkid);
+	hidePopView();
+	showPopView(point);
+}
 function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var resid = Ti.App.Android.R.drawable.marker_tap;
@@ -56,13 +64,7 @@ function addActionListeners(module,map){
 		if(from[0]==0 || from[1]==0){
 			Ti.API.info('GPS not available');
 		}else{
-   			setDestinatePos(e);
-			removePrevAll(map);
-			var id=Ti.App.Android.R.drawable.marker_tap_long;
-			var mkid = addMarker(map,to,id);
-			Ti.App.Properties.setInt("dest",mkid);
-			var coord = [e.lat,e.lng];
-			showPopView(coord);
+   			changeDestination(to);
 		}
 	});
 }

@@ -71,9 +71,9 @@ function createAdressLabel(row1,row2){
 	var label1 = Ti.UI.createLabel({
 	  color: '#000',
 	  font: { fontSize:20 },
-	  shadowColor: '#aaa',
-	  shadowOffset: {x:5, y:5},
-	  shadowRadius: 3,
+	  //shadowColor: '#aaa',
+	  //shadowOffset: {x:5, y:5},
+	  //shadowRadius: 3,
 	  text: 'Unnamed',
 	  textAlign: Ti.UI.TEXT_ALIGNMENT_CENTER,
 	  bottom: 2,

@@ -34,8 +34,8 @@ function removePrevLine(){
 	}
 }
 function removePrevDestMarker(){
-	if(Ti.App.Properties.getInt("dest") !==0){
-		map.removeLayer(Ti.App.Properties.getInt("dest"));
+	if(Ti.App.Properties.getInt("dest_marker") !==0){
+		map.removeLayer(Ti.App.Properties.getInt("dest_marker"));
 	}
 }
 function removePrevNodeMarkers(){

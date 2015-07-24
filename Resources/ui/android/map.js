@@ -8,6 +8,7 @@ initMapListener(win,mf,map);
 initNav(mf);
 appEventListeners();
 createAndroidSearchBar();
+//createSuggestList();
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {

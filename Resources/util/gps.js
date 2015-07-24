@@ -9,9 +9,10 @@ function getCurrentPos(){
 function getDestinatePos(){
 	return [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
 }
-function setDestinatePos(e){
-	Ti.App.Properties.setDouble("dest_lat",e.lat);
-	Ti.App.Properties.setDouble("dest_lng",e.lng);
+function setDestinatePos(p){
+	//var p = JSON.parse(str);
+	Ti.App.Properties.setDouble("dest_lat",p[0]);
+	Ti.App.Properties.setDouble("dest_lng",p[1]);
 }
 //function handleLocation(e) {
 var locationCallback = function(e) {

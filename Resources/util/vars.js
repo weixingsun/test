@@ -3,7 +3,7 @@ function initVars(){
 	setNodes('');
 	Ti.App.Properties.setInt("myCircle",0);
 	Ti.App.Properties.setInt("mySpot",0);
-	Ti.App.Properties.setInt("dest",0);
+	Ti.App.Properties.setInt("dest_marker",0);
 	Ti.App.Properties.setInt('route',0);
 	Ti.App.Properties.setString('RouteMarkers','');
 	Ti.App.Properties.setString('by','car');
