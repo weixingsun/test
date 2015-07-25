@@ -25,6 +25,10 @@ function initVars(){
 	Ti.App.Properties.setString('by_icons',JSON.stringify(BY_ICONS));
 	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT));
 }
+function getGHDict(){
+	var strGH = Ti.App.Properties.getString('GH_TURN_DICT');
+	return JSON.parse(strGH);
+}
 var AllViews={"car_img":0,"pop":0,"place_name1":0,"place_name2":0};
 function getLabelById(id){
    return AllViews[id];

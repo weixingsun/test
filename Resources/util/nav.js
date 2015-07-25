@@ -11,7 +11,7 @@ function navi(module,map,from,to){
 	};
 	module.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
-			removePrevAll();
+			removePrevRoute();
 			var line = map.createPolyline({
 				"latlngs": data.pts,
 				"color": "blue",

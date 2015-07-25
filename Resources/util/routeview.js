@@ -26,7 +26,10 @@ function removePrevAll(){
 	removePrevDestMarker();
 	removePrevNodeMarkers();
 }
-
+function removePrevRoute(){
+	removePrevLine();
+	removePrevNodeMarkers();
+}
 function removePrevLine(){
 	var pre_line = Ti.App.Properties.getInt('route');
 	if(pre_line!==0){

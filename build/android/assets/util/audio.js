@@ -1,1 +1,1 @@
-function play(i){{var e=Ti.Filesystem.resRawDirectory;Ti.Filesystem.getFile(e,i)}}
+function play(i,e){var t=getGHDict(),a=t[i],n=100*Math.ceil(e/100),r=a+"_dist_"+n+".mp3",o=Ti.Filesystem.getResRawDirectory()+r;if(!player.isPlaying()){player.url=o;try{player.play()}catch(l){Ti.API.info(o+" not exist")}}}var player=Titanium.Media.createSound();

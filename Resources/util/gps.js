@@ -52,6 +52,7 @@ var locationCallback = function(e) {
 			var nextPoint = nextNode.pts[0];
 		    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
 		    showToast(stepId,nextNode,dist2next);
+			play(nextNode.sign,dist2next);
 		}else{
 			//redraw route
 			//var nextPoint = nextNode.pts[0];
