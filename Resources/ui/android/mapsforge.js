@@ -59,11 +59,11 @@ function animateTo(to){
 function addOfflineMapLayer(map){
 	map.addLayer({
 		"name": "osm",
-		"path": "osmdroid/maps/nz/nz.map",
+		"path": Ti.App.id+"/map/nz.map",
 	});
 }
 function initNav(module){
-	module.load("/osmdroid/maps/nz/");
+	module.load(Ti.App.id+"/gh/nz/");
 }
 
 function initMapListener(win,module,map){

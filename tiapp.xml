@@ -13,6 +13,14 @@
     <analytics>true</analytics>
     <guid>80d31341-8942-4692-9ddd-99a525079d64</guid>
     <property name="ti.ui.defaultunit" type="string">dp</property>
+    <android xmlns:android="http://schemas.android.com/apk/res/android">
+        <manifest>
+            <application>
+                <meta-data
+                    android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A"/>
+            </application>
+        </manifest>
+    </android>
     <ios>
         <plist>
             <dict>
@@ -38,7 +46,6 @@
             </dict>
         </plist>
     </ios>
-    <android xmlns:android="http://schemas.android.com/apk/res/android"/>
     <mobileweb>
         <precache/>
         <splash>
