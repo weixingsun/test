@@ -46,17 +46,16 @@ function changeDestination(point){
 	Ti.App.Properties.setInt("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);
-	animateTo(point);
+	Ti.API.info('changeDestination() to '+point);
 }
 function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
-		var resid = Ti.App.Android.R.drawable.marker_tap;
-		var point=[e.lat,e.lng];
-		Ti.API.info('clicked:' +point);
+		var latlng=[e.lat,e.lng];
+		var xy=[e.x,e.y];
 	    //var p = findPOI(point,radius);
-	    //var pop = AllViews["pop"];
-	    //showPopView();
-	    findSavedMarker(point);
+	    var markerTap = findSavedMarker(latlng,xy);//{mk:0,latlng:[0,0]};
+	    changeDestination(markerTap.latlng);
+	    //animateTo(point);
 	    hideSuggestList();
 	    hideKeyboard();
 	});

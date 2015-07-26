@@ -43,7 +43,7 @@ function initMap(win,module){
 	 "zoomLevel": 16, //Bogus initial zoom level
 	 "debug": false });
 	//mapView.centerLatlng = [-43.524551, 172.58346];
-	//mapView.zoomLevel = 12;
+	//mapView.zoomLevel = 16;
 	win.add(mapView);
 	win.open();
 	return mapView;

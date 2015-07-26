@@ -17,15 +17,15 @@ function setDestinatePos(p){
 var locationCallback = function(e) {
     if (!e.error) {
         //Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
-	    Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);
-	    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);
+	    Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);//.toFixed(6)
+	    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);//.toFixed(6)
 	    Ti.App.Properties.setInt("heading",e.coords.heading);
 	    //Ti.App.Properties.setInt("gps_accuracy",e.coords.accuracy);
 	    Ti.App.Properties.setInt("speed",e.coords.speed);
 	    //var altitude = e.coords.altitude;
 	    //var timestamp = e.coords.timestamp;
 	    //var altAccuracy = e.coords.altitudeAccuracy;
-	    var me = [e.coords.latitude,e.coords.longitude];
+	    var me = [e.coords.latitude,e.coords.longitude];//.toFixed(6)
 	    addMyLocMarker(me,e.coords.accuracy);
 		var strNodes = getNodes();
     	Ti.API.info("handleLocation()done with location, start deal with route");

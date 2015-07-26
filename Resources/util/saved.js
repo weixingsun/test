@@ -1,10 +1,47 @@
-function findSavedMarker(point){
-	Ti.API.info('findSavedMarker():'+JSON.stringify(point));
+function findSavedMarker(inlatlng,inxy){
+	var zoom = map.getZoomLevel();
+	Ti.API.info('findSavedMarker()'+'zoom='+zoom+' latlng:'+inlatlng);//XY:inxy
+	var places = JSON.parse(Ti.App.Properties.getString('SavedPlaceMarkers'));
+	for(var i=0;i<places.length;i++){
+		var latlng=places[i].latlng;
+		//var xy = map.toPixels(latlng);
+		var dist = distance(latlng[0],latlng[1],inlatlng[0],inlatlng[1]);
+		Ti.API.info('loop:dist='+dist);
+		var tap = tapRange(zoom,dist);
+		if(tap){
+			return places[i];
+		}
+	}
+	return null;
+}
+function tapRange(zoom,dist){
+	var value=false;
+	switch(zoom){
+		case 20: value=dist<3?true:false; break;
+		case 19: value=dist<5?true:false; break;
+		case 18: value=dist<10?true:false; break;
+		case 17: value=dist<20?true:false; break;
+		case 16: value=dist<30?true:false; break;
+		case 15: value=dist<50?true:false; break;
+		case 14: value=dist<150?true:false; break;
+		case 13: value=dist<300?true:false; break;
+		case 12: value=dist<500?true:false; break;
+		case 11: value=dist<1000?true:false; break;
+		case 10: value=dist<2000?true:false; break;
+		case 10: value=dist<4000?true:false; break;
+		case 9: value=dist<6000?true:false; break;
+		case 8: value=dist<10000?true:false; break;
+		case 7: value=dist<20000?true:false; break;
+		case 6: value=dist<30000?true:false; break;
+		case 5: value=dist<40000?true:false; break;
+		case 4: value=dist<50000?true:false; break;
+	}
+	return value;
 }
 
 function createSavedPlaceTable(){
 	var db = Ti.Database.open('wx_map');
-	db.execute('CREATE TABLE IF NOT EXISTS saved_places(lat varchar(10), lng varchar(10), name varchar(100));');
+	db.execute('CREATE TABLE IF NOT EXISTS saved_places(lat varchar(20), lng varchar(20), name varchar(100));');
 	db.close();
 	//db.file.setRemoteBackup(false);
 }
@@ -12,7 +49,7 @@ function showAllSavedPlaceMarkers(){
 	var places = selectAllPlacesDB();
 	var savedPlaceMarkerIds=[];
 	for(var i=0;i<places.length;i++){
-	    var pp = [places[i].lat,places[i].lng];
+	    var pp = [places[i].lat,places[i].lng];//.toFixed(6)
 	    var id=Ti.App.Android.R.drawable.star_red_24;
 	    var mkid=addMarker(map,pp,id);
 	    var item={mk:mkid,latlng:pp};
@@ -29,7 +66,8 @@ function removeSavedPlaceMarker(inlatlng){
 	for(var i=0;i<places.length;i++){
 		var latlng=places[i].latlng;
 		var mkid = places[i].mk;
-		Ti.API.info('removeSavedPlaceMarker() latlng='+latlng+', inlatlng='+inlatlng);
+		//Ti.API.info('removeSavedPlaceMarker() latlng='+latlng+', inlatlng='+inlatlng);
+		//if(latlng == inlatlng){
 		if(JSON.stringify(latlng) == JSON.stringify(inlatlng)){
 			removeLayer(mkid);
 			places.removeAt(i);

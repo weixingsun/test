@@ -24,6 +24,7 @@ function createSuggestList(list){
         		//Ti.API.info("clicked :"+JSON.stringify(item));
 				if(typeof item.rowtitle.id !== 'undefined'){
 					changeDestination(JSON.parse(item.rowtitle.id));
+					animateTo(JSON.parse(item.rowtitle.id));
 				}
         		hideSuggestList();
 			}
