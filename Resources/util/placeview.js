@@ -118,23 +118,41 @@ function createBottomColumns(popDownView){
         width : 10+"%"
     });
 	var close=Ti.App.Android.R.drawable.close_64;
+	var star=Ti.App.Android.R.drawable.star_red_64;
+	var unstar=Ti.App.Android.R.drawable.star_gray_64;
 	var search=Ti.App.Android.R.drawable.search_64;
 	var parking=Ti.App.Android.R.drawable.parking_64;
 	var img_close = createImages(column1,close);
-	var img_search = createImages(column2,search);
-	var img_parking = createImages(column3,parking);
+	var img_star;
+	if(isSavedPlacesDB(JSON.stringify(getDestinatePos()))){
+		Ti.API.info('===================is star place');
+		img_star  = createImages(column2,unstar);
+	}else{
+		Ti.API.info('==================star icon to save place');
+		img_star  = createImages(column2,star);
+	}
+	var img_search = createImages(column3,search);
+	var img_parking = createImages(column4,parking);
     img_close.addEventListener('click', function(e){
     	e.source.parent.parent.parent.hide();
     	removePrevAll();
-    	var pre_line = Ti.App.Properties.getInt('route');
-		if(pre_line!==0){
-			map.removeLayer(pre_line);
-		}
 		Ti.App.Properties.setInt("MODE",0);
+    });
+    img_star.addEventListener('click', function(e){
+    	var point=getDestinatePos();
+    	var place = {lat:point[0],lng:point[1],name:'name'};
+    	if(isSavedPlacesDB(JSON.stringify(point))){
+    		removeSavedPlaceDB(place);
+    		img_star.image=star;
+    	}else{
+    		addSavedPlaceDB(place);
+    		img_star.image=unstar;
+    	}
     });
 	popDownView.add(column1);
 	popDownView.add(column2);
 	popDownView.add(column3);
+	popDownView.add(column4);
 }
 function createImages(view,id){
 	var img = Titanium.UI.createImageView({

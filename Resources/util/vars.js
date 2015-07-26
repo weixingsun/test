@@ -24,7 +24,9 @@ function initVars(){
 	Ti.App.Properties.setString('bys',JSON.stringify(BYS));
 	Ti.App.Properties.setString('by_icons',JSON.stringify(BY_ICONS));
 	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT));
+	setDestinatePos([0,0]);
 }
+
 function getGHDict(){
 	var strGH = Ti.App.Properties.getString('GH_TURN_DICT');
 	return JSON.parse(strGH);

@@ -168,7 +168,7 @@ function initGPS(){
     var gpsRule = Ti.Geolocation.Android.createLocationRule({
         provider: Ti.Geolocation.PROVIDER_GPS,
         accuracy: 50, // in meters
-        maxAge: (1000 * 30),
+        maxAge: (1000 * 5),
         minAge: (1000 * 2)
     });
     Ti.Geolocation.Android.addLocationRule(gpsRule);

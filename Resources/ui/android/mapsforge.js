@@ -8,7 +8,8 @@ initMapListener(win,mf,map);
 initNav(mf);
 appEventListeners();
 createAndroidSearchBar();
-//createSuggestList();
+createSavedPlaceTable();
+
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
@@ -72,5 +73,6 @@ function initMapListener(win,module,map){
 		addOfflineMapLayer(map);
 		addActionListeners(module,map);
 		initGPS();
+		showAllSavedPlaceMarkers();
 	});
 }
