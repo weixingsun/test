@@ -14,13 +14,42 @@ function showAllSavedPlaceMarkers(){
 	for(var i=0;i<places.length;i++){
 	    var pp = [places[i].lat,places[i].lng];
 	    var id=Ti.App.Android.R.drawable.star_red_24;
-		//Ti.API.info('map:'+map+',pp='+pp+',id='+id);
 	    var mkid=addMarker(map,pp,id);
-		savedPlaceMarkerIds.push(mkid);
+	    var item={mk:mkid,latlng:pp};
+		savedPlaceMarkerIds.push(item);
 	}
-	Ti.App.Properties.setString('SavedPlaceMarkers',JSON.stringify(savedPlaceMarkerIds));
+	var strValue=JSON.stringify(savedPlaceMarkerIds);
+	Ti.App.Properties.setString('SavedPlaceMarkers',strValue);
+	Ti.API.info('SavedPlaceMarkers='+strValue);
 }
 
+function removeSavedPlaceMarker(inlatlng){
+	var strValue = Ti.App.Properties.getString('SavedPlaceMarkers');
+	var places = JSON.parse(strValue);
+	for(var i=0;i<places.length;i++){
+		var latlng=places[i].latlng;
+		var mkid = places[i].mk;
+		Ti.API.info('removeSavedPlaceMarker() latlng='+latlng+', inlatlng='+inlatlng);
+		if(JSON.stringify(latlng) == JSON.stringify(inlatlng)){
+			removeLayer(mkid);
+			places.removeAt(i);
+		}
+	}
+	var strValue=JSON.stringify(places);
+	Ti.API.info('removeSavedPlaceMarker='+strValue);
+	Ti.App.Properties.setString('SavedPlaceMarkers',strValue);
+}
+function addSavedPlaceMarker(latlng){
+	var strValue = Ti.App.Properties.getString('SavedPlaceMarkers');
+	var places = JSON.parse(strValue);
+    var id=Ti.App.Android.R.drawable.star_red_24;
+    var mkid=addMarker(map,latlng,id);
+    var item={mk:mkid,latlng:latlng};
+	places.push(item);
+	var strValue=JSON.stringify(places);
+	Ti.API.info('SavedPlaceMarkers='+strValue);
+	Ti.App.Properties.setString('SavedPlaceMarkers',strValue);
+}
 function selectAllPlacesDB(){
 	var db = Ti.Database.open('wx_map');
 	var rows = db.execute('select * from saved_places;');
@@ -79,7 +108,15 @@ function removeSavedPlaceDB(place){
 	//db.file.setRemoteBackup(false);
 	Ti.API.info('removeSavedPlaceDB():'+JSON.stringify(place));
 }
-//////////////////////////////////////////////////////////////////////////////
+function updateSavedPlaceDB(place){
+	var db = Ti.Database.open('wx_map');
+	var param = [place.lat,place.lng];
+	db.execute('delete from saved_places where lat=? and lng=?',param);
+	db.close();
+	//db.file.setRemoteBackup(false);
+	Ti.API.info('removeSavedPlaceDB():'+JSON.stringify(place));
+}
+/*
 function getAllSavedPlaces(){
 	var saved = Ti.App.Properties.getString('SAVED_PLACES');
 	Ti.API.info('places='+saved);
@@ -106,4 +143,4 @@ function removeSavedPlace(item){
 	delete places[JSON.stringify(item.latlng)];
 	saveAllSavedPlaces(places);
 	Ti.API.info('removeSavedPlace():'+JSON.stringify(places));
-}
+}*/

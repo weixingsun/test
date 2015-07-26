@@ -10,7 +10,6 @@ appEventListeners();
 createAndroidSearchBar();
 createSavedPlaceTable();
 
-
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
 		//Ti.API.info('win1 got focus');
@@ -75,4 +74,16 @@ function initMapListener(win,module,map){
 		initGPS();
 		showAllSavedPlaceMarkers();
 	});
+}
+function addMarker(map,to,id){
+	//platform/android/res/drawable/marker_tap.png
+	//Ti.App.Android.R.drawable.marker_tap_long
+	var mk = map.createMarker({
+		"iconPath": id,
+		"latlng": to
+    });
+    return mk.id;
+}
+function removeLayer(id){
+	map.removeLayer(id);
 }

@@ -1,3 +1,15 @@
+if (!Array.prototype.remove) {
+  Array.prototype.remove = function(val) {
+    var i = this.indexOf(val);
+    return i>-1 ? this.splice(i, 1) : [];
+  };
+}
+if (!Array.prototype.removeAt) {
+  Array.prototype.removeAt = function(i) {
+    return i>-1 ? this.splice(i, 1) : [];
+  };
+}
+
 function initVars(){
 	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
 	setNodes('');

@@ -143,9 +143,11 @@ function createBottomColumns(popDownView){
     	var place = {lat:point[0],lng:point[1],name:'name'};
     	if(isSavedPlacesDB(JSON.stringify(point))){
     		removeSavedPlaceDB(place);
+    		removeSavedPlaceMarker(point);
     		img_star.image=star;
     	}else{
     		addSavedPlaceDB(place);
+    		addSavedPlaceMarker(point);
     		img_star.image=unstar;
     	}
     });

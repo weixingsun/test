@@ -67,9 +67,6 @@ var locationCallback = function(e) {
     }
 };
 function findNextNode(nodes,currId){
-	//if(currId<0){		//if no nodeId
-	//	return nodes[0];
-	//}else 
 	if(currId+1<nodes.length){
 		return nodes[currId+1];
 	}else{//last node

@@ -1,12 +1,4 @@
-function addMarker(map,to,id){
-	//platform/android/res/drawable/marker_tap.png
-	//Ti.App.Android.R.drawable.marker_tap_long
-	var mk = map.createMarker({
-		"iconPath": id,
-		"latlng": to
-    });
-    return mk.id;
-}
+
 function addNodeMarkers(){
 	var strNodes = getNodes();
 	var nodes = JSON.parse(strNodes);
