@@ -37,8 +37,26 @@ function initVars(){
 	Ti.App.Properties.setString('by_icons',JSON.stringify(BY_ICONS));
 	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT));
 	setDestinatePos([0,0]);
+	Ti.App.Properties.setString('played','{}');
 }
 
+function setEmptyPlayedList(list){
+	var played = {};
+	for (var i=0;i<list.length;i++){
+		played[''+i]='';
+	}
+	Ti.App.Properties.setString('played',JSON.stringify(played));
+}
+function setPlayedList(id){
+	var list = JSON.parse(Ti.App.Properties.getString('played'));
+	list[''+id]='y';
+	Ti.App.Properties.setString('played',JSON.stringify(list));
+}
+function isPlayed(id){
+	var list = JSON.parse(Ti.App.Properties.getString('played'));
+	if(list[''+id]=='y') return true;
+	return false;
+}
 function getGHDict(){
 	var strGH = Ti.App.Properties.getString('GH_TURN_DICT');
 	return JSON.parse(strGH);

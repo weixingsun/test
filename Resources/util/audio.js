@@ -1,4 +1,4 @@
-//play('type_1_dist_0.mp3');
+//play('turn_left_dist_0.mp3');
 var player = Titanium.Media.createSound();
 
 function play(type,dist){
@@ -9,8 +9,9 @@ function play(type,dist){
 	var path = Ti.Filesystem.getResRawDirectory() + file;
 	//var inFile = Ti.Filesystem.getFile(path);
 	if(player.isPlaying()) return;
-	player.url= path;
 	try{
+		Ti.API.info('playing '+file);
+		player.url= path;
 		player.play();
 	}catch(e){
 		Ti.API.info(path+' not exist');

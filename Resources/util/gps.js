@@ -1,5 +1,5 @@
 var locationAdded = false;
-var GPS_RANGE_MIN = 60;
+var GPS_RANGE_MIN = 30;
 //var GPS_RANGE_MIN = 30;
 var GPS_RANGE_MAX = 200;
 
@@ -16,19 +16,19 @@ function setDestinatePos(p){
 //function handleLocation(e) {
 var locationCallback = function(e) {
     if (!e.error) {
-        //Ti.API.info("location: "+e.coords.longitude+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
-	    Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);//.toFixed(6)
-	    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);//.toFixed(6)
+        //Ti.API.info("location: "+e.coords.longitude.toFixed(6)+","+e.coords.latitude+"("+e.coords.accuracy+")   time:"+e.coords.timestamp);
+	    Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);
+	    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);
 	    Ti.App.Properties.setInt("heading",e.coords.heading);
 	    //Ti.App.Properties.setInt("gps_accuracy",e.coords.accuracy);
 	    Ti.App.Properties.setInt("speed",e.coords.speed);
 	    //var altitude = e.coords.altitude;
 	    //var timestamp = e.coords.timestamp;
 	    //var altAccuracy = e.coords.altitudeAccuracy;
-	    var me = [e.coords.latitude,e.coords.longitude];//.toFixed(6)
+	    var me = [e.coords.latitude,e.coords.longitude];
 	    addMyLocMarker(me,e.coords.accuracy);
 		var strNodes = getNodes();
-    	Ti.API.info("handleLocation()done with location, start deal with route");
+    	//Ti.API.info("handleLocation()done with location, start deal with route");
 	    var mode = Ti.App.Properties.getInt("MODE");
 	    if(strNodes.length<1 || mode==0){
 	    	return;
@@ -51,7 +51,13 @@ var locationCallback = function(e) {
 			var nextPoint = nextNode.pts[0];
 		    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
 		    showToast(stepId,nextNode,dist2next);
-			play(nextNode.sign,dist2next);
+		    if(stepId>-1){
+		    	if(!isPlayed(stepId)){
+					play(nextNode.sign,dist2next);
+					setPlayedList(stepId);
+    				Ti.API.info("nextNode:"+JSON.stringify(nextNode)+",stepId="+stepId);
+				}
+			}
 		}else{
 			//redraw route
 			//var nextPoint = nextNode.pts[0];
@@ -90,8 +96,7 @@ function findMyStepId(nodes, me, range){
 function showToast(inWhichStep,nextNode,dist){
 	var msg = '';
 	if(inWhichStep>-1){
-		var strdict = Ti.App.Properties.getString('GH_TURN_DICT');
-		var dict = JSON.parse(strdict);
+		var dict = JSON.parse(Ti.App.Properties.getString('GH_TURN_DICT'));
 		var turn = dict[''+nextNode.sign];
 		msg='in '+dist+'m, turn ' +turn+', on '+nextNode.name+', in step '+ inWhichStep;
 	}else if(dist>0){
@@ -152,18 +157,18 @@ function removeHandler() {
 
 function initGPS(){
 	//Ti.Geolocation.accuracy = Ti.Geolocation.ACCURACY_BEST;
-	//Ti.Geolocation.distanceFilter = 50; //drop event accuracy >50m
+	//Ti.Geolocation.distanceFilter = 10; //drop event accuracy >10m
 	//Ti.Geolocation.preferredProvider = Ti.Geolocation.PROVIDER_GPS;
 	Ti.Geolocation.Android.manualMode = true;
     var gpsProvider = Ti.Geolocation.Android.createLocationProvider({
         name: Ti.Geolocation.PROVIDER_GPS,
-        minUpdateTime: 2,
-        minUpdateDistance: 50
+        minUpdateTime: '2',//'5.0'
+        //minUpdateDistance: 10,
     });
     Ti.Geolocation.Android.addLocationProvider(gpsProvider);
     var gpsRule = Ti.Geolocation.Android.createLocationRule({
         provider: Ti.Geolocation.PROVIDER_GPS,
-        accuracy: 20, // in meters
+        //accuracy: 20, // in meters
         maxAge: (1000 * 3),
         minAge: (1000 * 2),
     });

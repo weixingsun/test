@@ -22,6 +22,7 @@ function navi(module,map,from,to){
 			addNodeMarkers();
 			Ti.App.Properties.setInt("MODE",1);
 			win.setKeepScreenOn(true);
+			setEmptyPlayedList(data.nodes);
 		}else{
 			Ti.API.info("navi error:"+data.error);
 		}
