@@ -4,11 +4,11 @@
 function navi(module,map,from,to){
 	var by = Ti.App.Properties.getString('by');
 	var args = {
-	 "weighting": "fastest",	//fast/short
 	 "vehicle":   by,		//car/foot/bicycle/bus
 	 "from": from,
 	 "to":   to
 	};
+	// "weighting": "fastest",	//fast/short
 	module.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
 			removePrevRoute();
@@ -24,7 +24,7 @@ function navi(module,map,from,to){
 			win.setKeepScreenOn(true);
 			setEmptyPlayedList(data.nodes);
 		}else{
-			Ti.API.info("navi error:"+data.error);
+			Ti.API.info("navi error:"+data.errmsg);
 		}
 	});
 }
