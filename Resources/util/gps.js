@@ -51,13 +51,6 @@ var locationCallback = function(e) {
 			var nextPoint = nextNode.pts[0];
 		    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
 		    showToast(stepId,nextNode,dist2next);
-		    if(stepId>-1){
-		    	if(!isPlayed(stepId)){
-					play(nextNode.sign,dist2next);
-					setPlayedList(stepId);
-    				Ti.API.info("nextNode:"+JSON.stringify(nextNode)+",stepId="+stepId);
-				}
-			}
 		}else{
 			//redraw route
 			//var nextPoint = nextNode.pts[0];
@@ -93,12 +86,18 @@ function findMyStepId(nodes, me, range){
     }
     return inWhichStep;
 }
-function showToast(inWhichStep,nextNode,dist){
+function showToast(stepId,nextNode,dist){
 	var msg = '';
-	if(inWhichStep>-1){
-		var dict = JSON.parse(Ti.App.Properties.getString('GH_TURN_DICT'));
+	if(stepId>-1){
+		var dict = getGHDict();
+		var dist00 = Math.round(dist/100)*100;//ceil/floor/round
 		var turn = dict[''+nextNode.sign];
-		msg='in '+dist+'m, turn ' +turn+', on '+nextNode.name+', in step '+ inWhichStep;
+    	if(!isPlayed(stepId)){
+			Ti.API.info('dist='+dist00+",stepId="+stepId+" turn="+nextNode.sign+", nextNode:"+JSON.stringify(nextNode));
+			var playOrNot = play(turn,dist00);
+			if(playOrNot) setPlayedList(stepId);
+		}
+		msg=dist+'~'+dist00+'m, turn ' +turn+', on '+nextNode.name+', in step '+ stepId;
 	}else if(dist>0){
 		msg='dist='+dist+',but not in any step';
 	}else{
