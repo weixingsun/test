@@ -14,6 +14,14 @@ function showPopView(coord){
 		pop.show();
 		Ti.API.info('show pop view');
 	}
+	var star_img = AllViews["star_img"];
+	if(isSavedPlacesDB(JSON.stringify(getDestinatePos()))){
+		var unstar=Ti.App.Android.R.drawable.star_gray_64;
+		star_img.image=unstar;
+	}else{
+		var star=Ti.App.Android.R.drawable.star_red_64;
+		star_img.image=star;
+	}
 }
 function createPlaceView(){
 	//backgroundColor : rgba(255,0,0,0.5)	//ios
@@ -124,6 +132,7 @@ function createBottomColumns(popDownView){
 	var parking=Ti.App.Android.R.drawable.parking_64;
 	var img_close = createImages(column1,close);
 	var img_star;
+	//AllViews["star_img"]
 	if(isSavedPlacesDB(JSON.stringify(getDestinatePos()))){
 		Ti.API.info('===================is star place');
 		img_star  = createImages(column2,unstar);
@@ -151,6 +160,7 @@ function createBottomColumns(popDownView){
     		img_star.image=unstar;
     	}
     });
+	AllViews["star_img"] = img_star;
 	popDownView.add(column1);
 	popDownView.add(column2);
 	popDownView.add(column3);

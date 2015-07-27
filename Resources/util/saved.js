@@ -1,12 +1,12 @@
 function findSavedMarker(inlatlng,inxy){
 	var zoom = map.getZoomLevel();
-	Ti.API.info('findSavedMarker()'+'zoom='+zoom+' latlng:'+inlatlng);//XY:inxy
+	//Ti.API.info('findSavedMarker()'+'zoom='+zoom+' latlng:'+inlatlng);//XY:inxy
 	var places = JSON.parse(Ti.App.Properties.getString('SavedPlaceMarkers'));
 	for(var i=0;i<places.length;i++){
 		var latlng=places[i].latlng;
-		//var xy = map.toPixels(latlng);
 		var dist = distance(latlng[0],latlng[1],inlatlng[0],inlatlng[1]);
-		Ti.API.info('loop:dist='+dist);
+		//var xy = map.toPixels(latlng);
+		//Ti.API.info('loop:dist='+dist);
 		var tap = tapRange(zoom,dist);
 		if(tap){
 			return places[i];

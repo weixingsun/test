@@ -35,7 +35,6 @@ var locationCallback = function(e) {
 	    }else{
 	    	animateTo(me);
 	    }
-    	
 	    var nextNode,stepId;
 	    var strNodes = getNodes();
 		//strNodes=[[172.584333,-43.523472],[172.584716,-43.523578]]
@@ -164,9 +163,9 @@ function initGPS(){
     Ti.Geolocation.Android.addLocationProvider(gpsProvider);
     var gpsRule = Ti.Geolocation.Android.createLocationRule({
         provider: Ti.Geolocation.PROVIDER_GPS,
-        accuracy: 50, // in meters
-        maxAge: (1000 * 5),
-        minAge: (1000 * 2)
+        accuracy: 20, // in meters
+        maxAge: (1000 * 3),
+        minAge: (1000 * 2),
     });
     Ti.Geolocation.Android.addLocationRule(gpsRule);
     var providerNetwork = Ti.Geolocation.Android.createLocationProvider({
@@ -177,8 +176,8 @@ function initGPS(){
 	Ti.Geolocation.Android.addLocationProvider(providerNetwork);
 	var networkRule = Ti.Geolocation.Android.createLocationRule({
 		  provider: Ti.Geolocation.PROVIDER_NETWORK,
-		  accuracy: 50,
-		  maxAge: 30*1000,
+		  accuracy: 20,
+		  maxAge: 3*1000,
 		  minAge: 2*1000,
 	});
 	Ti.Geolocation.Android.addLocationRule(networkRule);

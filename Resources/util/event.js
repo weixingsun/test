@@ -54,7 +54,7 @@ function addActionListeners(module,map){
 		var xy=[e.x,e.y];
 	    //var p = findPOI(point,radius);
 	    var markerTap = findSavedMarker(latlng,xy);//{mk:0,latlng:[0,0]};
-	    changeDestination(markerTap.latlng);
+	    if(markerTap!== null) changeDestination(markerTap.latlng);
 	    //animateTo(point);
 	    hideSuggestList();
 	    hideKeyboard();
