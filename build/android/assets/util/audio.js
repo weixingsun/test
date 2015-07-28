@@ -1,1 +1,1 @@
-function play(i,e){var a=i+"_dist_"+e+".mp3",n=Ti.Filesystem.getResRawDirectory()+a;if(player.isPlaying())return!1;try{return Ti.API.info("playing "+a),player.url=n,player.play(),!0}catch(t){Ti.API.info(n+" not exist")}return!1}var player=Titanium.Media.createSound();
+function play(i,e){var a=i+"_dist_"+e+".mp3",n=Ti.Filesystem.getResRawDirectory()+a;if(null!==player&&player.isPlaying())return!1;try{return player=Ti.Media.createSound({url:n}),player.play(),Ti.API.info("playing "+a),!0}catch(t){Ti.API.info(n+" not exist"),player=null}return!1}var player=null;

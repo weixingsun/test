@@ -1,6 +1,5 @@
 //play('turn_left_dist_0.mp3');
-var player = Titanium.Media.createSound();
-
+var player= null;
 function play(type,dist00){
 	//var GH = getGHDict();
 	//var signname = GH[type];
@@ -8,14 +7,15 @@ function play(type,dist00){
 	var file = type+'_dist_'+dist00+'.mp3';
 	var path = Ti.Filesystem.getResRawDirectory() + file;
 	//var inFile = Ti.Filesystem.getFile(path);
-	if(player.isPlaying()) return false;
+	if(player!== null && player.isPlaying()) return false;
 	try{
-		Ti.API.info('playing '+file);
-		player.url= path;
+		player = Ti.Media.createSound({url:path});
 		player.play();
+		Ti.API.info('playing '+file);
 		return true;
 	}catch(e){
 		Ti.API.info(path+' not exist');
+		player= null;
 	}
 	return false;
 }
