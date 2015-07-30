@@ -89,39 +89,47 @@ function addSavedPlaceMarker(latlng){
 	Ti.App.Properties.setString('SavedPlaceMarkers',strValue);
 }
 function selectAllPlacesDB(){
-	var db = Ti.Database.open('wx_map');
-	var rows = db.execute('select * from saved_places;');
+	var db,rows;
 	var data =[];
-	while (rows.isValidRow()){
-		data.push({
-			lat:rows.fieldByName('lat'),
-			lng:rows.fieldByName('lng'),
-			name:rows.fieldByName('name'),
-		});
-		rows.next();
-	}
-	Ti.API.info('selectAllPlacesDB()row#'+rows.rowCount);
-	rows.close();
-	db.close();
+	try {
+		db = Ti.Database.open('wx_map');
+		rows = db.execute('select * from saved_places;');
+		while (rows.isValidRow()){
+			data.push({
+				lat:rows.fieldByName('lat'),
+				lng:rows.fieldByName('lng'),
+				name:rows.fieldByName('name'),
+			});
+			rows.next();
+		}
+		Ti.API.info('selectAllPlacesDB()row#'+rows.rowCount);
+	}finally{
+		if(rows!==null) rows.close();
+		if(db!==null) db.close();
+    }
 	//db.file.setRemoteBackup(false);
 	return data;
 }
 function selectASavedPlace(strlatlng){
-	var db = Ti.Database.open('wx_map');
-	var latlng = JSON.parse(strlatlng);
-	var row = db.execute('select * from saved_places where lat=? and lng=? ',latlng);
+	var db;
 	var data =[];
-	if(row.rowCount<1) return null;
-	while (row.isValidRow()){
-		data.push({
-			lat:row.fieldByName('lat'),
-			lng:row.fieldByName('lng'),
-			name:row.fieldByName('name'),
-		});
-		row.next();
+	try {
+		db = Ti.Database.open('wx_map');
+		var latlng = JSON.parse(strlatlng);
+		var rows = db.execute('select * from saved_places where lat=? and lng=? ',latlng);
+		if(rows.rowCount<1) return null;
+		while (rows.isValidRow()){
+			data.push({
+				lat:rows.fieldByName('lat'),
+				lng:rows.fieldByName('lng'),
+				name:rows.fieldByName('name'),
+			});
+			rows.next();
+		}
+	}finally{
+		if(rows!==null) rows.close();
+		if(db!==null) db.close();
 	}
-	row.close();
-	db.close();
 	return data[0];
 }
 function isSavedPlacesDB(strlatlng){	//'[lat,lng]'
@@ -131,26 +139,36 @@ function isSavedPlacesDB(strlatlng){	//'[lat,lng]'
 	return saved;
 }
 function addSavedPlaceDB(place){	//{lat:0,lng:0,name:'0'}
-	var db = Ti.Database.open('wx_map');
-	var param = [place.lat,place.lng, place.name];
-	db.execute('insert into saved_places(lat,lng,name) values(?,?,?)',param);
-	db.close();
-	//db.file.setRemoteBackup(false);
+	var db;
+	try{
+		db = Ti.Database.open('wx_map');
+		var param = [place.lat,place.lng, place.name];
+		db.execute('insert into saved_places(lat,lng,name) values(?,?,?)',param);
+	}finally{
+		if(db!==null) db.close();
+	}
 	Ti.API.info('addSavedPlaceDB():'+JSON.stringify(place));
 }
 function removeSavedPlaceDB(place){
-	var db = Ti.Database.open('wx_map');
-	var param = [place.lat,place.lng];
-	db.execute('delete from saved_places where lat=? and lng=?',param);
-	db.close();
-	//db.file.setRemoteBackup(false);
+	var db;
+	try{
+		db = Ti.Database.open('wx_map');
+		var param = [place.lat,place.lng];
+		db.execute('delete from saved_places where lat=? and lng=?',param);
+	}finally{
+		if(db!==null) db.close();
+	}
 	Ti.API.info('removeSavedPlaceDB():'+JSON.stringify(place));
 }
 function updateSavedPlaceDB(place){
-	var db = Ti.Database.open('wx_map');
-	var param = [place.lat,place.lng];
-	db.execute('delete from saved_places where lat=? and lng=?',param);
-	db.close();
+	var db;
+	try{
+		db = Ti.Database.open('wx_map');
+		var param = [place.lat,place.lng];
+		db.execute('delete from saved_places where lat=? and lng=?',param);
+	}finally{
+		if(db!==null) db.close();
+	}
 	//db.file.setRemoteBackup(false);
 	Ti.API.info('removeSavedPlaceDB():'+JSON.stringify(place));
 }

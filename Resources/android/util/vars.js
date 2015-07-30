@@ -43,18 +43,24 @@ function initVars(){
 function setEmptyPlayedList(list){
 	var played = {};
 	for (var i=0;i<list.length;i++){
-		played[''+i]='';
+		played[''+i+"_0"]='';
+		//played[''+i+"_100"]='';
+		//played[''+i+"_200"]='';
+		//played[''+i+"_500"]='';
+		//played[''+i+"_1000"]='';
+		//played[''+i+"_2000"]='';
 	}
 	Ti.App.Properties.setString('played',JSON.stringify(played));
 }
-function setPlayedList(id){
+function setPlayedList(id,dist){
 	var list = JSON.parse(Ti.App.Properties.getString('played'));
-	list[''+id]='y';
+	list[''+id+"_"+dist]='y';
 	Ti.App.Properties.setString('played',JSON.stringify(list));
 }
-function isPlayed(id){
+//
+function isPlayed(id,dist){
 	var list = JSON.parse(Ti.App.Properties.getString('played'));
-	if(list[''+id]=='y') return true;
+	if(list[''+id+"_"+dist]==='y') return true;
 	return false;
 }
 function getGHDict(){

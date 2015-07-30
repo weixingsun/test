@@ -56,6 +56,7 @@
     </mobileweb>
     <modules>
         <module platform="android">ti.mapsforge</module>
+        <module platform="android">ti.map</module>
     </modules>
     <deployment-targets>
         <target device="iphone">false</target>

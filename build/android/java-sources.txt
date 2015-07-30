@@ -4,6 +4,7 @@
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/com/google/android/gms/R.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/ApplicationStylesheet.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/AssetCryptImpl.java"
+"C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/Manifest.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/R.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/TestActivity.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/TestAppInfo.java"
