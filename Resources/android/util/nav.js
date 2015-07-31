@@ -1,4 +1,6 @@
-//var mf = require('ti.mapsforge');
+function initNav(module){
+	module.load(Ti.App.id+"/gh/nz/");
+}
 //Headings are north based azimuth (clockwise) in (0, 360) or NaN for equal preference.
 
 function navi(module,map,from,to){

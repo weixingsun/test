@@ -2,8 +2,8 @@
 initVars();
 var win = initWindow();
 initWindowEvent(win);
-var mf = initModule();
-var map = initMap(win,mf);
+var mf = initMapsfirgeModule();
+var map = initMapsforge(win,mf);
 initMapListener(win,mf,map);
 initNav(mf);
 appEventListeners();
@@ -28,11 +28,11 @@ function hideBar(win){
 function initWindow(){
 	return Ti.UI.createWindow();
 }
-function initModule(){
+function initMapsfirgeModule(){
 	return require('ti.mapsforge');
 }
 
-function initMap(win,module){
+function initMapsforge(win,module){
 	var lon = Ti.App.Properties.getDouble("gps_lng",0);
 	var lat = Ti.App.Properties.getDouble("gps_lat",0);
 	var mapView = module.createMapsforgeView({
@@ -61,9 +61,6 @@ function addOfflineMapLayer(map){
 		"name": "osm",
 		"path": Ti.App.id+"/map/nz.map",
 	});
-}
-function initNav(module){
-	module.load(Ti.App.id+"/gh/nz/");
 }
 
 function initMapListener(win,module,map){

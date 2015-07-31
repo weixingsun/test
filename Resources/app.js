@@ -1,5 +1,4 @@
 //sun.wsn.app.map
-
 if(Ti.Platform.osname = "android"){
 	Ti.include('util/vars.js');
 	Ti.include('util/gps.js');
