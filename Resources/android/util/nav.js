@@ -17,10 +17,10 @@ function navi(module,map,from,to){
 				"color": "blue",
 				"strokeWidth": 10
 				});
-			Ti.App.Properties.setInt('route',line.id);
-			Ti.App.Properties.setString('Nodes',JSON.stringify(data.nodes));
+			savePolylineId(line.id);
+			saveRouteInfo(data.nodes);
 			addNodeMarkers();
-			Ti.App.Properties.setInt("MODE",1);
+			setNaviMode(1);
 			win.setKeepScreenOn(true);
 			setEmptyPlayedList(data.nodes);
 		}else{

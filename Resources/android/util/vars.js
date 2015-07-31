@@ -39,17 +39,32 @@ function initVars(){
 	setDestinatePos([0,0]);
 	Ti.App.Properties.setString('played','{}');
 }
-
+function setNaviMode(mode){
+	Ti.App.Properties.setInt("MODE",mode);
+}
+function setSettingBy(by){
+	Ti.App.Properties.setString('by',by);
+}
+function saveRouteInfo(nodes){
+	Ti.App.Properties.setString('Nodes',JSON.stringify(nodes));
+}
+function savePolylineId(id){
+	Ti.App.Properties.setInt('route',id);
+}
+function saveNodeMarker(nodeMarkerIds){
+	Ti.App.Properties.setString('RouteMarkers',JSON.stringify(nodeMarkerIds));
+}
+	
 function setEmptyPlayedList(list){
 	var played = {};
-	for (var i=0;i<list.length;i++){
-		played[''+i+"_0"]='';
+	//for (var i=0;i<list.length;i++){
+		//played[''+i+"_0"]='';
 		//played[''+i+"_100"]='';
 		//played[''+i+"_200"]='';
 		//played[''+i+"_500"]='';
 		//played[''+i+"_1000"]='';
 		//played[''+i+"_2000"]='';
-	}
+	//}
 	Ti.App.Properties.setString('played',JSON.stringify(played));
 }
 function setPlayedList(id,dist){
@@ -60,7 +75,7 @@ function setPlayedList(id,dist){
 //
 function isPlayed(id,dist){
 	var list = JSON.parse(Ti.App.Properties.getString('played'));
-	if(list[''+id+"_"+dist]==='y') return true;
+	if(list[''+id+"_"+dist] !== undefined && list[''+id+"_"+dist]==='y') return true;
 	return false;
 }
 function getGHDict(){

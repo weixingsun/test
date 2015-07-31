@@ -192,8 +192,8 @@ function createCarImage(view,id){
 		var index = bys.indexOf(by);
 		var nextindex = index==bys.length-1?0:index+1;
 		var nextby = bys[nextindex];
-		Ti.API.info('nextBy='+nextby);
-		Ti.App.Properties.setString('by',nextby);
+		//Ti.API.info('nextBy='+nextby);
+		setSettingBy(nextby);
     	var icons = JSON.parse(Ti.App.Properties.getString('by_icons'));
     	var nexticon = icons[nextindex];
     	e.source.image = nexticon;

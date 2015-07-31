@@ -11,7 +11,7 @@ function addNodeMarkers(){
 	    var mkid=addMarker(map,pp,id);
 		nodeMarkerIds.push(mkid);
 	}
-	Ti.App.Properties.setString('RouteMarkers',JSON.stringify(nodeMarkerIds));
+	saveNodeMarker(nodeMarkerIds);
 }
 function removePrevAll(){
 	removePrevLine();
