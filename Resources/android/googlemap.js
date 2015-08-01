@@ -2,9 +2,12 @@ initVars();
 var win = initWindow();
 initWindowEvent(win);
 var module = initGoogleModule();
+var graph = initGraphhopperModule();
 var map = initGoogleMap(win,module);
+initNav(graph);
 //initMapListener(win,module,map);
-initNav(module);
+//initGPS();
+//showAllSavedPlaceMarkers();
 //appEventListeners();
 //createAndroidSearchBar();
 //createSavedPlaceTable();
@@ -28,9 +31,13 @@ function hideBar(win){
 function initGoogleModule(){
 	return require('ti.map');
 }
+function initGraphhopperModule(){
+	return require('ti.mapsforge');
+}
 function initGoogleMap(win,module){
 	var lon = Ti.App.Properties.getDouble("gps_lng",0);
 	var lat = Ti.App.Properties.getDouble("gps_lat",0);
+
 	var map1 = module.createView({
 	    userLocation: true,
 	    mapType: module.NORMAL_TYPE,
@@ -41,9 +48,41 @@ function initGoogleMap(win,module){
 	    top: 0,
 	    left: 0,
 	});
+	/*map1.addAnnotation(Ti.Map.createAnnotation({
+	    animate : true,
+	    pincolor : Ti.Map.ANNOTATION_RED,
+	    title : 'annotation',
+	    latitude : lat,
+	    longitude : lon,
+	}));*/
+	addGmapActionListeners(map1);
 	win.add(map1);
 	win.open();
 	return map1;
+}
+//new googlemap module 2.3.2
+function addGmapActionListeners(map){
+	map.addEventListener('click', function(e) {
+	    var lng = e.longitude;
+	    var lat = e.latitude;
+		Ti.API.info('map.clicked:'+lat+','+lng);
+	});
+	map.addEventListener('longclick', function(e) {
+	    var lng = e.longitude;
+	    var lat = e.latitude;
+		Ti.API.info('map.longclick:'+lat+','+lng);//no properties like e.x e.y
+	});
+	//regionchanged
+	map.addEventListener('complete', function(e){
+		Ti.API.info('map load complete');
+		//complete:e={"type":"complete","source":{"bubbleParent":true,"enabled":true,"region":{"latitude":-43.53449409,"longitude":172.60395921,"latitudeDelta":0.1,"longitudeDelta":0.1},"maxZoomLevel":21,"minZoomLevel":3,"backgroundRepeat":false,"height":"100%","left":0,"compassEnabled":true,"children":[],"rect":{"height":887,"y":0,"x":0,"width":600},"visible":true,"width":"100%","size":{"height":887,"y":0,"width":600,"x":0},"keepScreenOn":false,"userLocation":true,"animate":true,"apiName":"Ti.Map","top":0,"mapType":1,"_events":{"click":{},"longpress":{},"complete":{}}},"bubbles":true,"cancelBubble":false}
+    });
+}
+function addGoogleMarker(){
+	
+}
+function addGooglePolyline(){
+	
 }
 
 /*

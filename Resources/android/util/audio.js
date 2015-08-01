@@ -10,6 +10,11 @@ function play(type,dist00){
 	if(player!== null && player.isPlaying()) return false;
 	try{
 		player = Ti.Media.createSound({url:path});
+		player.addEventListener();
+		player.addEventListener('complete',function(e) {
+		    Ti.API.info('audio complete');
+			this.release();///////////////////////////////////////////
+		});
 		player.play();
 		Ti.API.info('playing '+file);
 		return true;
