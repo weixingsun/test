@@ -48,13 +48,6 @@ function initGoogleMap(win,module){
 	    top: 0,
 	    left: 0,
 	});
-	/*map1.addAnnotation(Ti.Map.createAnnotation({
-	    animate : true,
-	    pincolor : Ti.Map.ANNOTATION_RED,
-	    title : 'annotation',
-	    latitude : lat,
-	    longitude : lon,
-	}));*/
 	addGmapActionListeners(map1);
 	win.add(map1);
 	win.open();
@@ -66,6 +59,9 @@ function addGmapActionListeners(map){
 	    var lng = e.longitude;
 	    var lat = e.latitude;
 		Ti.API.info('map.clicked:'+lat+','+lng);
+		addGoogleMarker(lat,lng,Ti.App.Android.R.drawable.marker_tap_long);
+		//addGoogleMarker(lat,lng,'marker_tap.png');
+		//addGoogleMarker(lat,lng,'drawable/marker_tap.png');
 	});
 	map.addEventListener('longclick', function(e) {
 	    var lng = e.longitude;
@@ -78,13 +74,28 @@ function addGmapActionListeners(map){
 		//complete:e={"type":"complete","source":{"bubbleParent":true,"enabled":true,"region":{"latitude":-43.53449409,"longitude":172.60395921,"latitudeDelta":0.1,"longitudeDelta":0.1},"maxZoomLevel":21,"minZoomLevel":3,"backgroundRepeat":false,"height":"100%","left":0,"compassEnabled":true,"children":[],"rect":{"height":887,"y":0,"x":0,"width":600},"visible":true,"width":"100%","size":{"height":887,"y":0,"width":600,"x":0},"keepScreenOn":false,"userLocation":true,"animate":true,"apiName":"Ti.Map","top":0,"mapType":1,"_events":{"click":{},"longpress":{},"complete":{}}},"bubbles":true,"cancelBubble":false}
     });
 }
-function addGoogleMarker(){
-	
+function addGoogleMarker(lat,lng,img){
+	var params = {
+        latitude:lat,
+        longitude:lng,
+        title:"Atlanta, GA",
+        subtitle:'Atlanta Braves Stadium',
+        animate:true,
+        image: img, //'images/cityIcon.png',
+        draggable: true,
+        //leftButton:'../images/atlanta.jpg',
+        //rightButton: Titanium.UI.iPhone.SystemButton.DISCLOSURE,
+        myid:3,
+    };
+	var mk = module.createAnnotation(params);
+	map.addAnnotation(mk);
 }
 function addGooglePolyline(){
 	
 }
-
+function removeGoogleMarker(){
+	
+}
 /*
 win.add(map2);
 win.add(map3);
