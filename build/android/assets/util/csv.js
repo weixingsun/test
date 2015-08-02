@@ -1,0 +1,1 @@
+for(var f=Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory,"examples","route.csv"),csv=f.read(),points=[],lines=csv.toString().split("\n"),c=0;c<lines.length;c++){var line=lines[c],latlong=line.split(",");if(latlong.length>1){var lat=latlong[0],lon=latlong[1],entry={latitude:lat,longitude:lon};points[c]=entry}}

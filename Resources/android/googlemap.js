@@ -1,4 +1,5 @@
-initVars();
+var map_type = 'google.normal';
+initVars(map_type);
 var win = initWindow();
 initWindowEvent(win);
 var module = initGoogleModule();
@@ -41,7 +42,7 @@ function initGoogleMap(win,module){
 	var map1 = module.createView({
 	    userLocation: true,
 	    mapType: module.NORMAL_TYPE,
-	    animate: true,
+	    //animate: true,
 	    region: {latitude: lat, longitude: lon, latitudeDelta: 0.1, longitudeDelta: 0.1 },
 	    height: '100%',
 	    width: '100%',
@@ -59,14 +60,17 @@ function addGmapActionListeners(map){
 	    var lng = e.longitude;
 	    var lat = e.latitude;
 		Ti.API.info('map.clicked:'+lat+','+lng);
-		addGoogleMarker(lat,lng,Ti.App.Android.R.drawable.marker_tap_long);
-		//addGoogleMarker(lat,lng,'marker_tap.png');
 		//addGoogleMarker(lat,lng,'drawable/marker_tap.png');
 	});
 	map.addEventListener('longclick', function(e) {
-	    var lng = e.longitude;
-	    var lat = e.latitude;
-		Ti.API.info('map.longclick:'+lat+','+lng);//no properties like e.x e.y
+		var dest = {
+			lat: e.latitude,
+			lng: e.longitude,
+			};
+		var me = getCurrentPosDict();
+		//Ti.API.info('map.longclick:'+lat+','+lng);
+		addGoogleMarker(dest.lat,dest.lng,Ti.App.Android.R.drawable.marker_tap);
+		naviGoogle(module,me,dest);
 	});
 	//regionchanged
 	map.addEventListener('complete', function(e){
@@ -78,23 +82,26 @@ function addGoogleMarker(lat,lng,img){
 	var params = {
         latitude:lat,
         longitude:lng,
-        title:"Atlanta, GA",
-        subtitle:'Atlanta Braves Stadium',
+        //title:"Atlanta, GA",
+        //subtitle:'Atlanta Braves Stadium',
         animate:true,
-        image: img, //'images/cityIcon.png',
+        image: img, //resourceId,
         draggable: true,
         //leftButton:'../images/atlanta.jpg',
         //rightButton: Titanium.UI.iPhone.SystemButton.DISCLOSURE,
-        myid:3,
+        //myid:3,
     };
 	var mk = module.createAnnotation(params);
 	map.addAnnotation(mk);
 }
-function addGooglePolyline(){
-	
+function addGoogleRoute(route){
+	map.addRoute(route);
 }
 function removeGoogleMarker(){
 	
+}
+function removeGoogleRoute(route){
+	map.removeRoute(route);
 }
 /*
 win.add(map2);

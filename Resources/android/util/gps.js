@@ -3,6 +3,12 @@ var GPS_RANGE_MIN = 30;
 //var GPS_RANGE_MIN = 30;
 var GPS_RANGE_MAX = 200;
 
+function getCurrentPosDict(){
+	return {
+		lat:Ti.App.Properties.getDouble("gps_lat"),
+		lng:Ti.App.Properties.getDouble("gps_lng"),
+	};
+}
 function getCurrentPos(){
 	return [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
 }

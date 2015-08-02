@@ -10,7 +10,8 @@ if (!Array.prototype.removeAt) {
   };
 }
 
-function initVars(){
+function initVars(mapType){
+	Ti.App.Properties.setString('map_type',mapType);//mapsforge.offline/google.sattlite/google.normal
 	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
 	setNodes('');
 	Ti.App.Properties.setInt("myCircle",0);

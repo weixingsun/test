@@ -19,20 +19,20 @@ function getAddressGoogle(lat,lng, callback){
 	var addrReq = Titanium.Network.createHTTPClient();
 	addrReq.open("GET",addrUrl);
 	addrReq.send(null);
-	  
+
 	addrReq.onload = function(){
-    var response = JSON.parse(this.responseText);
-    if(response.status == "OK"){
-        //var addr = getInfoFromGoogleJson(response.results[0].address_components);
-        //var address = [addr['number']+addr['street'], addr['area']+addr['city']+" "+addr['zip']];	//state,country
-        var address = getInfoFromGoogleJsonSimple(response.results[0].address_components);
-        if(callback) {
-	       Ti.API.info("reverse geolocation result = "+address);
-	       callback.call(null, address);
+	    var response = JSON.parse(this.responseText);
+	    if(response.status == "OK"){
+	        //var addr = getInfoFromGoogleJson(response.results[0].address_components);
+	        //var address = [addr['number']+addr['street'], addr['area']+addr['city']+" "+addr['zip']];	//state,country
+	        var address = getInfoFromGoogleJsonSimple(response.results[0].address_components);
+	        if(callback) {
+		       Ti.API.info("reverse geolocation result = "+address);
+		       callback.call(null, address);
+		    }
+	    }else{
+	        showAlert('','Unable to find Address');
 	    }
-    }else{
-        showAlert('','Unable to find Address');
-    }
 	};
 }
 function getInfoFromGoogleJson(value){
@@ -122,6 +122,4 @@ function searchAddressGoogle(name,country_code){
 	xhrGeocode.setRequestHeader('Content-Type', 'application/json; charset=utf-8');
 	xhrGeocode.send();
 }
-function fillSuggestList(list){
-	
-}
+

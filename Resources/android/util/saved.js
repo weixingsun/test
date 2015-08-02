@@ -59,16 +59,31 @@ function showAllSavedPlaceMarkers(){
 	Ti.App.Properties.setString('SavedPlaceMarkers',strValue);
 	Ti.API.info('SavedPlaceMarkers='+strValue);
 }
-
+function compare(latlng1, latlng2){
+	//if(Math.abs(var1-var2)<0.000001) return true;
+	//Ti.API.info('compare: '+latlng1+', '+latlng2);
+	var lat1 = Number(latlng1.toString().split(',')[0]);
+	var lng1 = Number(latlng1.toString().split(',')[1]);
+	var lat2 = Number(latlng2.toString().split(',')[0]);
+	var lng2 = Number(latlng2.toString().split(',')[1]);
+	if(lat1.toFixed(6)==lat2.toFixed(6) &&
+	   lng1.toFixed(6)==lng2.toFixed(6)
+	  ){
+		//Ti.API.info(lat1+','+lng1+' = '+lat2+','+lng2);
+		return true;
+	} else{
+		//Ti.API.info(lat1+','+lng1+' != '+lat2+','+lng2);
+		return false;
+	}
+}
 function removeSavedPlaceMarker(inlatlng){
 	var strValue = Ti.App.Properties.getString('SavedPlaceMarkers');
 	var places = JSON.parse(strValue);
 	for(var i=0;i<places.length;i++){
 		var latlng=places[i].latlng;
 		var mkid = places[i].mk;
-		//Ti.API.info('removeSavedPlaceMarker() latlng='+latlng+', inlatlng='+inlatlng);
 		//if(latlng == inlatlng){
-		if(JSON.stringify(latlng) == JSON.stringify(inlatlng)){
+		if(compare(latlng, inlatlng)){//
 			removeLayer(mkid);
 			places.removeAt(i);
 		}
