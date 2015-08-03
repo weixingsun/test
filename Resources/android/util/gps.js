@@ -94,9 +94,10 @@ function instruction(stepId,nextNode,dist){
 		var dict = getGHDict();
 		var dist00 = Math.round(dist/100)*100;//ceil/floor/round
 		var turn = dict[''+nextNode.sign];
+		var playOrNot = true;
     	if(!isPlayed(stepId,dist00)){
 			Ti.API.info('dist='+dist00+",stepId="+stepId+" turn="+turn+", nextNode:"+JSON.stringify(nextNode));
-			var playOrNot = play(turn,dist00);
+			playOrNot = play(turn,dist00);
 			if(playOrNot) setPlayedList(stepId,dist00);
 		}
 		msg='step '+ stepId+', '+dist00+'m('+dist+'), turn ' +turn+', on '+nextNode.name +', play='+playOrNot;

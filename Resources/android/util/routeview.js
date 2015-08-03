@@ -22,6 +22,10 @@ function removePrevRoute(){
 	removePrevLine();
 	removePrevNodeMarkers();
 }
+function removePrevRouteGoogle(){
+	addRouteGoogle();
+	removePrevNodeMarkersGoogle();
+}
 function removePrevLine(){
 	var pre_line = Ti.App.Properties.getInt('route');
 	if(pre_line!==0){

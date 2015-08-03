@@ -7,19 +7,21 @@ function play(type,dist00){
 	var file = type+'_dist_'+dist00+'.mp3';
 	var path = Ti.Filesystem.getResRawDirectory() + file;
 	//var inFile = Ti.Filesystem.getFile(path);
-	if(player!== null && player.isPlaying()) return false;
+	if(player!== null && player.isPlaying()){
+		Ti.API.info('still playing '+file);
+		return false;
+	} 
 	try{
 		player = Ti.Media.createSound({url:path});
-		player.addEventListener();
-		//player.addEventListener('complete',function(e) {
-		//	Ti.API.info('audio complete');
-		//	this.release();///////////////////////////////////////////
-		//});
+		player.addEventListener('complete',function(e) {
+			Ti.API.info('audio complete');
+			player.release();///////////////////////////////////////////
+		});
 		player.play();
-		Ti.API.info('playing '+file);
+		Ti.API.info('play '+file);
 		return true;
 	}catch(e){
-		Ti.API.info(path+' not exist');
+		Ti.API.info(path+' err:'+e.message);
 		player= null;
 	}
 	return false;

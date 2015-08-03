@@ -63,6 +63,7 @@ function addGmapActionListeners(map){
 		//addGoogleMarker(lat,lng,'drawable/marker_tap.png');
 	});
 	map.addEventListener('longclick', function(e) {
+		removePrevRouteGoogle();
 		var dest = {
 			lat: e.latitude,
 			lng: e.longitude,
@@ -94,15 +95,16 @@ function addGoogleMarker(lat,lng,img){
 	var mk = module.createAnnotation(params);
 	map.addAnnotation(mk);
 }
-function addGoogleRoute(route){
+function addRouteGoogle(route){
 	map.addRoute(route);
 }
-function removeGoogleMarker(){
+function removePrevNodeMarkersGoogle(){
 	
 }
-function removeGoogleRoute(route){
+function removeRouteGoogle(route){
 	map.removeRoute(route);
 }
+
 /*
 win.add(map2);
 win.add(map3);

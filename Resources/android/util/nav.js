@@ -37,8 +37,6 @@ function naviGoogle(module,start,end){
     var addrUrl = pre+"origin="+start.lat+","+start.lng+"&destination="+end.lat+","+end.lng;
     Ti.API.info(addrUrl);
     loader.open("GET",addrUrl);
-	//loader.send(null);
-	
     loader.onload = function(){
         var response = JSON.parse(this.responseText);
         if (response.routes.length > 0){
@@ -47,24 +45,22 @@ function naviGoogle(module,start,end){
 				name: "navi",
 			    points: points,
 			    color: 'red',
-			    width : 3,
+			    width : 10,
 			});
-		    Ti.API.info("googleRoute.onload:"+points.length);
+		    //Ti.API.info("googleRoute.onload:"+points.length);
 			addGoogleRoute(route);
         } else{
             return;
         }
     };
+	loader.send();
+	
 }
 var createRouteData = function(json){
-
-    var step = json.routes[0].overview_polyline.points;
-    var intStep = 0,
-    intSteps = step.length,
-    points = [];
-    var decodedPolyline,
-    intPoint = 0,
-    intPoints = 0;
+    var step = json.routes[0].overview_polyline.points;// brief points
+    //var intStep = step.length;
+    var points = [];
+    var decodedPolyline, intPoint = 0, intPoints = 0;
 
     decodedPolyline = decodeLine(step);
     intPoints = decodedPolyline.length;
