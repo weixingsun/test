@@ -34,13 +34,13 @@ function naviGoogle(module,start,end){
 	var points = [];
 	var loader = Ti.Network.createHTTPClient();
 	var pre = "http://maps.googleapis.com/maps/api/directions/json?sensor=false&";
-    var addrUrl = pre+"origin="+start.lat+","+start.lng+"&destination="+end.lat+","+end.lng;
+    var addrUrl = pre+"origin="+start[0]+","+start[1]+"&destination="+end[0]+","+end[1];
     Ti.API.info(addrUrl);
     loader.open("GET",addrUrl);
     loader.onload = function(){
         var response = JSON.parse(this.responseText);
         if (response.routes.length > 0){
-            var points = createRouteData(response);
+            var points = createRouteDataGoogle(response);
 			var route = module.createRoute({
 				name: "navi",
 			    points: points,
@@ -54,15 +54,14 @@ function naviGoogle(module,start,end){
         }
     };
 	loader.send();
-	
 }
-var createRouteData = function(json){
+var createRouteDataGoogle = function(json){
     var step = json.routes[0].overview_polyline.points;// brief points
     //var intStep = step.length;
     var points = [];
     var decodedPolyline, intPoint = 0, intPoints = 0;
 
-    decodedPolyline = decodeLine(step);
+    decodedPolyline = decodeLineGoogle(step);
     intPoints = decodedPolyline.length;
     for (intPoint = 0; intPoint < intPoints; intPoint = intPoint + 1){
         if (decodedPolyline[intPoint] != null){
@@ -75,7 +74,7 @@ var createRouteData = function(json){
 
     return points;
 };
-var decodeLine = function(encoded){
+var decodeLineGoogle = function(encoded){
     var len = encoded.length;
     var index = 0;
     var array = [];

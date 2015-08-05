@@ -23,8 +23,8 @@ function removePrevRoute(){
 	removePrevNodeMarkers();
 }
 function removePrevRouteGoogle(){
-	addRouteGoogle();
-	removePrevNodeMarkersGoogle();
+	//removePrevLineGoogle();
+	//removePrevNodeMarkersGoogle();
 }
 function removePrevLine(){
 	var pre_line = Ti.App.Properties.getInt('route');

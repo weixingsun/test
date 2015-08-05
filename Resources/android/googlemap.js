@@ -64,14 +64,12 @@ function addGmapActionListeners(map){
 	});
 	map.addEventListener('longclick', function(e) {
 		removePrevRouteGoogle();
-		var dest = {
-			lat: e.latitude,
-			lng: e.longitude,
-			};
-		var me = getCurrentPosDict();
+		var dest = [e.latitude,e.longitude];
+		var me = getCurrentPos();
 		//Ti.API.info('map.longclick:'+lat+','+lng);
-		addGoogleMarker(dest.lat,dest.lng,Ti.App.Android.R.drawable.marker_tap);
-		naviGoogle(module,me,dest);
+		//addGoogleMarker(dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap);
+		//naviGoogle(module,me,dest);
+		navi(graph,map,me,dest);
 	});
 	//regionchanged
 	map.addEventListener('complete', function(e){
@@ -95,11 +93,11 @@ function addGoogleMarker(lat,lng,img){
 	var mk = module.createAnnotation(params);
 	map.addAnnotation(mk);
 }
-function addRouteGoogle(route){
-	map.addRoute(route);
+function removeMarkerGoogle(){
+	map.removeRoute(route);
 }
-function removePrevNodeMarkersGoogle(){
-	
+function addGoogleRoute(route){
+	map.addRoute(route);
 }
 function removeRouteGoogle(route){
 	map.removeRoute(route);

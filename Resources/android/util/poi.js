@@ -123,3 +123,4 @@ function searchAddressGoogle(name,country_code){
 	xhrGeocode.send();
 }
 
+
