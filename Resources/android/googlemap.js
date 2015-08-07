@@ -64,7 +64,7 @@ function addGmapActionListeners(map){
 	});
 	map.addEventListener('longclick', function(e) {
 		removeMyGoogleMarker('dest');
-		//removeMyGoogleRoute('navi');
+		removeMyGooglePolyline('navi');
 		var dest = [e.latitude,e.longitude];
 		var me = getCurrentPos();
 		//naviGoogle(module,me,dest);
@@ -91,11 +91,11 @@ function addMyGoogleMarker(name,lat,lng,img,draggable){
 function removeMyGoogleMarker(id){
 	map.removeMarker(id);
 }
-function addGoogleRoute(route){
-	map.addRoute(route);
+function addMyGooglePolyline(options){
+	map.addPolyline(options);
 }
-function removeMyGoogleRoute(route){
-	map.removeRoute(route);
+function removeMyGooglePolyline(id){
+	map.removePolyline(id);
 }
 function move(to){
 	map.updateCamera({

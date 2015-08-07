@@ -24,21 +24,13 @@ function navi(module,map,from,to){
 }
 function drawGHonGMap(data){
 	//data.pts = [[lng,lat],[lng,lat]];
-	var points = [];
-	for(var i=0;i<data.pts.length;i++){
-		var p = {
-			latitude:data.pts[i][1],
-			longitude:data.pts[i][0],
-		};
-		points[i] =p;
-	}
-	var route = module.createRoute({
-		name: "navi",
-	    points: points,//{latitude:0,longitude:0}
+	var options = {
+		id: "navi",
+	    points: data.pts,
 	    color: 'blue',
 	    width : 10,
-	});
-	addGoogleRoute(route);
+	};
+	addMyGooglePolyline(options);
 }
 function drawGHonMapsforge(data){
 	removePrevRoute();
