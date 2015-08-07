@@ -13,22 +13,46 @@ function navi(module,map,from,to){
 	//weighting:fastest,	//fast/short
 	module.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
-			removePrevRoute();
-			var line = map.createPolyline({
-				"latlngs": data.pts,
-				"color": "blue",
-				"strokeWidth": 10
-				});
-			savePolylineId(line.id);
-			saveRouteInfo(data.nodes);
-			addNodeMarkers();
-			setNaviMode(1);
-			win.setKeepScreenOn(true);
-			setEmptyPlayedList(data.nodes);
+			if(isGoogleMap())
+				drawGHonGMap(data);
+			else
+				drawGHonMapsforge(data);
 		}else{
 			Ti.API.info("navi error:"+data.errmsg);
 		}
 	});
+}
+function drawGHonGMap(data){
+	//data.pts = [[lng,lat],[lng,lat]];
+	var points = [];
+	for(var i=0;i<data.pts.length;i++){
+		var p = {
+			latitude:data.pts[i][1],
+			longitude:data.pts[i][0],
+		};
+		points[i] =p;
+	}
+	var route = module.createRoute({
+		name: "navi",
+	    points: points,//{latitude:0,longitude:0}
+	    color: 'blue',
+	    width : 10,
+	});
+	addGoogleRoute(route);
+}
+function drawGHonMapsforge(data){
+	removePrevRoute();
+	var line = map.createPolyline({
+		"latlngs": data.pts,
+		"color": "blue",
+		"strokeWidth": 10
+		});
+	savePolylineId(line.id);
+	saveRouteInfo(data.nodes);
+	addNodeMarkers();
+	setNaviMode(1);
+	win.setKeepScreenOn(true);
+	setEmptyPlayedList(data.nodes);
 }
 function naviGoogle(module,start,end){
 	var points = [];
@@ -47,7 +71,7 @@ function naviGoogle(module,start,end){
 			    color: 'red',
 			    width : 10,
 			});
-		    //Ti.API.info("googleRoute.onload:"+points.length);
+		    Ti.API.info("googleRoute.onload:"+points.length);
 			addGoogleRoute(route);
         } else{
             return;

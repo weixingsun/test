@@ -63,12 +63,12 @@ function addGmapActionListeners(map){
 		//addGoogleMarker(lat,lng,'drawable/marker_tap.png');
 	});
 	map.addEventListener('longclick', function(e) {
-		removePrevRouteGoogle();
+		removeMyGoogleMarker('dest');
+		//removeMyGoogleRoute('navi');
 		var dest = [e.latitude,e.longitude];
 		var me = getCurrentPos();
-		//Ti.API.info('map.longclick:'+lat+','+lng);
-		//addGoogleMarker(dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap);
 		//naviGoogle(module,me,dest);
+		addMyGoogleMarker('dest',dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap,false);
 		navi(graph,map,me,dest);
 	});
 	//regionchanged
@@ -77,32 +77,42 @@ function addGmapActionListeners(map){
 		//complete:e={"type":"complete","source":{"bubbleParent":true,"enabled":true,"region":{"latitude":-43.53449409,"longitude":172.60395921,"latitudeDelta":0.1,"longitudeDelta":0.1},"maxZoomLevel":21,"minZoomLevel":3,"backgroundRepeat":false,"height":"100%","left":0,"compassEnabled":true,"children":[],"rect":{"height":887,"y":0,"x":0,"width":600},"visible":true,"width":"100%","size":{"height":887,"y":0,"width":600,"x":0},"keepScreenOn":false,"userLocation":true,"animate":true,"apiName":"Ti.Map","top":0,"mapType":1,"_events":{"click":{},"longpress":{},"complete":{}}},"bubbles":true,"cancelBubble":false}
     });
 }
-function addGoogleMarker(lat,lng,img){
+function addMyGoogleMarker(name,lat,lng,img,draggable){
 	var params = {
         latitude:lat,
         longitude:lng,
-        //title:"Atlanta, GA",
-        //subtitle:'Atlanta Braves Stadium',
-        animate:true,
+        id:name,
+        //animate:true,
         image: img, //resourceId,
-        draggable: true,
-        //leftButton:'../images/atlanta.jpg',
-        //rightButton: Titanium.UI.iPhone.SystemButton.DISCLOSURE,
-        //myid:3,
+        draggable: draggable,
     };
-	var mk = module.createAnnotation(params);
-	map.addAnnotation(mk);
+	var mk = map.addMarker(params);
 }
-function removeMarkerGoogle(){
-	map.removeRoute(route);
+function removeMyGoogleMarker(id){
+	map.removeMarker(id);
 }
 function addGoogleRoute(route){
 	map.addRoute(route);
 }
-function removeRouteGoogle(route){
+function removeMyGoogleRoute(route){
 	map.removeRoute(route);
 }
+function move(to){
+	map.updateCamera({
+		latitude:to[0],
+		longitude:to[1],
+	});
+}
 
+function animateTo(to){
+	map.updateCamera({
+		latitude:to[0],
+		longitude:to[1],
+		animate:true,
+		//zoom:
+		//bearing:direction
+	});
+}
 /*
 win.add(map2);
 win.add(map3);

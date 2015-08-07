@@ -3,13 +3,32 @@ if (!Array.prototype.remove) {
     var i = this.indexOf(val);
     return i>-1 ? this.splice(i, 1) : [];
   };
-}
-if (!Array.prototype.removeAt) {
   Array.prototype.removeAt = function(i) {
     return i>-1 ? this.splice(i, 1) : [];
   };
 }
-
+String.prototype.startWith=function(str){  
+    if(str==null||str==""||this.length==0||str.length>this.length)  
+      return false;  
+    if(this.substr(0,str.length)==str)  
+      return true;  
+    else  
+      return false;  
+    return true;  
+};
+String.prototype.endWith=function(str){  
+    if(str==null||str==""||this.length==0||str.length>this.length)  
+      return false;  
+    if(this.substring(this.length-str.length)==str)  
+      return true;  
+    else  
+      return false;  
+    return true;  
+};
+function isGoogleMap(){
+	var str = Ti.App.Properties.getString('map_type');
+	return str.startWith('google');
+}
 function initVars(mapType){
 	Ti.App.Properties.setString('map_type',mapType);//mapsforge.offline/google.sattlite/google.normal
 	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
