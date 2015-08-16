@@ -72,7 +72,7 @@ function initMapListener(win,module,map){
 		showAllSavedPlaceMarkers();
 	});
 }
-function addMarker(map,to,id){
+function addMarkerMF(to,id){
 	//platform/android/res/drawable/marker_tap.png
 	//Ti.App.Android.R.drawable.marker_tap_long
 	var mk = map.createMarker({

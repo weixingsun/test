@@ -1,6 +1,6 @@
-function findSavedMarker(inlatlng,inxy){
+function findSavedMarker(inlatlng){
 	var zoom = map.getZoomLevel();
-	//Ti.API.info('findSavedMarker()'+'zoom='+zoom+' latlng:'+inlatlng);//XY:inxy
+	//Ti.API.info('findSavedMarker()'+'zoom='+zoom+' latlng:'+inlatlng);
 	var places = JSON.parse(Ti.App.Properties.getString('SavedPlaceMarkers'));
 	for(var i=0;i<places.length;i++){
 		var latlng=places[i].latlng;

@@ -29,7 +29,7 @@ var locationCallback = function(e) {
 	    Ti.App.Properties.setInt("speed",e.coords.speed);
 	    //e.coords.altitude/e.coords.timestamp/e.coords.altitudeAccuracy
 	    var me = [e.coords.latitude,e.coords.longitude];
-	    addMyLocMarker(me,e.coords.accuracy);
+	    if(!isGoogleMap()) addMyLocMarker(me,e.coords.accuracy);
 		var strNodes = getNodes();
 	    var mode = Ti.App.Properties.getInt("MODE");
 	    if(strNodes.length<1 || mode==0){

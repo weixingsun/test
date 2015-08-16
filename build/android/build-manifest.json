@@ -5,7 +5,7 @@
 	"platformPath": "C:\\ProgramData\\Titanium\\mobilesdk\\win32\\4.1.0.GA\\android",
 	"modulesHash": "79ee07f75a191d4e998ec2454417696f",
 	"modulesManifestHash": "77e53738d63c966add9c94d86acdcfdb",
-	"modulesNativeHash": "fbf2b9563d941d05154ad8e7019ed54c",
+	"modulesNativeHash": "c9cde048da0ba13129f6dd5410f97cbc",
 	"modulesBindingsHash": "c1c0e0bdd800a385c7b4fd7679754dea",
 	"gitHash": "d57aa7d",
 	"name": "test",

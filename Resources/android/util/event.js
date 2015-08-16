@@ -51,9 +51,9 @@ function changeDestination(point){
 function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var latlng=[e.lat,e.lng];
-		var xy=[e.x,e.y];
+		//var xy=[e.x,e.y];
 	    //var p = findPOI(point,radius);
-	    var markerTap = findSavedMarker(latlng,xy);//{mk:0,latlng:[0,0]};
+	    var markerTap = findSavedMarker(latlng);//{mk:0,latlng:[0,0]};  //,xy
 	    if(markerTap!== null) changeDestination(markerTap.latlng);
 	    //animateTo(point);
 	    hideSuggestList();

@@ -21,7 +21,7 @@ function createSuggestList(list){
 			//var pt = e.itemId;	//'[0,0]'
 			if (e.bindId == 'rowtitle' || e.bindId == 'pic'){
 				var item = e.section.getItemAt(e.itemIndex);
-        		//Ti.API.info("clicked :"+JSON.stringify(item));
+        		Ti.API.info("suggest.list.clicked :"+JSON.stringify(item));
 				if(typeof item.rowtitle.id !== 'undefined'){
 					changeDestination(JSON.parse(item.rowtitle.id));
 					animateTo(JSON.parse(item.rowtitle.id));
@@ -119,20 +119,23 @@ function hideKeyboard(){
 	}
 }
 function createAndroidSearchBar(){
+	//var h=Ti.Platform.displayCaps.platformHeight;
+	var pw = Ti.Platform.displayCaps.platformWidth;
+	var ldf = Ti.Platform.displayCaps.logicalDensityFactor;
+	var w = parseInt(pw / (ldf || 1), 10);
 	var searchBar = Ti.UI.Android.createSearchView({
 	    //hintText: "Input Address to Search ",
 	    backgroundColor: 'rgba(128,128,128,128)',
 	    color: "black",
-        width : '80%',
+        width : w - 160,
 	    height : '52dp',
 	    top:0,
-	    left:10,
+	    left:50,
 	});
 	var searchThread;
     var funReturn = function (e) {
     	clearTimeout(searchThread);
 	    searchThread = setTimeout( function() {
-	        //Ti.API.info(JSON.stringify(e));
 		    if(e.source.value.length>1){
 	        	searchAddressGoogle(e.source.value,'nz');
 	        }else{

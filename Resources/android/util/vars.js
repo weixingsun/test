@@ -29,6 +29,13 @@ function isGoogleMap(){
 	var str = Ti.App.Properties.getString('map_type');
 	return str.startWith('google');
 }
+function addMarker(name,lat,lng,img,draggable){
+	if(isGoogleMap()){
+		addMyGoogleMarker(name,lat,lng,img,draggable);
+	}else{
+		addMarkerMF([lat,lng],img);
+	}
+}
 function initVars(mapType){
 	Ti.App.Properties.setString('map_type',mapType);//mapsforge.offline/google.sattlite/google.normal
 	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
