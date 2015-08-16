@@ -51,7 +51,7 @@ function showAllSavedPlaceMarkers(){
 	for(var i=0;i<places.length;i++){
 	    var pp = [places[i].lat,places[i].lng];//.toFixed(6)
 	    var id=Ti.App.Android.R.drawable.star_red_24;
-	    var mkid=addMarker(map,pp,id);
+	    var mkid=addMarker(map,pp,id,false);
 	    var item={mk:mkid,latlng:pp};
 		savedPlaceMarkerIds.push(item);
 	}
@@ -96,7 +96,7 @@ function addSavedPlaceMarker(latlng){
 	var strValue = Ti.App.Properties.getString('SavedPlaceMarkers');
 	var places = JSON.parse(strValue);
     var id=Ti.App.Android.R.drawable.star_red_24;
-    var mkid=addMarker(map,latlng,id);
+    var mkid=addMarker(map,latlng,id,false);
     var item={mk:mkid,latlng:latlng};
 	places.push(item);
 	var strValue=JSON.stringify(places);

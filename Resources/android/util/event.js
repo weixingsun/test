@@ -39,10 +39,11 @@ function appEventListeners(){
 	Ti.Android.registerBroadcastReceiver(dspon, [Ti.Android.ACTION_SCREEN_ON]);
 }
 function changeDestination(point){
+	Ti.API.info('changeDestination:'+point);
 	setDestinatePos(point);
 	removePrevDestMarker();
 	var id=Ti.App.Android.R.drawable.marker_tap_long;
-	var mkid = addMarker(map,point,id);
+	var mkid = addMarker(map,point,id,false);
 	Ti.App.Properties.setInt("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);

@@ -8,7 +8,7 @@ function addNodeMarkers(){
 	    var p = nodes[i].pts[0];
 	    var pp = [p[1],p[0]];
 	    var id=Ti.App.Android.R.drawable.point_red;
-	    var mkid=addMarker(map,pp,id);
+	    var mkid=addMarker(map,pp,id,false);
 		nodeMarkerIds.push(mkid);
 	}
 	saveNodeMarker(nodeMarkerIds);

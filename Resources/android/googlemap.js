@@ -99,14 +99,14 @@ function removeMyGooglePolyline(id){
 	map.removePolyline(id);
 }
 function move(to){
-	map.updateCamera({
+	map.setLocation({
 		latitude:to[0],
 		longitude:to[1],
 	});
 }
 
 function animateTo(to){
-	map.updateCamera({
+	map.setLocation({
 		latitude:to[0],
 		longitude:to[1],
 		animate:true,

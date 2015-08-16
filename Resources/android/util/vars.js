@@ -29,9 +29,9 @@ function isGoogleMap(){
 	var str = Ti.App.Properties.getString('map_type');
 	return str.startWith('google');
 }
-function addMarker(name,lat,lng,img,draggable){
+function addMarker(name,latlng,img,draggable){
 	if(isGoogleMap()){
-		addMyGoogleMarker(name,lat,lng,img,draggable);
+		addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
 	}else{
 		addMarkerMF([lat,lng],img);
 	}
