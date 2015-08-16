@@ -106,14 +106,20 @@ function move(to){
 }
 
 function animateTo(to){
-	map.setLocation({
-		latitude:to[0],
-		longitude:to[1],
-		animate:true,
-		//zoom:
-		//bearing:direction
-	});
+	//map.setLocation({
+	//	latitude:to[0],
+	//	longitude:to[1],
+	//	animate:true,
+    //  latitudeDelta : 0.01,
+    //  longitudeDelta : 0.01,
+	//});
+	//zoom,bearing
+	var currentRegion = map.getRegion();
+	currentRegion.latitude = to[0];
+	currentRegion.longitude = to[1];
+	map.setLocation(currentRegion); //getFitZoomMapRegionWithCoords(to));
 }
+
 function setTraffic(traffic){
 	map.setTrafficEnabled(traffic);
 }
@@ -121,6 +127,37 @@ function setTraffic(traffic){
 function setGoogleMapType(type){
 	map.setMapType(type);
 }
+function getFitZoomMapRegionWithCoords(points) {
+ 
+    var topLeftLatitude = -90;
+    var topLeftLongitude = 180;
+    var bottomRightLatitude = 90;
+    var bottomRightLongitude = -180;
+ 
+    for (var i = 0; i < points.length; i++) {
+        var reg = points[i];
+        topLeftLongitude = Math.min(topLeftLongitude, parseFloat(reg.longitude));
+        topLeftLatitude = Math.max(topLeftLatitude, parseFloat(reg.latitude));
+        bottomRightLongitude = Math.max(bottomRightLongitude, parseFloat(reg.longitude));
+        bottomRightLatitude = Math.min(bottomRightLatitude, parseFloat(reg.latitude));
+    }
+ 
+    var fitLatitude = topLeftLatitude - (topLeftLatitude - bottomRightLatitude) * 0.5;
+    var fitLongitude = topLeftLongitude + (bottomRightLongitude - topLeftLongitude) * 0.5;
+    var fitSpanLatDelta = Math.abs(topLeftLatitude - bottomRightLatitude) * 1.1;
+    var fitSpanLongDelta = Math.abs(bottomRightLongitude - topLeftLongitude) * 1.1;
+    if (fitSpanLatDelta == 0 && fitSpanLongDelta == 0) {
+        fitSpanLatDelta = fitSpanLongDelta = 0.01;
+    }
+    var fitRegion = {
+        latitude : fitLatitude,
+        longitude : fitLongitude,
+        latitudeDelta : fitSpanLatDelta,
+        longitudeDelta : fitSpanLongDelta
+    };
+ 
+    return fitRegion;
+};
 /*
 win.add(map2);
 win.add(map3);
