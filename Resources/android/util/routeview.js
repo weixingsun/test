@@ -1,5 +1,5 @@
 function changeDestination(point){
-	Ti.API.info('changeDestination:'+point);
+	Ti.API.info('changeDestination:'+JSON.stringify(point));
 	setDestinatePos(point);
 	removePrevDestMarker();
 	var idmf=Ti.App.Android.R.drawable.marker_tap_long;
@@ -10,7 +10,7 @@ function changeDestination(point){
 	}else{
 		mkid = addMarker('dest_marker',point,idmf,false);
 	}
-	Ti.App.Properties.setInt("dest_marker",mkid);
+	Ti.App.Properties.setString("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);
 	Ti.API.info('changeDestination() to '+point);
@@ -52,8 +52,8 @@ function removePrevDestMarker(){
 	if(isGoogleMap()){
 		removeMyGoogleMarker('dest_marker');
 	}else{
-		if(Ti.App.Properties.getInt("dest_marker") !==0)
-			map.removeLayer(Ti.App.Properties.getInt("dest_marker"));
+		if(Ti.App.Properties.getString("dest_marker").length >0)
+			map.removeLayer(Ti.App.Properties.getString("dest_marker"));
 	}
 }
 function removePrevNodeMarkers(){

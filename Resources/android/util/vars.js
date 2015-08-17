@@ -31,7 +31,8 @@ function isGoogleMap(){
 }
 function addMarker(name,latlng,img,draggable){
 	if(isGoogleMap()){
-		return addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
+		addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
+		return name;
 	}else{
 		return addMarkerMF([latlng[0],latlng[1]],img);
 	}
@@ -42,7 +43,7 @@ function initVars(mapType){
 	setNodes('');
 	Ti.App.Properties.setInt("myCircle",0);
 	Ti.App.Properties.setInt("mySpot",0);
-	Ti.App.Properties.setInt("dest_marker",0);
+	Ti.App.Properties.setString("dest_marker",'');
 	Ti.App.Properties.setInt('route',0);
 	Ti.App.Properties.setString('RouteMarkers','');
 	Ti.App.Properties.setString('by','car');

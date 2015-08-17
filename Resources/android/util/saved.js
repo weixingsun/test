@@ -49,9 +49,10 @@ function showAllSavedPlaceMarkers(){
 	var places = selectAllPlacesDB();
 	var savedPlaceMarkerIds=[];
 	for(var i=0;i<places.length;i++){
-	    var pp = [places[i].lat,places[i].lng];//.toFixed(6)
 	    var id=Ti.App.Android.R.drawable.star_red_24;
-	    var mkid=addMarker(map,pp,id,false);
+	    var pp = [places[i].lat,places[i].lng];//.toFixed(6)
+	    var name = 'saved_'+JSON.stringify(pp);
+	    var mkid=addMarker(name,pp,id,false);
 	    var item={mk:mkid,latlng:pp};
 		savedPlaceMarkerIds.push(item);
 	}
