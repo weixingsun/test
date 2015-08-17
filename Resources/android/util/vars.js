@@ -33,7 +33,7 @@ function addMarker(name,latlng,img,draggable){
 	if(isGoogleMap()){
 		addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
 	}else{
-		addMarkerMF([lat,lng],img);
+		addMarkerMF([latlng[0],latlng[1]],img);
 	}
 }
 function initVars(mapType){

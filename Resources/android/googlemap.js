@@ -2,10 +2,10 @@ var map_type = 'google.normal';
 initVars(map_type);
 var win = initWindow();
 initWindowEvent(win);
-var module = initGoogleModule();
-var graph = initGraphhopperModule();
-var map = initGoogleMap(win,module);
-initNav(graph);
+var mapmodule = initGoogleModule();
+var navimodule = initGraphhopperModule();
+var map = initGoogleMap(win,mapmodule);
+initNav(navimodule);
 initGPS();
 //showAllSavedPlaceMarkers();
 //appEventListeners();
@@ -67,7 +67,7 @@ function addGmapActionListeners(map){
 		var me = getCurrentPos();
 		//naviGoogle(module,me,dest);
 		addMyGoogleMarker('dest',dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap,false);
-		navi(graph,map,me,dest);
+		navi(navimodule,me,dest);
 	});
 	//regionchanged
 	map.addEventListener('complete', function(e){
@@ -106,17 +106,11 @@ function move(to){
 }
 
 function animateTo(to){
-	//map.setLocation({
-	//	latitude:to[0],
-	//	longitude:to[1],
-	//	animate:true,
-    //  latitudeDelta : 0.01,
-    //  longitudeDelta : 0.01,
-	//});
 	//zoom,bearing
 	var currentRegion = map.getRegion();
 	currentRegion.latitude = to[0];
 	currentRegion.longitude = to[1];
+	//	animate:true,
 	map.setLocation(currentRegion); //getFitZoomMapRegionWithCoords(to));
 }
 

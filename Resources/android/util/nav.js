@@ -3,7 +3,7 @@ function initNav(module){
 }
 //Headings are north based azimuth (clockwise) in (0, 360) or NaN for equal preference.
 
-function navi(module,map,from,to){
+function navi(navimodule,from,to){
 	var by = Ti.App.Properties.getString('by');
 	var args = {
 	 "vehicle":   by,		//car/foot/bicycle/bus
@@ -11,7 +11,7 @@ function navi(module,map,from,to){
 	 "to":   to
 	};
 	//weighting:fastest,	//fast/short
-	module.getRouteAsyncCallback(args,function(data){
+	navimodule.getRouteAsyncCallback(args,function(data){
 		if(data.error==0){
 			if(isGoogleMap())
 				drawGHonGMap(data);

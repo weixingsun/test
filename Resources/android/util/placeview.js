@@ -183,8 +183,8 @@ function createCarImage(view,id){
     img.addEventListener('click', function(e){
 	    var from = getCurrentPos();
 	    var to = getDestinatePos();
-	    Ti.API.info("mf="+mf+",map="+map+",from="+from+",to="+to);
-	    navi(mf,map,from,to);
+	    //Ti.API.info("module="+module+",map="+map+",from="+from+",to="+to);
+	    navi(navimodule,from,to);
 	    });
 	img.addEventListener('longclick',function(e){
 		var bys = JSON.parse(Ti.App.Properties.getString('bys'));

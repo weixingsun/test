@@ -42,8 +42,14 @@ function changeDestination(point){
 	Ti.API.info('changeDestination:'+point);
 	setDestinatePos(point);
 	removePrevDestMarker();
-	var id=Ti.App.Android.R.drawable.marker_tap_long;
-	var mkid = addMarker(map,point,id,false);
+	var idmf=Ti.App.Android.R.drawable.marker_tap_long;
+	var idgg=Ti.App.Android.R.drawable.marker_tap;
+	var mkid=0;
+	if(isGoogleMap()){
+		mkid = addMarker(map,point,idgg,false);
+	}else{
+		mkid = addMarker(map,point,idmf,false);
+	}
 	Ti.App.Properties.setInt("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);

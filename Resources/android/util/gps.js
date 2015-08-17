@@ -41,8 +41,8 @@ var locationCallback = function(e) {
 	    var nextNode,stepId;
 	    var strNodes = getNodes(); //[[172.584333,-43.523472],[172.584716,-43.523578]]
 	    var nodes = JSON.parse(strNodes);
+		var range = (e.coords.accuracy < GPS_RANGE_MIN) ? GPS_RANGE_MIN : e.coords.accuracy;
 	    try {
-		    var range = (e.coords.accuracy < GPS_RANGE_MIN) ? GPS_RANGE_MIN : e.coords.accuracy;
 		    stepId = findMyStepId(nodes, me, range);
 		    nextNode = findNextNode(nodes,stepId);
 		    //throw "err_content"; err="err_content"
@@ -60,7 +60,7 @@ var locationCallback = function(e) {
 			//showToast(-1,-1,-1);
 			var toast = Titanium.UI.createNotification({
 				duration: Ti.UI.NOTIFICATION_DURATION_SHORT,
-				message: 'redraw route?'
+				message: 'redraw route?range='+range+',accuracy='+e.coords.accuracy,
 			});
 			toast.show();
 		}
@@ -112,8 +112,8 @@ function instruction(stepId,nextNode,dist){
 	});
 	toast.show();
 }
-function checkStep(me,nodePts,range){
-	var isIn = mf.isInStep({
+function checkStep(navimodule,me,nodePts,range){
+	var isIn = navimodule.isInStep({
 		"range": range,
 		"point": me,
 		"points": nodePts //in meter
