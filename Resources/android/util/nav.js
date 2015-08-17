@@ -24,13 +24,16 @@ function navi(navimodule,from,to){
 }
 function drawGHonGMap(data){
 	//data.pts = [[lng,lat],[lng,lat]];
+	removePrevRoute();
 	var options = {
-		id: "navi",
+		id: "route",
 	    points: data.pts,
 	    color: 'blue',
 	    width : 10,
 	};
 	addMyGooglePolyline(options);
+	saveRouteInfo(data.nodes);
+	addNodeMarkers();
 }
 function drawGHonMapsforge(data){
 	removePrevRoute();

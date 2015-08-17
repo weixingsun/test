@@ -31,9 +31,9 @@ function isGoogleMap(){
 }
 function addMarker(name,latlng,img,draggable){
 	if(isGoogleMap()){
-		addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
+		return addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
 	}else{
-		addMarkerMF([latlng[0],latlng[1]],img);
+		return addMarkerMF([latlng[0],latlng[1]],img);
 	}
 }
 function initVars(mapType){

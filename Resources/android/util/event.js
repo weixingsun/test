@@ -38,23 +38,7 @@ function appEventListeners(){
 	});
 	Ti.Android.registerBroadcastReceiver(dspon, [Ti.Android.ACTION_SCREEN_ON]);
 }
-function changeDestination(point){
-	Ti.API.info('changeDestination:'+point);
-	setDestinatePos(point);
-	removePrevDestMarker();
-	var idmf=Ti.App.Android.R.drawable.marker_tap_long;
-	var idgg=Ti.App.Android.R.drawable.marker_tap;
-	var mkid=0;
-	if(isGoogleMap()){
-		mkid = addMarker(map,point,idgg,false);
-	}else{
-		mkid = addMarker(map,point,idmf,false);
-	}
-	Ti.App.Properties.setInt("dest_marker",mkid);
-	hidePopView();
-	showPopView(point);
-	Ti.API.info('changeDestination() to '+point);
-}
+
 function addActionListeners(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var latlng=[e.lat,e.lng];

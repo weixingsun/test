@@ -61,13 +61,14 @@ function addGmapActionListeners(map){
 		//addGoogleMarker(lat,lng,'drawable/marker_tap.png');
 	});
 	map.addEventListener('longclick', function(e) {
-		removeMyGoogleMarker('dest');
-		removeMyGooglePolyline('navi');
+		//removeMyGoogleMarker('dest');
+		//removeMyGooglePolyline('navi');
 		var dest = [e.latitude,e.longitude];
-		var me = getCurrentPos();
+		//var me = getCurrentPos();
+		changeDestination(dest);
 		//naviGoogle(module,me,dest);
-		addMyGoogleMarker('dest',dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap,false);
-		navi(navimodule,me,dest);
+		//addMyGoogleMarker('dest',dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap,false);
+		//navi(navimodule,me,dest);
 	});
 	//regionchanged
 	map.addEventListener('complete', function(e){
@@ -88,6 +89,7 @@ function addMyGoogleMarker(name,lat,lng,img,draggable){
         draggable: draggable,
     };
 	var mk = map.addMarker(params);
+	return 0;
 }
 function removeMyGoogleMarker(id){
 	map.removeMarker(id);
