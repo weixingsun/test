@@ -112,7 +112,7 @@ function instruction(stepId,nextNode,dist){
 	});
 	toast.show();
 }
-function checkStep(navimodule,me,nodePts,range){
+function checkStep(me,nodePts,range){
 	var isIn = navimodule.isInStep({
 		"range": range,
 		"point": me,
