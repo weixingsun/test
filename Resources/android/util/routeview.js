@@ -1,5 +1,4 @@
 function changeDestination(point){
-	Ti.API.info('changeDestination:'+JSON.stringify(point));
 	setDestinatePos(point);
 	removePrevDestMarker();
 	var idmf=Ti.App.Android.R.drawable.marker_tap_long;
@@ -13,6 +12,7 @@ function changeDestination(point){
 	Ti.App.Properties.setString("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);
+	animateTo(point);
 	Ti.API.info('changeDestination() to '+point);
 }
 function addNodeMarkers(){
@@ -24,7 +24,7 @@ function addNodeMarkers(){
 	    var p = nodes[i].pts[0];
 	    var pp = [p[1],p[0]];
 	    var id=Ti.App.Android.R.drawable.point_red;
-	    var name = 'RouteMarker_'+JSON.stringify(pp);
+	    var name = 'RouteMarker_'+p[1]+'_'+p[0];
 	    var mkid=addMarker(name,pp,id,false);
 	    if(isGoogleMap()) nodeMarkerIds.push(name);
 		else nodeMarkerIds.push(mkid);

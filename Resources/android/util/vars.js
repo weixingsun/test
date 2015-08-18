@@ -25,16 +25,23 @@ String.prototype.endWith=function(str){
       return false;  
     return true;  
 };
+var GOOGLE_API_KEY = 'AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A';
 function isGoogleMap(){
 	var str = Ti.App.Properties.getString('map_type');
 	return str.startWith('google');
 }
 function addMarker(name,latlng,img,draggable){
 	if(isGoogleMap()){
-		addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
-		return name;
+		return addMyGoogleMarker(name,latlng[0],latlng[1],img,draggable);
 	}else{
 		return addMarkerMF([latlng[0],latlng[1]],img);
+	}
+}
+function removeMarker(id){
+	if(isGoogleMap()){
+		map.removeMarker(id);
+	}else{
+		map.removeLayer(id);
 	}
 }
 function initVars(mapType){
@@ -66,6 +73,7 @@ function initVars(mapType){
 	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT));
 	setDestinatePos([0,0]);
 	Ti.App.Properties.setString('played','{}');
+	Ti.App.Properties.setString('SavedPlaceMarkers','[]');
 }
 function setNaviMode(mode){
 	Ti.App.Properties.setInt("MODE",mode);

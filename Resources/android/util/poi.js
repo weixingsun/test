@@ -14,8 +14,7 @@ var getAddressCallback = function(e) {
 };
 //reverse geocoding google
 function getAddressGoogle(lat,lng, callback){
-	var addrUrl = "http://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng="+lat+","+lng;
-	/* web-service call */
+	var addrUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng="+lat+","+lng+'&key='+GOOGLE_API_KEY;
 	var addrReq = Titanium.Network.createHTTPClient();
 	addrReq.open("GET",addrUrl);
 	addrReq.send(null);
@@ -31,7 +30,7 @@ function getAddressGoogle(lat,lng, callback){
 		       callback.call(null, address);
 		    }
 	    }else{
-	        showAlert('','Unable to find Address');
+	        Ti.API.error('getAddressGoogle:'+this.responseText);
 	    }
 	};
 }

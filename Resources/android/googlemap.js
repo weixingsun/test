@@ -8,7 +8,7 @@ var map = initGoogleMap(win,mapmodule);
 initNav(navimodule);
 initGPS();
 //appEventListeners();
-//createSavedPlaceTable();
+createSavedPlaceTable();
 function initWindow(){
 	return Ti.UI.createWindow();
 }
@@ -54,10 +54,12 @@ function initGoogleMap(win,module){
 //new googlemap module 2.3.2
 function addGmapActionListeners(map){
 	map.addEventListener('click', function(e) {
-	    var lng = e.longitude;
-	    var lat = e.latitude;
-		Ti.API.info('map.clicked:'+lat+','+lng);
-		//addGoogleMarker(lat,lng,'drawable/marker_tap.png');
+		var latlng=[e.latitude,e.longitude];
+	    var markerTap = findSavedMarker(latlng);//{mk:0,latlng:[0,0]};  //,xy
+	    if(markerTap!== null) changeDestination(markerTap.latlng);
+	    //animateTo(point);
+	    hideSuggestList();
+	    hideKeyboard();
 	});
 	map.addEventListener('longclick', function(e) {
 		//removeMyGoogleMarker('dest');
@@ -79,6 +81,7 @@ function addGmapActionListeners(map){
     });
 }
 function addMyGoogleMarker(name,lat,lng,img,draggable){
+	var anchor = [];
 	var params = {
         latitude:lat,
         longitude:lng,
@@ -86,9 +89,12 @@ function addMyGoogleMarker(name,lat,lng,img,draggable){
         //animate:true,
         image: img, //resourceId,
         draggable: draggable,
+        //size: new google.maps.Size(20, 32),
+        //origin: new google.maps.Point(0, 0),
+		//anchor: new google.maps.Point(0, 32),
     };
-	var mk = map.addMarker(params);
-	return 0;
+	map.addMarker(params);
+	return name;
 }
 function removeMyGoogleMarker(id){
 	map.removeMarker(id);
@@ -99,12 +105,6 @@ function addMyGooglePolyline(options){
 function removeMyGooglePolyline(id){
 	map.removePolyline(id);
 }
-function move(to){
-	map.setLocation({
-		latitude:to[0],
-		longitude:to[1],
-	});
-}
 
 function animateTo(to){
 	//zoom,bearing
@@ -112,6 +112,7 @@ function animateTo(to){
 	currentRegion.latitude = to[0];
 	currentRegion.longitude = to[1];
 	//	animate:true,
+	Ti.API.info('delta='+currentRegion.latitudeDelta+','+currentRegion.longitudeDelta);
 	map.setLocation(currentRegion); //getFitZoomMapRegionWithCoords(to));
 }
 
@@ -123,7 +124,6 @@ function setGoogleMapType(type){
 	map.setMapType(type);
 }
 function getFitZoomMapRegionWithCoords(points) {
- 
     var topLeftLatitude = -90;
     var topLeftLongitude = 180;
     var bottomRightLatitude = 90;

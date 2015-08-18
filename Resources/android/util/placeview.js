@@ -12,9 +12,9 @@ function showPopView(coord){
 	var pop = AllViews["pop"];
 	if(typeof pop !== 'undefined' && pop!==0){
 		pop.show();
-		Ti.API.info('show pop view');
 	}
 	var star_img = AllViews["star_img"];
+	Ti.API.info('showPopView');
 	if(isSavedPlacesDB(JSON.stringify(getDestinatePos()))){
 		var unstar=Ti.App.Android.R.drawable.star_gray_64;
 		star_img.image=unstar;
@@ -133,6 +133,7 @@ function createBottomColumns(popDownView){
 	var img_close = createImages(column1,close);
 	var img_star;
 	//AllViews["star_img"]
+	//Ti.API.info('createBottomColumns');
 	if(isSavedPlacesDB(JSON.stringify(getDestinatePos()))){
 		Ti.API.info('===================is star place');
 		img_star  = createImages(column2,unstar);

@@ -10,10 +10,13 @@ function getCurrentPosDict(){
 	};
 }
 function getCurrentPos(){
-	return [Ti.App.Properties.getDouble("gps_lat"),Ti.App.Properties.getDouble("gps_lng")];
+	return [Ti.App.Properties.getDouble("gps_lat",0),Ti.App.Properties.getDouble("gps_lng",0)];
 }
 function getDestinatePos(){
-	return [Ti.App.Properties.getDouble("dest_lat"),Ti.App.Properties.getDouble("dest_lng")];
+	var lat = Ti.App.Properties.getDouble("dest_lat",0);
+	var lng = Ti.App.Properties.getDouble("dest_lng",0);
+	//Ti.API.info('getDestinatePos()'+lat+','+lng);
+	return [lat,lng];
 }
 function setDestinatePos(p){
 	Ti.App.Properties.setDouble("dest_lat",p[0]);
