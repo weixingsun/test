@@ -55,8 +55,12 @@ function initGoogleMap(win,module){
 function addGmapActionListeners(map){
 	map.addEventListener('click', function(e) {
 		var latlng=[e.latitude,e.longitude];
-	    var markerTap = findSavedMarker(latlng);//{mk:0,latlng:[0,0]};  //,xy
-	    if(markerTap!== null) changeDestination(markerTap.latlng);
+		var markerId=e.markerId;
+		if(markerId!=null){
+			changeDestination(latlng);
+		}
+	    //var markerTap = findSavedMarker(latlng);
+	    //if(markerTap!== null) changeDestination(markerTap.latlng);
 	    //animateTo(point);
 	    hideSuggestList();
 	    hideKeyboard();
@@ -154,9 +158,10 @@ function getFitZoomMapRegionWithCoords(points) {
     return fitRegion;
 };
 /*
-win.add(map2);
-win.add(map3);
-win.add(map4);
+ * 
+#todo list
+ti.map.TiUIMapView.onMarkerClick()
+
  var map2 = module.createView({
     userLocation: true,
     mapType: module.TERRAIN_TYPE,

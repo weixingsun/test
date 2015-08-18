@@ -5,14 +5,14 @@ function changeDestination(point){
 	var idgg=Ti.App.Android.R.drawable.marker_tap;
 	var mkid=0;
 	if(isGoogleMap()){
-		mkid = addMarker('dest_marker',point,idgg,false);
+		mkid = addMarker('dest_marker',point,idgg,false);//anchor
 	}else{
 		mkid = addMarker('dest_marker',point,idmf,false);
 	}
 	Ti.App.Properties.setString("dest_marker",mkid);
 	hidePopView();
 	showPopView(point);
-	animateTo(point);
+	//animateTo(point);
 	Ti.API.info('changeDestination() to '+point);
 }
 function addNodeMarkers(){
