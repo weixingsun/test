@@ -4,14 +4,9 @@ function findSavedMarker(inlatlng){
 		var lat=places[i].lat;
 		var lng=places[i].lng;
 		var dist = distance(lat,lng,inlatlng[0],inlatlng[1]);
-		var tap;
-		if(isGoogleMap()){
-			var zoom = Math.round( map.getZoom() );
-			tap = tapRange(zoom,dist);
-		}else{
-			var zoom = map.getZoomLevel();
-			tap = tapRange(zoom,dist);
-		}
+		var tap = tapRange(zoom,dist);
+		var zoom= Math.round( map.getZoomLevel() );
+		Titanium.API.info('zoom='+zoom+',dist='+dist);
 		if(tap){
 			return places[i];
 		}
