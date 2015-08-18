@@ -102,7 +102,6 @@ function selectASavedPlaceDB(strlatlng){
 	var table = 'saved_places';
 	var columns = 'lat,lng,name';
 	var latlng = JSON.parse(strlatlng);
-	//var where = 'lat='+latlng[0]+' and lng='+latlng[1];
 	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
 	var records = selectDB(table,columns,where);
 	Ti.API.info('selectASavedPlaceDB()'+strlatlng+' db_record='+JSON.stringify(records));
@@ -132,7 +131,6 @@ function selectASavedPlaceMarkerDB(strlatlng){
 	var table = 'saved_marker_id';
 	var columns = 'lat,lng,id';
 	var latlng = JSON.parse(strlatlng);
-	//var where = 'lat='+latlng[0]+' and lng='+latlng[1];
 	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
 	var records = selectDB(table,columns,where);
 	Ti.API.info('selectASavedPlaceMarkerDB()'+strlatlng+' db_record='+JSON.stringify(records));
@@ -140,7 +138,7 @@ function selectASavedPlaceMarkerDB(strlatlng){
 	return null;
 }
 function removeSavedPlaceDB(place){
-	var where = 'lat='+place.lat+' and lng='+place.lng;
+	var where = "lat='"+place.lat+"' and lng='"+place.lng+"'";
 	deleteDB('saved_places',where);
 }
 function updateSavedPlaceDB(place){
