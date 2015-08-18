@@ -80,7 +80,8 @@ function compare(latlng1, latlng2){
 	}
 }
 function removeSavedPlaceMarker(inlatlng){
-	var marker = selectASavedPlaceMarkerDB(inlatlng);
+	///////////////////////////////////////////////////////
+	var marker = selectASavedPlaceMarkerDB(JSON.stringify(inlatlng));
 	var where = "lat='"+marker.lat+"' and lng='"+marker.lng+"'";
 	deleteSavedPlaceMarkerDB(where);
 	removeMarker(marker.id);
@@ -161,11 +162,12 @@ function deleteDB(table,where){
 		db = Ti.Database.open('wx_map');
 		//var param = [place.lat,place.lng];
 		//db.execute('delete from '+table+' where lat=? and lng=?',param);
-		db.execute('delete from '+table+' where '+where);
+		var sql = 'delete from '+table+' where '+where;
+		Ti.API.info('deleteDB()sql:'+sql);
+		db.execute(sql);
 	}finally{
 		if(db!==null) db.close();
 	}
-	Ti.API.info('deleteDB()table:'+table+' where: '+where);
 }
 //table_columns: 'table(col1,col2) values(?,?)'
 //values: [value1,value2]
