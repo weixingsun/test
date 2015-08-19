@@ -6,7 +6,7 @@ function findSavedMarker(inlatlng){
 		var dist = distance(lat,lng,inlatlng[0],inlatlng[1]);
 		var tap = tapRange(zoom,dist);
 		var zoom= Math.round( map.getZoomLevel() );
-		Titanium.API.info('zoom='+zoom+',dist='+dist);
+		Titanium.API.info('zoom='+zoom+',dist='+dist+',place='+JSON.stringify(places[i]));
 		if(tap){
 			return places[i];
 		}
@@ -102,7 +102,7 @@ function selectASavedPlaceDB(strlatlng){
 	var latlng = JSON.parse(strlatlng);
 	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
 	var records = selectDB(table,columns,where);
-	Ti.API.info('selectASavedPlaceDB()'+strlatlng+' db_record='+JSON.stringify(records));
+	//Ti.API.info('selectASavedPlaceDB()'+strlatlng+' db_record='+JSON.stringify(records));
 	if(records!=null && records.length>0) return records[0];
 	return null;
 }

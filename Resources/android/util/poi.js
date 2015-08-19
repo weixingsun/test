@@ -8,7 +8,7 @@ var getAddressOSM = function(latitude,longitude, callback){
   });
 };
 var getAddressCallback = function(e) {
-    Ti.API.info("address callback = "+e);
+    //Ti.API.info("address callback = "+e);
     AllViews["place_name1"].text = e[0];
     AllViews["place_name2"].text = e[1];
 };
@@ -26,7 +26,7 @@ function getAddressGoogle(lat,lng, callback){
 	        //var address = [addr['number']+addr['street'], addr['area']+addr['city']+" "+addr['zip']];	//state,country
 	        var address = getInfoFromGoogleJsonSimple(response.results[0].address_components);
 	        if(callback) {
-		       Ti.API.info("reverse geolocation result = "+address);
+		       //Ti.API.info("reverse geolocation result = "+address);
 		       callback.call(null, address);
 		    }
 	    }else{

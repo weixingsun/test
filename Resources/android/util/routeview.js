@@ -18,7 +18,6 @@ function changeDestination(point){
 function addNodeMarkers(){
 	var strNodes = getNodes();
 	var nodes = JSON.parse(strNodes);
-	/*for (var node in nodes){}	//not working */
 	var nodeMarkerIds = [];
 	for (var i = 0; i < nodes.length; i++){
 	    var p = nodes[i].pts[0];
