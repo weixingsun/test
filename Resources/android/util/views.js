@@ -136,6 +136,7 @@ function createAndroidSearchBar(){
     var funReturn = function (e) {
     	clearTimeout(searchThread);
 	    searchThread = setTimeout( function() {
+	    	Ti.API.info('search:'+e.source.value);
 		    if(e.source.value.length>1){
 	        	searchAddressGoogle(e.source.value,'nz');
 	        }else{

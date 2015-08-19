@@ -48,13 +48,15 @@ function createSavedPlaceTable(){
 function showAllSavedPlaceMarkers(){
 	deleteSavedPlaceMarkerDB('1=1');
 	var places = selectAllPlacesDB();
-	for(var i=0;i<places.length;i++){
-	    var id=Ti.App.Android.R.drawable.star_red_24;
-	    var pp = [places[i].lat,places[i].lng];//.toFixed(6)
-	    var name = 'saved_'+places[i].lat+'_'+places[i].lng;
-	    var mkid=addMarker(name,pp,id,false);
-	    var item={lat:pp[0],lng:pp[1],id:mkid};
-		addSavedPlaceMarkerDB(item);
+	if(places!=null){
+		for(var i=0;i<places.length;i++){
+		    var id=Ti.App.Android.R.drawable.star_red_24;
+		    var pp = [places[i].lat,places[i].lng];//.toFixed(6)
+		    var name = 'saved_'+places[i].lat+'_'+places[i].lng;
+		    var mkid=addMarker(name,pp,id,false);
+		    var item={lat:pp[0],lng:pp[1],id:mkid};
+			addSavedPlaceMarkerDB(item);
+		}
 	}
 }
 function compare(latlng1, latlng2){

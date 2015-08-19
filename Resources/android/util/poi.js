@@ -93,11 +93,11 @@ function getInfoFromGoogleJsonSimple(value){
 //forward geocoding google
 function searchAddressGoogle(name,country_code){
 	//region="+country_code+"&
-	var url = "http://maps.google.com/maps/api/geocode/json?sensor=true&address="+name.replace(' ', '+')+','+country_code;
+	var url = "https://maps.google.com/maps/api/geocode/json?sensor=true&address="+name.replace(' ', '+')+','+country_code+'&key='+GOOGLE_API_KEY;
 	var xhrGeocode = Ti.Network.createHTTPClient();
-	xhrGeocode.setTimeout(120000);
+	xhrGeocode.setTimeout(10000);
 	xhrGeocode.onerror = function (e) {
-	  alert('Error occurred'+e);
+	  Ti.API.error('searchAddressGoogle()Error:'+e);
 	};
 	
 	xhrGeocode.onload = function (e) {
@@ -115,6 +115,8 @@ function searchAddressGoogle(name,country_code){
 	  		list.push(dict);	//+','+addr[1]
 	  	}
 	  	createSuggestList(list);
+	  }else{
+	  	Ti.API.error('searchAddressGoogle()ServerError:'+this.responseText);
 	  }
 	};
 	xhrGeocode.open("GET", url);
