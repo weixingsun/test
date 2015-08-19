@@ -39,7 +39,7 @@ function appEventListeners(){
 	Ti.Android.registerBroadcastReceiver(dspon, [Ti.Android.ACTION_SCREEN_ON]);
 }
 
-function addActionListeners(module,map){
+function addActionListenersMF(module,map){
 	Ti.App.addEventListener('clicked', function(e) {
 		var latlng=[e.lat,e.lng];
 		//var xy=[e.x,e.y];

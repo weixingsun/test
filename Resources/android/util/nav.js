@@ -1,9 +1,11 @@
+var ROUTING=false;
 function initNav(module){
 	module.load(Ti.App.id+"/gh/nz/");
 }
 //Headings are north based azimuth (clockwise) in (0, 360) or NaN for equal preference.
 
 function navi(navimodule,from,to){
+	ROUTING=true;
 	var by = Ti.App.Properties.getString('by');
 	var args = {
 	 "vehicle":   by,		//car/foot/bicycle/bus
@@ -20,6 +22,7 @@ function navi(navimodule,from,to){
 		}else{
 			Ti.API.info("navi error:"+data.errmsg);
 		}
+		ROUTING=false;
 	});
 }
 function drawGHonGMap(data){
@@ -34,6 +37,9 @@ function drawGHonGMap(data){
 	addMyGooglePolyline(options);
 	saveRouteInfo(data.nodes);
 	addNodeMarkers();
+	setNaviMode(1);
+	win.setKeepScreenOn(true);
+	setEmptyPlayedList(data.nodes);
 }
 function drawGHonMapsforge(data){
 	removePrevRoute();

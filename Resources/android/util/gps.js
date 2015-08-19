@@ -52,10 +52,10 @@ var locationCallback = function(e) {
 		}catch(err) {
     		Ti.API.info("handleLocation()err:"+err.message+", "+strNodes);
 		}
-		if(typeof nextNode !=='undefined'){
+		if(typeof nextNode !=='undefined' && stepId>-1){
 			var nextPoint = nextNode.pts[0];
 		    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
-		    instruction(stepId,nextNode,dist2next);
+		    instruction(stepId,nextNode,dist2next,range);
 		}else{
 			//redraw route
 			//var nextPoint = nextNode.pts[0];
@@ -66,6 +66,13 @@ var locationCallback = function(e) {
 				message: 'redraw route?range='+range+',accuracy='+e.coords.accuracy,
 			});
 			toast.show();
+    		if(!ROUTING){
+				//play replaning route mp3
+    			removePrevAll();
+	    		var from = getCurrentPos();
+		    	var to = getDestinatePos();
+		    	navi(navimodule,from,to);
+	    	}
 		}
     }
 };
@@ -78,12 +85,10 @@ function findNextNode(nodes,currId){
 }
 
 function findMyStepId(nodes, me, range){
-	//var nodes = JSON.parse(strNodes);
 	var strme = JSON.stringify(me);
 	var inWhichStep = -1;
 	for (var i = 0; i < nodes.length; i++){
-      var strNodePts = JSON.stringify(nodes[i].pts);
-      var isIn = checkStep(strme,strNodePts,range);
+      var isIn = checkStep(strme, JSON.stringify(nodes[i].pts), range);
       if(isIn) {
       	inWhichStep=i;
       	break;
@@ -91,7 +96,7 @@ function findMyStepId(nodes, me, range){
     }
     return inWhichStep;
 }
-function instruction(stepId,nextNode,dist){
+function instruction(stepId,nextNode,dist,range){
 	var msg = '';
 	if(stepId>-1){
 		var dict = getGHDict();

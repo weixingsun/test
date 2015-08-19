@@ -67,7 +67,7 @@ function initMapListener(win,module,map){
 	Ti.App.addEventListener('viewCreated', function(e) {
 		Ti.API.info('mapCreated: received by js' );
 		addOfflineMapLayer(map);
-		addActionListeners(module,map);
+		addActionListenersMF(module,map);
 		initGPS();
 		showAllSavedPlaceMarkers();
 	});

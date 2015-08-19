@@ -147,6 +147,7 @@ function createBottomColumns(popDownView){
     	e.source.parent.parent.parent.hide();
     	removePrevAll();
 		Ti.App.Properties.setInt("MODE",0);
+		win.setKeepScreenOn(false);
     });
     img_star.addEventListener('click', function(e){
     	var point=getDestinatePos();
