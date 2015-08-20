@@ -27,8 +27,8 @@ String.prototype.endWith=function(str){
 };
 var GOOGLE_API_KEY = 'AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A';
 function isGoogleMap(){
-	var str = Ti.App.Properties.getString('map_type');
-	return str.startWith('google');
+	//var str = Ti.App.Properties.getString('map_type');
+	return map_type.startWith('google');
 }
 function addMarker(name,latlng,img,draggable){
 	if(isGoogleMap()){
@@ -44,8 +44,10 @@ function removeMarker(id){
 		map.removeLayer(id);
 	}
 }
+var map_type;
 function initVars(mapType){
 	Ti.App.Properties.setString('map_type',mapType);//mapsforge.offline/google.sattlite/google.normal
+	map_type = mapType;
 	Ti.App.Properties.setInt("MODE",0);//0-none/1-navi/
 	setNodes('');
 	Ti.App.Properties.setInt("myCircle",0);

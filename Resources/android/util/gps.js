@@ -1,7 +1,7 @@
 var locationAdded = false;
 var GPS_RANGE_MIN = 30;
-//var GPS_RANGE_MIN = 30;
 var GPS_RANGE_MAX = 200;
+var GPS_RANGE = GPS_RANGE_MIN;
 
 function getCurrentPosDict(){
 	return {
@@ -12,70 +12,78 @@ function getCurrentPosDict(){
 function getCurrentPos(){
 	return [Ti.App.Properties.getDouble("gps_lat",0),Ti.App.Properties.getDouble("gps_lng",0)];
 }
-function getDestinatePos(){
-	var lat = Ti.App.Properties.getDouble("dest_lat",0);
-	var lng = Ti.App.Properties.getDouble("dest_lng",0);
-	//Ti.API.info('getDestinatePos()'+lat+','+lng);
-	return [lat,lng];
+function saveGpsData(e){
+	Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);
+    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);
+    Ti.App.Properties.setInt("heading",e.coords.heading);
+    Ti.App.Properties.setInt("gps_accuracy",e.coords.accuracy);
+    Ti.App.Properties.setInt("speed",e.coords.speed);
+    //e.coords.altitude/e.coords.timestamp/e.coords.altitudeAccuracy
 }
-function setDestinatePos(p){
-	Ti.App.Properties.setDouble("dest_lat",p[0]);
-	Ti.App.Properties.setDouble("dest_lng",p[1]);
+function naviOrNot(strNodes){
+	var mode = Ti.App.Properties.getInt("MODE");
+    if(strNodes.length<1 || mode==0){
+    	return false;
+    }else{
+    	return true;
+    }
 }
-//function handleLocation(e) {
-var locationCallback = function(e) {
+function hint(me,stepId,nextNode){
+	var nextPoint = nextNode.pts[0];
+    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
+    instruction(stepId,nextNode,dist2next);
+}
+function getRange(accuracy){
+	return (accuracy < GPS_RANGE_MIN) ? GPS_RANGE_MIN : accuracy;
+}
+function drawMyLocMarker(me,accuracy){
+    //GoogleMaps contains location marker already
+    if(!isGoogleMap()) addMyLocMarker(me,accuracy);
+}
+//var locationCallback = function(e) {
+function locationCallback(e) {
     if (!e.error) {
-        Ti.App.Properties.setDouble("gps_lng",e.coords.longitude);
-	    Ti.App.Properties.setDouble("gps_lat",e.coords.latitude);
-	    Ti.App.Properties.setInt("heading",e.coords.heading);
-	    Ti.App.Properties.setInt("gps_accuracy",e.coords.accuracy);
-	    Ti.App.Properties.setInt("speed",e.coords.speed);
-	    //e.coords.altitude/e.coords.timestamp/e.coords.altitudeAccuracy
+        saveGpsData(e);
 	    var me = [e.coords.latitude,e.coords.longitude];
-	    if(!isGoogleMap()) addMyLocMarker(me,e.coords.accuracy);
-		var strNodes = getNodes();
-	    var mode = Ti.App.Properties.getInt("MODE");
-	    if(strNodes.length<1 || mode==0){
-	    	return;
-	    }else{
+	    drawMyLocMarker(me,e.coords.accuracy);
+    	var strNodes = getNodes();
+	    if(naviOrNot(strNodes)){
+			var nodes = JSON.parse(strNodes);
 	    	animateTo(me);
+	    	var stepId = checkOnRoad(nodes,me,e.coords.accuracy);
+			if(stepId>-1){
+				var nextNode = findNextNode(nodes,stepId);
+				hint(me,stepId,nextNode);
+			}else{
+				reroute();
+			}
 	    }
-    	//Ti.API.info("handleLocation()done with location, start deal with route");
-	    var nextNode,stepId;
-	    var strNodes = getNodes(); //[[172.584333,-43.523472],[172.584716,-43.523578]]
-	    var nodes = JSON.parse(strNodes);
-		var range = (e.coords.accuracy < GPS_RANGE_MIN) ? GPS_RANGE_MIN : e.coords.accuracy;
-	    try {
-		    stepId = findMyStepId(nodes, me, range);
-		    nextNode = findNextNode(nodes,stepId);
-		    //throw "err_content"; err="err_content"
-		}catch(err) {
-    		Ti.API.info("handleLocation()err:"+err.message+", "+strNodes);
-		}
-		if(typeof nextNode !=='undefined' && stepId>-1){
-			var nextPoint = nextNode.pts[0];
-		    var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
-		    instruction(stepId,nextNode,dist2next,range);
-		}else{
-			//redraw route
-			//var nextPoint = nextNode.pts[0];
-		    //var dist2next = distance(me[0],me[1],nextPoint[1],nextPoint[0]);
-			//showToast(-1,-1,-1);
-			var toast = Titanium.UI.createNotification({
-				duration: Ti.UI.NOTIFICATION_DURATION_SHORT,
-				message: 'redraw route?range='+range+',accuracy='+e.coords.accuracy,
-			});
-			toast.show();
-    		if(!ROUTING){
-				//play replaning route mp3
-    			removePrevAll();
-	    		var from = getCurrentPos();
-		    	var to = getDestinatePos();
-		    	navi(navimodule,from,to);
-	    	}
-		}
+		
     }
 };
+function checkOnRoad(nodes,me,accuracy){
+	var range = getRange(accuracy);
+	var stepId = findMyStepId(nodes, me, range);
+	if(stepId<0){
+		stepId = findMyStepId(nodes, me, range+50);
+	}
+	return stepId;
+	//var nextNode = findNextNode(nodes,stepId);
+}
+function reroute(){
+	/*var toast = Titanium.UI.createNotification({
+		duration: Ti.UI.NOTIFICATION_DURATION_SHORT,
+		message: 'redraw route?range='+range+',accuracy='+e.coords.accuracy,
+	});
+	toast.show();*/
+	if(!ROUTING){
+		//play replaning route mp3
+		removePrevAll();
+		var from = getCurrentPos();
+    	var to = getDestinatePos();
+    	navi(navimodule,from,to);
+	}
+}
 function findNextNode(nodes,currId){
 	if(currId+1<nodes.length){
 		return nodes[currId+1];
@@ -96,7 +104,7 @@ function findMyStepId(nodes, me, range){
     }
     return inWhichStep;
 }
-function instruction(stepId,nextNode,dist,range){
+function instruction(stepId,nextNode,dist){
 	var msg = '';
 	if(stepId>-1){
 		var dict = getGHDict();

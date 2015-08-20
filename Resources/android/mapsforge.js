@@ -1,5 +1,4 @@
-var map_type = 'mapsforge.offline';
-initVars(map_type);
+initVars('mapsforge.offline');
 var win = initWindow();
 initWindowEvent(win);
 var navimodule = initMapsfirgeModule();

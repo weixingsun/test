@@ -4,6 +4,16 @@ function initNav(module){
 }
 //Headings are north based azimuth (clockwise) in (0, 360) or NaN for equal preference.
 
+function getDestinatePos(){
+	var lat = Ti.App.Properties.getDouble("dest_lat",0);
+	var lng = Ti.App.Properties.getDouble("dest_lng",0);
+	//Ti.API.info('getDestinatePos()'+lat+','+lng);
+	return [lat,lng];
+}
+function setDestinatePos(p){
+	Ti.App.Properties.setDouble("dest_lat",p[0]);
+	Ti.App.Properties.setDouble("dest_lng",p[1]);
+}
 function navi(navimodule,from,to){
 	ROUTING=true;
 	var by = Ti.App.Properties.getString('by');

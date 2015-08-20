@@ -1,5 +1,4 @@
-var map_type = 'google.normal';
-initVars(map_type);
+initVars('google.normal');
 var win = initWindow();
 initWindowEvent(win);
 var mapmodule = initGoogleModule();
