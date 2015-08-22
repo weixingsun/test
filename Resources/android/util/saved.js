@@ -4,9 +4,8 @@ function findSavedMarker(inlatlng){
 		var lat=places[i].lat;
 		var lng=places[i].lng;
 		var dist = distance(lat,lng,inlatlng[0],inlatlng[1]);
-		var tap = tapRange(zoom,dist);
 		var zoom= Math.round( map.getZoomLevel() );
-		Titanium.API.info('zoom='+zoom+',dist='+dist+',place='+JSON.stringify(places[i]));
+		var tap = tapRange(zoom,dist);
 		if(tap){
 			return places[i];
 		}
@@ -15,9 +14,10 @@ function findSavedMarker(inlatlng){
 }
 function tapRange(zoom,dist){
 	var value=false;
+	Ti.API.info('zoom='+zoom+',dist='+dist);
 	switch(zoom){
 		case 20: value=dist<3?true:false; break;
-		case 19: value=dist<5?true:false; break;
+		case 19: value=dist<5?true:false;break;
 		case 18: value=dist<10?true:false; break;
 		case 17: value=dist<20?true:false; break;
 		case 16: value=dist<30?true:false; break;
@@ -94,14 +94,14 @@ function selectAllPlacesDB(){
 	var table = 'saved_places';
 	var columns = 'lat,lng,name';
 	var where = '1=1';
-	return selectDB(table,columns,where);
+	return selectDB('wx_map',table,columns,where);
 }
 function selectASavedPlaceDB(strlatlng){
 	var table = 'saved_places';
 	var columns = 'lat,lng,name';
 	var latlng = JSON.parse(strlatlng);
 	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
-	var records = selectDB(table,columns,where);
+	var records = selectDB('wx_map',table,columns,where);
 	//Ti.API.info('selectASavedPlaceDB()'+strlatlng+' db_record='+JSON.stringify(records));
 	if(records!=null && records.length>0) return records[0];
 	return null;
@@ -130,7 +130,7 @@ function selectASavedPlaceMarkerDB(strlatlng){
 	var columns = 'lat,lng,id';
 	var latlng = JSON.parse(strlatlng);
 	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
-	var records = selectDB(table,columns,where);
+	var records = selectDB('wx_map',table,columns,where);
 	Ti.API.info('selectASavedPlaceMarkerDB()'+strlatlng+' db_record='+JSON.stringify(records));
 	if(records!=null && records.length>0) return records[0];
 	return null;
@@ -176,16 +176,16 @@ function insertDB(table_columns,values){	//{lat:0,lng:0,name:'0'}
 	}finally{
 		if(db!==null) db.close();
 	}
-	Ti.API.info('insertDB():'+table_columns+' value:'+values);
+	//Ti.API.info('insertDB():'+table_columns+' value:'+values);
 }
-function selectDB(table,columns,where){
+function selectDB(dbname,table,columns,where){
 	var db;
 	var data =[];
 	var vColumns = columns.split(',');
 	try {
-		db = Ti.Database.open('wx_map');
+		db = Ti.Database.open(dbname);
 		var sql = 'select '+columns+' from '+table+' where '+where;
-		Ti.API.info('selectDB='+sql);
+		//Ti.API.info('selectDB='+sql);
 		var rows = db.execute(sql);
 		if(rows.rowCount<1) return null;
 		while (rows.isValidRow()){

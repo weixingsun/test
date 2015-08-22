@@ -1,9 +1,18 @@
-
-function createSuggestList(list){
+function createSuggestList(list,source){
 	clearSuggestList();
 	showSuggestList();
-	var searchList = AllViews["searchList"];
 	var searchBar  = AllViews["searchBar"];
+	var searchList = findOrCreateSearchList();
+    var sections =[];
+    var listSection = createGoogleListSection(list,source);
+    Ti.API.info("createSuggestList().listSection.created");
+    sections.push(listSection);
+    searchList.sections=sections;
+    showSuggestList();
+    win.add(searchList);
+}
+function findOrCreateSearchList(){
+	var searchList = AllViews["searchList"];
 	if(typeof searchList === 'undefined'){
     	var template = createSearchListItemTemplate();
 		var searchList = Ti.UI.createListView({
@@ -30,12 +39,15 @@ function createSuggestList(list){
 			}
         	hideKeyboard();
 		});
+		AllViews["searchList"] = searchList;
 	}
-    var sections =[];
-    var googleSection = Ti.UI.createListSection({headerTitle:"Online",width: Ti.UI.FILL,});
+	return searchList;
+}
+function createGoogleListSection(list,source){
+	var googleSection = Ti.UI.createListSection({headerTitle:source,width: Ti.UI.FILL,});
     var addressData= [];
     for (var i=0;i<list.length;i++){
-    	var start = JSON.parse(list[i].point);
+    	var start = list[i].point; //JSON.parse();
     	var to = getCurrentPos();
     	var dist = distance(start[0], start[1], to[0], to[1]);
     	var distance1 = dist>999?(dist/1000).toFixed(1) + " km":dist+' m';
@@ -45,7 +57,7 @@ function createSuggestList(list){
     		},
 	        rowtitle : {
 	            text : list[i].addr,
-	            id: list[i].point,
+	            id: JSON.stringify(list[i].point),
 	    		color:'black',
 	        },
 	        dist:{
@@ -60,11 +72,7 @@ function createSuggestList(list){
     	addressData.push(newitem);
     }
     googleSection.setItems(addressData);
-    sections.push(googleSection);
-    searchList.sections=sections;
-    showSuggestList();
-    win.add(searchList);
-	AllViews["searchList"] = searchList;
+    return googleSection;
 }
 function createSearchListItemTemplate(){
 	var template = {
@@ -138,7 +146,8 @@ function createAndroidSearchBar(){
 	    searchThread = setTimeout( function() {
 	    	Ti.API.info('search:'+e.source.value);
 		    if(e.source.value.length>1){
-	        	searchAddressGoogle(e.source.value,'nz');
+	        	//searchAddressGoogle(e.source.value,'nz');
+	        	var list = searchOfflinePOI(e.source.value,'nz');
 	        }else{
 	        	hideSuggestList();
 	        }

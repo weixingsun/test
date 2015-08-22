@@ -5,9 +5,6 @@ var navimodule = initMapsfirgeModule();
 var map = initMapsforge(win,navimodule);
 initMapListener(win,navimodule,map);
 initNav(navimodule);
-appEventListeners();
-createAndroidSearchBar();
-createSavedPlaceTable();
 
 function initWindowEvent(win){
 	win.addEventListener('focus', function() {
@@ -66,9 +63,14 @@ function initMapListener(win,module,map){
 	Ti.App.addEventListener('viewCreated', function(e) {
 		Ti.API.info('mapCreated: received by js' );
 		addOfflineMapLayer(map);
+		createAndroidSearchBar();
 		addActionListenersMF(module,map);
+		appEventListeners();
 		initGPS();
 		showAllSavedPlaceMarkers();
+		createSavedPlaceTable();
+		//installOfflinePoiDB();
+
 	});
 }
 function addMarkerMF(to,id){

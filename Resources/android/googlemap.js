@@ -5,9 +5,7 @@ var mapmodule = initGoogleModule();
 var navimodule = initGraphhopperModule();
 var map = initGoogleMap(win,mapmodule);
 initNav(navimodule);
-initGPS();
-//appEventListeners();
-createSavedPlaceTable();
+
 function initWindow(){
 	return Ti.UI.createWindow();
 }
@@ -78,7 +76,11 @@ function addGmapActionListeners(map){
 	map.addEventListener('complete', function(e){
 		Ti.API.info('map load complete');
 		createAndroidSearchBar();
+		appEventListeners();
+		initGPS();
 		showAllSavedPlaceMarkers();
+		createSavedPlaceTable();
+		//installOfflinePoiDB();
 		//complete:e={"type":"complete","source":{"bubbleParent":true,"enabled":true,"region":{"latitude":-43.53449409,"longitude":172.60395921,"latitudeDelta":0.1,"longitudeDelta":0.1},"maxZoomLevel":21,"minZoomLevel":3,"backgroundRepeat":false,"height":"100%","left":0,"compassEnabled":true,"children":[],"rect":{"height":887,"y":0,"x":0,"width":600},"visible":true,"width":"100%","size":{"height":887,"y":0,"width":600,"x":0},"keepScreenOn":false,"userLocation":true,"animate":true,"apiName":"Ti.Map","top":0,"mapType":1,"_events":{"click":{},"longpress":{},"complete":{}}},"bubbles":true,"cancelBubble":false}
     });
 }

@@ -26,3 +26,34 @@ function play(type,dist00){
 	}
 	return false;
 }
+function importUtteranceModule(){
+	var utterance = require('bencoding.utterance'),
+		textToSpeech = utterance.createSpeech(),
+		speechToText = utterance.createSpeechToText();
+	if(!utterance.isSupported()){
+		alert("Sorry your device does not support text to speech");
+	}
+}
+function speak(inputText){
+	if(textToSpeech.isSpeaking()){
+		Ti.API.info("already speaking");
+		return;
+	}
+	textToSpeech.startSpeaking({
+		text:inputText
+	});	
+}
+function hear(){
+	speechToText.startSpeechToText({
+		promptText:"Say something",
+		maxResults: 10
+	});
+	speechToText.addEventListener('completed',function(e){
+		Ti.API.info(JSON.stringify(e));	
+		if(e.success && (e.wordCount > 0)){
+			alert("Speech Recognized " + e.wordCount + " matches found: "  + JSON.stringify(e.words));
+		}else{
+			alert("Unable to recognize your speech");
+		}
+	});
+}

@@ -1,3 +1,21 @@
+var installOfflinePoiDB = function(){
+	var dbFile = Ti.Filesystem.externalStorageDirectory+"poi/nz.db";
+	var db = Ti.Database.install('nz', dbFile);
+	//Ti.Filesystem.externalStorageDirectory + 'nz' + Ti.Filesystem.separator + 'poi';
+};
+var searchOfflinePOI = function(name,country){
+	var table = 'poi';
+	var columns = 'lat,lng,pname';	//,admin,country_code
+	var where = "pname match '*"+name+"*'";
+	var strSQL = "select "+columns+" from "+table+" where "+where;
+	var poiFile = "/"+Ti.App.id+"/poi/"+country+".db";
+	//return selectDB(country,sql,callback);
+	var data ={sql:strSQL,db:poiFile,};
+	navimodule.queryFTS(data, function(result) {
+	  Ti.API.info('search records='+JSON.stringify(result.rows));
+	  createSuggestList(result.rows,"Offline");
+	});
+};
 var getAddressOSM = function(latitude,longitude, callback){
      Ti.Geolocation.reverseGeocoder(latitude,longitude,function(evt){
         //places = evt.places;
@@ -111,10 +129,11 @@ function searchAddressGoogle(name,country_code){
 		    var addr = getInfoFromGoogleJsonSimple(response.results[i].address_components);
         	//var address = addr['number']+addr['street']+", "+addr['area']+addr['city']+" "+addr['zip'];	//state,country
         	dict.addr=addr[0];
-        	dict.point=JSON.stringify([myLat,myLon]);
+        	//dict.point=JSON.stringify([myLat,myLon]);
+        	dict.point=[myLat,myLon];
 	  		list.push(dict);	//+','+addr[1]
 	  	}
-	  	createSuggestList(list);
+	  	createSuggestList(list,"Online");
 	  }else{
 	  	Ti.API.error('searchAddressGoogle()ServerError:'+this.responseText);
 	  }
