@@ -4,10 +4,15 @@ var installOfflinePoiDB = function(){
 	//Ti.Filesystem.externalStorageDirectory + 'nz' + Ti.Filesystem.separator + 'poi';
 };
 var searchOfflinePOI = function(name,country){
+	var uname = name.replace(/'/g, "''"); //.replace(/\\/g, "\\\\");
+	var me = getCurrentPos();
 	var table = 'poi';
 	var columns = 'lat,lng,pname';	//,admin,country_code
-	var where = "pname match '*"+name+"*'";
-	var strSQL = "select "+columns+" from "+table+" where "+where;
+	var where = "pname match '*"+uname+"*'";
+	var diffLat = me[0]+"-lat";
+	var diffLng = me[1]+"-lng";
+	var order = "("+diffLat+")*("+diffLat+")+("+diffLng+")*("+diffLng+")  asc limit 0,20";
+	var strSQL = "select "+columns+" from "+table+" where "+where+" order by "+order;
 	var poiFile = "/"+Ti.App.id+"/poi/"+country+".db";
 	//return selectDB(country,sql,callback);
 	var data ={sql:strSQL,db:poiFile,};
