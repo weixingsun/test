@@ -75,6 +75,13 @@ function initMapListener(win,module,map){
 
 	});
 }
+function addPolylineMF(pts,color,width){
+	return map.createPolyline({
+		"latlngs": pts,
+		"color": color,
+		"strokeWidth": width
+		});
+}
 function addMarkerMF(to,id){
 	//platform/android/res/drawable/marker_tap.png
 	//Ti.App.Android.R.drawable.marker_tap_long
@@ -86,6 +93,7 @@ function addMarkerMF(to,id){
     //{"id":1135727744,"latlng":[-43.52477599,172.58337179],"radius":231,"type":"circle","colorHex":"#33000099"}
     return mkid;
 }
+
 function addCircleMF(point,range,color){
 	var ccid = map.createCircle({
 		"radius": range,

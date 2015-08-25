@@ -53,12 +53,8 @@ function drawGHonGMap(data){
 }
 function drawGHonMapsforge(data){
 	removePrevRoute();
-	var line = map.createPolyline({
-		"latlngs": data.pts,
-		"color": "blue",
-		"strokeWidth": 10
-		});
-	savePolylineId(line.id);
+	var lineid = addPolylineMF(data.pts,"blue",10);
+	savePolylineId(lineid);
 	saveRouteInfo(data.nodes);
 	addNodeMarkers();
 	setNaviMode(1);
