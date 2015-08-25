@@ -19,6 +19,7 @@ var searchOfflinePOI = function(name,country){
 	navimodule.queryFTS(data, function(result) {
 	  Ti.API.info('search records='+JSON.stringify(result.rows));
 	  createSuggestList(result.rows,"Offline");
+	  if(result.rows.length<1) searchAddressGoogle(name,country);
 	});
 };
 var getAddressOSM = function(latitude,longitude, callback){

@@ -1,4 +1,6 @@
 initVars('mapsforge.offline');
+importUtteranceModule();
+//initSpeachToText();
 var win = initWindow();
 initWindowEvent(win);
 var navimodule = initMapsfirgeModule();
@@ -76,12 +78,40 @@ function initMapListener(win,module,map){
 function addMarkerMF(to,id){
 	//platform/android/res/drawable/marker_tap.png
 	//Ti.App.Android.R.drawable.marker_tap_long
-	var mk = map.createMarker({
+	var mkid = map.createMarker({
 		"iconPath": id,
 		"latlng": to
     });
-    return mk.id;
+    Ti.API.info("addMarkerMF()"+JSON.stringify(mkid));
+    //{"id":1135727744,"latlng":[-43.52477599,172.58337179],"radius":231,"type":"circle","colorHex":"#33000099"}
+    return mkid;
+}
+function addCircleMF(point,range,color){
+	var ccid = map.createCircle({
+		"radius": range,
+		"latlng": point,
+		"colorHex": color, //"#33000099",
+    });
+    //Ti.API.info("addCircleMF()"+JSON.stringify(ccid));
+    return ccid;
 }
 function removeLayer(id){
 	map.removeLayer(id);
+}
+function updateCircle(id,me,range){
+	map.updateLayer({
+		"id": id,
+		"type":"circle",
+		"latlng":me,
+		"radius":range,
+		"move":1
+	});
+}
+function updateMarker(id,me){
+	map.updateLayer({
+		"id":id,
+		"type":"marker",
+		"latlng":me,
+		"move":1
+	});
 }

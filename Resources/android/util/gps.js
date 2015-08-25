@@ -104,6 +104,7 @@ function findMyStepId(nodes, me, range){
     }
     return inWhichStep;
 }
+
 function instruction(stepId,nextNode,dist){
 	var msg = '';
 	if(stepId>-1){
@@ -113,7 +114,10 @@ function instruction(stepId,nextNode,dist){
 		var playOrNot = true;
     	if(!isPlayed(stepId,dist00)){
 			Ti.API.info('dist='+dist00+",stepId="+stepId+" turn="+turn+", nextNode:"+JSON.stringify(nextNode));
-			playOrNot = play(turn,dist00);
+			//playOrNot = speakMp3(turn,dist00);
+			var str = 'in '+dist00+' meters, '+turn+', on '+nextNode.name;
+			var lang = 'en_US'; //'zh_CN';
+			speakLib(str,lang);
 			if(playOrNot) setPlayedList(stepId,dist00);
 		}
 		msg='step '+ stepId+', '+dist00+'m('+dist+'), turn ' +turn+', on '+nextNode.name +', play='+playOrNot;
@@ -137,35 +141,20 @@ function checkStep(me,nodePts,range){
 	return isIn;
 };
 function addMyLocMarker(me,accuracy){
-	///////////////////map.updateLayer()
-	if(Ti.App.Properties.getInt("myCircle") !== 0 || Ti.App.Properties.getInt("mySpot") !== 0){
-    	//map.removeLayer(Ti.App.Properties.getInt("myCircle"));
-    	//map.removeLayer(Ti.App.Properties.getInt("mySpot"));
-    	map.updateLayer({
-    		"id":Ti.App.Properties.getInt("myCircle"),
-    		"type":"circle",
-    		"latlng":me,
-    		"radius":accuracy,
-    		"move":1
-    	});
-    	map.updateLayer({
-    		"id":Ti.App.Properties.getInt("mySpot"),
-    		"type":"marker",
-    		"latlng":me,
-    		"move":1
-    	});
+	var mk = Ti.App.Properties.getInt("mySpot");
+	var cc = Ti.App.Properties.getInt("myCircle");
+	if(cc !== 0 || mk !== 0){
+    	//map.removeLayer(cc);
+    	//map.removeLayer(mk);
+    	updateCircle(cc,me,accuracy);
+    	updateMarker(mk,me);
+    	//Ti.API.info("updating my loc");
     }else{
-	    var myCircle = map.createCircle({
-			"latlng": me,
-			"colorHex": "#33000099",
-			"radius": accuracy //in meter
-		});
-		var mySpot = map.createMarker({
-			"iconPath": Ti.App.Android.R.drawable.me_point_blue_1,
-			"latlng": me
-	    });
-	    Ti.App.Properties.setInt("mySpot",mySpot.id);
-	    Ti.App.Properties.setInt("myCircle",myCircle.id);
+		var ccid = addCircleMF(me,accuracy,"#33000099");
+		var mkid = addMarkerMF(me,Ti.App.Android.R.drawable.me_point_blue_1);
+	    Ti.App.Properties.setInt("mySpot",mkid);
+	    Ti.App.Properties.setInt("myCircle",ccid);
+    	//Ti.API.info("creating my loc mk:"+mkid+",cc:"+ccid);
 	}
 }
 function removeHandler() {

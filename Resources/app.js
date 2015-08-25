@@ -1,4 +1,8 @@
 //sun.wsn.app.map
+Ti.include('util/acra.js');
+initACRA();
+crash();
+
 if(Ti.Platform.osname = "android"){
 	Ti.include('util/vars.js');
 	Ti.include('util/gps.js');

@@ -1,23 +1,23 @@
-//play('turn_left_dist_0.mp3');
-var player= null;
-function play(type,dist00){
+//speakMp3('turn_left_dist_0.mp3');
+var speaker= null;
+function speakMp3(type,dist00){
 	//var GH = getGHDict();
 	//var signname = GH[type];
 	//var dist00 = Math.floor(dist/100)*100;//ceil/floor/round
 	var file = type+'_dist_'+dist00+'.mp3';
 	var path = Ti.Filesystem.getResRawDirectory() + file;
 	//var inFile = Ti.Filesystem.getFile(path);
-	if(player!== null && player.isPlaying()){
+	/*if(speaker!== null && speaker.isPlaying()){
 		Ti.API.info('still playing '+file);
 		return false;
-	} 
+	}*/
 	try{
-		player = Ti.Media.createSound({url:path});
-		player.addEventListener('complete',function(e) {
+		speaker = Ti.Media.createSound({url:path});
+		speaker.addEventListener('complete',function(e) {
 			Ti.API.info('audio complete');
-			player.release();///////////////////////////////////////////
+			speaker.release();///////////////////////////////////////////
 		});
-		player.play();
+		speaker.play();
 		Ti.API.info('play '+file);
 		return true;
 	}catch(e){
@@ -27,21 +27,26 @@ function play(type,dist00){
 	return false;
 }
 function importUtteranceModule(){
-	var utterance = require('bencoding.utterance'),
-		textToSpeech = utterance.createSpeech(),
-		speechToText = utterance.createSpeechToText();
+	var utterance = require('bencoding.utterance');
 	if(!utterance.isSupported()){
-		alert("Sorry your device does not support text to speech");
+		Ti.API.error("Sorry your device "+Ti.Platform.manufacturer+" "+Ti.Platform.model +":"+Ti.Platform.version+" does not support text to speech");
 	}
+	speaker = utterance.createSpeech();
+	//utterance.createSpeechToText();
+	//return utterance;
 }
-function speak(inputText){
-	if(textToSpeech.isSpeaking()){
+
+function speakLib(inputText,lang){
+	if(speaker.isSpeaking()){
 		Ti.API.info("already speaking");
 		return;
 	}
-	textToSpeech.startSpeaking({
-		text:inputText
-	});	
+	Ti.API.info("playing "+inputText); //in 100 meters, turn_left
+	speaker.startSpeaking({
+		voice: lang, //'en_US',
+		text:inputText,
+	});
+	//myTTS.setLanguage(Locale.US);
 }
 function hear(){
 	speechToText.startSpeechToText({

@@ -68,11 +68,23 @@ function initVars(mapType){
 		"5":"reached_via",
 		"6":"use_roundabout"
 	};
+	var GH_TURN_DICT2={
+		"-3":"turn sharp left",
+		"-2":"turn left",
+		"-1":"turn slight left",
+		"0":"continue",
+		"1":"turn slight right",
+		"2":"turn right",
+		"3":"turn sharp right",
+		"4":"finish",
+		"5":"reached via",
+		"6":"use roundabout"
+	};
 	var BYS = ["car","bike","foot"];
 	var BY_ICONS = [Ti.App.Android.R.drawable.sedan_128,Ti.App.Android.R.drawable.bicycle_128,Ti.App.Android.R.drawable.runner_128];
 	Ti.App.Properties.setString('bys',JSON.stringify(BYS));
 	Ti.App.Properties.setString('by_icons',JSON.stringify(BY_ICONS));
-	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT));
+	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT2));////////////////////////
 	setDestinatePos([0,0]);
 	Ti.App.Properties.setString('played','{}');
 	Ti.App.Properties.setString('SavedPlaceMarkers','[]');

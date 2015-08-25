@@ -15,13 +15,11 @@
     <property name="ti.ui.defaultunit" type="string">dp</property>
     <android xmlns:android="http://schemas.android.com/apk/res/android">
         <manifest>
+            <uses-permission android:name="android.permission.INTERNET"/>
             <application>
                 <meta-data
-                    android:name="com.google.android.maps.v2.API_KEY" 
-                    android:value="AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A"/>
-                <meta-data
-				    android:name="com.google.android.gms.version"
-				    android:value="@integer/google_play_services_version" />
+                    android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A"/>
+                <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
             </application>
         </manifest>
     </android>
@@ -61,6 +59,9 @@
     <modules>
         <module platform="android">ti.mapsforge</module>
         <module platform="android">ti.map</module>
+        <module platform="iphone">bencoding.utterance</module>
+        <module platform="android">bencoding.utterance</module>
+        <module platform="android">ti.acra</module>
     </modules>
     <deployment-targets>
         <target device="iphone">false</target>

@@ -1,4 +1,6 @@
 initVars('google.normal');
+importUtteranceModule();
+//initSpeachToText();
 var win = initWindow();
 initWindowEvent(win);
 var mapmodule = initGoogleModule();

@@ -1,40 +1,59 @@
 function findSavedMarker(inlatlng){
+	var zoom= Math.round( map.getZoomLevel() );
+	var range = getTapRange(zoom);	//in meter
+	//var diffLat = getDiffLat(range);
+	//var diffLng = getDiffLng(range,inlatlng[0]);
+	//var whereLat = 'lat between '+(inlatlng[0]-diffLat)+' and '+(inlatlng[0]+diffLat);
+	//var whereLng = 'lng between '+(inlatlng[1]-diffLng)+' and '+(inlatlng[1]+diffLng);
+	//var where = whereLat+ ' and '+whereLng;
+	//selectPlacesDB(where);
 	var places = selectAllPlacesDB();//lat:lng:name
 	for(var i=0;i<places.length;i++){
 		var lat=places[i].lat;
 		var lng=places[i].lng;
 		var dist = distance(lat,lng,inlatlng[0],inlatlng[1]);
-		var zoom= Math.round( map.getZoomLevel() );
-		var tap = tapRange(zoom,dist);
-		if(tap){
+		if(dist<range){
 			return places[i];
 		}
 	}
 	return null;
 }
+function getDiffLat(m){
+	// 1 lat = 110574 m
+	// 1 long= 111320*cos(latitude) m
+	return m/110574.0;
+}
+function getDiffLng(m,lat){
+	// 1 lat = 110574 m
+	// 1 long= 111320*cos(latitude) m
+	return m/(111320.0*Math.cos(lat));
+}
+function getTapRange(zoom){
+	switch(zoom){
+		case 20: return 3;
+		case 19: return 5;
+		case 18: return 10;
+		case 17: return 20;
+		case 16: return 30;
+		case 15: return 50;
+		case 14: return 150;
+		case 13: return 300;
+		case 12: return 500;
+		case 11: return 1000;
+		case 10: return 2000;
+		case 10: return 4000;
+		case 9:  return 6000;
+		case 8:  return 10000;
+		case 7:  return 20000;
+		case 6:  return 30000;
+		case 5:  return 40000;
+		case 4:  return 50000;
+	}
+}
 function tapRange(zoom,dist){
 	var value=false;
-	Ti.API.info('zoom='+zoom+',dist='+dist);
-	switch(zoom){
-		case 20: value=dist<3?true:false; break;
-		case 19: value=dist<5?true:false;break;
-		case 18: value=dist<10?true:false; break;
-		case 17: value=dist<20?true:false; break;
-		case 16: value=dist<30?true:false; break;
-		case 15: value=dist<50?true:false; break;
-		case 14: value=dist<150?true:false; break;
-		case 13: value=dist<300?true:false; break;
-		case 12: value=dist<500?true:false; break;
-		case 11: value=dist<1000?true:false; break;
-		case 10: value=dist<2000?true:false; break;
-		case 10: value=dist<4000?true:false; break;
-		case 9: value=dist<6000?true:false; break;
-		case 8: value=dist<10000?true:false; break;
-		case 7: value=dist<20000?true:false; break;
-		case 6: value=dist<30000?true:false; break;
-		case 5: value=dist<40000?true:false; break;
-		case 4: value=dist<50000?true:false; break;
-	}
+	//Ti.API.info('zoom='+zoom+',dist='+dist);
+	if(dist<getTapRange(zoom)) return true;
 	return value;
 }
 
@@ -94,6 +113,12 @@ function selectAllPlacesDB(){
 	var table = 'saved_places';
 	var columns = 'lat,lng,name';
 	var where = '1=1';
+	return selectDB('wx_map',table,columns,where);
+}
+function selectPlacesDB(where){
+	var table = 'saved_places';
+	var columns = 'lat,lng,name';
+	//var where = '1=1';
 	return selectDB('wx_map',table,columns,where);
 }
 function selectASavedPlaceDB(strlatlng){
@@ -185,7 +210,7 @@ function selectDB(dbname,table,columns,where){
 	try {
 		db = Ti.Database.open(dbname);
 		var sql = 'select '+columns+' from '+table+' where '+where;
-		//Ti.API.info('selectDB='+sql);
+		Ti.API.info('selectDB='+sql);
 		var rows = db.execute(sql);
 		if(rows.rowCount<1) return null;
 		while (rows.isValidRow()){
