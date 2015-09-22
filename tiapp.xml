@@ -19,7 +19,7 @@
             <application>
                 <meta-data
                     android:name="com.google.android.maps.v2.API_KEY" android:value="AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A"/>
-                <meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>
+                <!--<meta-data android:name="com.google.android.gms.version" android:value="@integer/google_play_services_version"/>-->
             </application>
         </manifest>
     </android>
@@ -57,11 +57,11 @@
         <theme>default</theme>
     </mobileweb>
     <modules>
-        <module platform="android">ti.mapsforge</module>
-        <module platform="android">ti.map</module>
         <module platform="iphone">bencoding.utterance</module>
         <module platform="android">bencoding.utterance</module>
         <module platform="android">ti.acra</module>
+        <module platform="android">ti.mapsforge</module>
+        <module platform="android">ti.map</module>
     </modules>
     <deployment-targets>
         <target device="iphone">false</target>
@@ -69,7 +69,7 @@
         <target device="android">true</target>
         <target device="mobileweb">true</target>
     </deployment-targets>
-    <sdk-version>4.1.0.GA</sdk-version>
+    <sdk-version>5.0.0.GA</sdk-version>
     <property name="appc-app-id" type="string">5595b7bd82b25cfe6d27ff09</property>
     <property name="acs-authbase-url-development" type="string">https://secure-identity.cloud.appcelerator.com</property>
     <property name="acs-base-url-development" type="string">https://api.cloud.appcelerator.com</property>

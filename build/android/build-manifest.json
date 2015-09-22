@@ -2,12 +2,12 @@
 	"target": "device",
 	"deployType": "test",
 	"classname": "Test",
-	"platformPath": "C:\\ProgramData\\Titanium\\mobilesdk\\win32\\4.1.0.GA\\android",
-	"modulesHash": "f1cc2e5ba7556f48addfededb81d6b34",
-	"modulesManifestHash": "d9332cf07ed694ac8ff8310b3b6f2268",
-	"modulesNativeHash": "e67990a088c10dde3a51c1aae1d0d7d4",
+	"platformPath": "C:\\ProgramData\\Titanium\\mobilesdk\\win32\\5.0.0.GA\\android",
+	"modulesHash": "f6775f1958d50853b87b985bff1db662",
+	"modulesManifestHash": "85edecd3cac62f0809a69a182476b249",
+	"modulesNativeHash": "47f73a2adcdb68b1fa8f6c2309a24e54",
 	"modulesBindingsHash": "2a47829e8bc089c51a3024d13895bc85",
-	"gitHash": "d57aa7d",
+	"gitHash": "ec79bc5",
 	"name": "test",
 	"id": "sun.wsn.app.map",
 	"analytics": true,
@@ -19,6 +19,7 @@
 	"guid": "80d31341-8942-4692-9ddd-99a525079d64",
 	"icon": "appicon.png",
 	"fullscreen": false,
+	"navbarHidden": false,
 	"skipJSMinification": false,
 	"mergeCustomAndroidManifest": false,
 	"encryptJS": true,
@@ -27,6 +28,5 @@
 	"propertiesHash": "dbabdd8b0c64e4e201ed85675d78b703",
 	"activitiesHash": "d41d8cd98f00b204e9800998ecf8427e",
 	"servicesHash": "d41d8cd98f00b204e9800998ecf8427e",
-	"jssFilesHash": "d41d8cd98f00b204e9800998ecf8427e",
-	"jarLibHash": "64a330b269e8272893de014596b4dad8"
+	"jarLibHash": "624fd4385c1b1299d3abab32068a3612"
 }

@@ -80,11 +80,20 @@ function initVars(mapType){
 		"5":"reached via",
 		"6":"use roundabout"
 	};
+	var VOICE_PROMPT_DISTANCES={
+		"0":"0",
+		"100":"100",
+		"200":"200",
+		"500":"500",
+		"1000":"1000",
+		"2000":"2000",
+	};
 	var BYS = ["car","bike","foot"];
 	var BY_ICONS = [Ti.App.Android.R.drawable.sedan_128,Ti.App.Android.R.drawable.bicycle_128,Ti.App.Android.R.drawable.runner_128];
 	Ti.App.Properties.setString('bys',JSON.stringify(BYS));
 	Ti.App.Properties.setString('by_icons',JSON.stringify(BY_ICONS));
 	Ti.App.Properties.setString('GH_TURN_DICT',JSON.stringify(GH_TURN_DICT2));////////////////////////
+	Ti.App.Properties.setString('VOICE_PROMPT_DISTANCES',JSON.stringify(VOICE_PROMPT_DISTANCES));
 	setDestinatePos([0,0]);
 	Ti.App.Properties.setString('played','{}');
 	Ti.App.Properties.setString('SavedPlaceMarkers','[]');

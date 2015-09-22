@@ -62,3 +62,18 @@ function hear(){
 		}
 	});
 }
+function speakInterface(dist,turn,street){
+	var str = constructVoiceStr(dist,turn,street);
+	var lang = 'en_US'; //'zh_CN';
+	var strdict = Ti.App.Properties.getString('VOICE_PROMPT_DISTANCES');
+	var dict = JSON.parse(strdict);
+	if(dict[''+dist] != null) speakLib(str,lang);
+	return true;//played successfully
+}
+function constructVoiceStr(dist,turn,street){
+	var str = "";
+	if(dist>0) str += 'in '+dist+' meters, ';
+	str+=turn;
+	if(street!=null && street.length>0) str += ', on '+street;
+	return str;
+}

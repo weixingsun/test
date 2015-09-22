@@ -115,9 +115,7 @@ function instruction(stepId,nextNode,dist){
     	if(!isPlayed(stepId,dist00)){
 			Ti.API.info('dist='+dist00+",stepId="+stepId+" turn="+turn+", nextNode:"+JSON.stringify(nextNode));
 			//playOrNot = speakMp3(turn,dist00);
-			var str = 'in '+dist00+' meters, '+turn+', on '+nextNode.name;
-			var lang = 'en_US'; //'zh_CN';
-			speakLib(str,lang);
+			playOrNot = speakInterface(dist00,turn,nextNode.name);
 			if(playOrNot) setPlayedList(stepId,dist00);
 		}
 		msg='step '+ stepId+', '+dist00+'m('+dist+'), turn ' +turn+', on '+nextNode.name +', play='+playOrNot;
