@@ -183,7 +183,7 @@ Views.prototype.hidePopView=function(){
 Views.prototype.showPopView=function(point){
 	var that = this;
 	//getAddressOSM(coord[0],coord[1], getAddressCallback);
-	net.getAddressGoogle(point,function(e) {
+	net.getPointAddressGoogle(point,function(e) {
 	    //Ti.API.info("address callback = "+e);
 	    that.place_name1.text = e[0];
 	    that.place_name2.text = e[1];
@@ -276,7 +276,7 @@ Views.prototype.searchOfflinePOI = function(name,country){
 	  //Ti.API.info('search records='+JSON.stringify(result.rows));
 	  that.fillSearchList(result.rows,"Offline");
 	  that.showSearchList();
-	  if(result.rows.length<1) searchAddressGoogle(name,country);
+	  if(result.rows.length<1) net.searchNameAddressGoogle(name,country);
 	});
 };
 Views.prototype.fillSearchList=function (list,source){
@@ -288,9 +288,7 @@ Views.prototype.fillSearchList=function (list,source){
     var listSection = this.createGoogleListSection(list,source);
     sections.push(listSection);
     this.searchList.sections=sections;
-    Ti.API.info("createSuggestList().before.show");
     this.showSearchList();
-    Ti.API.info("createSuggestList().listSection.created");
     map.win.add(this.searchList);
 };
 Views.prototype.createGoogleListSection=function(list,source){

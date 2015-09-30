@@ -5,7 +5,7 @@ function Net(){
 
 	this.GOOGLE_API_KEY = 'AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A';
 };
-Net.prototype.getAddressGoogle=function(point,callback){
+Net.prototype.getPointAddressGoogle=function(point,callback){
 	var that = this;
 	var lat=point[0], lng=point[1];
 	var addrUrl = "https://maps.googleapis.com/maps/api/geocode/json?sensor=true&latlng="+lat+","+lng+'&key='+this.GOOGLE_API_KEY;
@@ -24,7 +24,7 @@ Net.prototype.getAddressGoogle=function(point,callback){
 		       callback.call(null, address);
 		    }
 	    }else{
-	        Ti.API.error('getAddressGoogle:'+this.responseText);
+	        Ti.API.error('getPointAddressGoogle:'+this.responseText);
 	    }
 	};
 };
@@ -44,15 +44,14 @@ Net.prototype.getInfoFromGoogleJsonSimple=function (value){
     return [line1.join(', '),line2.join()];
 };
 //getAddressOSM(coord[0],coord[1], getAddressCallback);
-//getAddressGoogle(point[0],point[1],getAddressCallback);
-Net.prototype.searchAddressGoogle = function(name,country){
+Net.prototype.searchNameAddressGoogle = function(name,country){
 	var that = this;
 	//region="+country_code+"&
-	var url = "https://maps.google.com/maps/api/geocode/json?sensor=true&address="+name.replace(' ', '+')+','+country_code+'&key='+GOOGLE_API_KEY;
+	var url = "https://maps.google.com/maps/api/geocode/json?sensor=true&address="+name.replace(' ', '+')+','+country+'&key='+this.GOOGLE_API_KEY;
 	var xhrGeocode = Ti.Network.createHTTPClient();
 	xhrGeocode.setTimeout(10000);
 	xhrGeocode.onerror = function (e) {
-	  Ti.API.error('searchAddressGoogle()Error:'+e);
+	  Ti.API.error('Net.searchNameAddressGoogle()Error:'+e);
 	};
 	
 	xhrGeocode.onload = function (e) {
@@ -70,9 +69,9 @@ Net.prototype.searchAddressGoogle = function(name,country){
         	dict.point=[myLat,myLon];
 	  		list.push(dict);	//+','+addr[1]
 	  	}
-	  	views.fillSearchList(rows,"Offline");
+	  	views.fillSearchList(list,"Online");
 	  }else{
-	  	Ti.API.error('searchAddressGoogle()ServerError:'+this.responseText);
+	  	Ti.API.error('Net.searchNameAddressGoogle()ServerError:'+this.responseText);
 	  }
 	};
 	xhrGeocode.open("GET", url);

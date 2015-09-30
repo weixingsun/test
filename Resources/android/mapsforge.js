@@ -22,7 +22,7 @@ Mapsforge.prototype.initWindowEvent = function () {
 		that.addOfflineMapLayer();
 		views.createAndroidSearchBar();
 		that.initGPS();
-		that.showAllSavedPlaceMarkers();
+		places.showAllSavedPlaceMarkers();
 		places.createSavedPlaceTable();
 		///////////installOfflinePoiDB();
 	});

@@ -1,10 +1,11 @@
 function Map(){
 	this.win = Ti.UI.createWindow();
     this.mapView = 0;
+    this.type=0;	//0->gmap  1->osm
 	this.destination=[0,0];
 	this.location=[0,0];
-	this.mapmodule=0;
 	this.mode=0;
+	this.mapmodule=0;
 	this.navimodule=0;
 	this.nodeMarkerIds=[];
 	this.nodes=0;
@@ -17,7 +18,6 @@ function Map(){
 	this.GPS_RANGE_MIN = 30;
 	this.GPS_RANGE_MAX = 200;
 	this.by='car';
-	//this.GOOGLE_API_KEY = 'AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A';
 	this.BYS = ["car","bike","foot"];
 	this.BY_ICONS = [Ti.App.Android.R.drawable.sedan_128,Ti.App.Android.R.drawable.bicycle_128,Ti.App.Android.R.drawable.runner_128];
 };
