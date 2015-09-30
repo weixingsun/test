@@ -1,4 +1,4 @@
-function hidePopView(){
+/*function hidePopView(){
 	var pop = AllViews["pop"];
 	Ti.API.info('start to hide pop view');
 	if(typeof pop !== 'undefined' && pop!==0){
@@ -202,4 +202,4 @@ function createCarImage(view,id){
 	});
 	AllViews["car_img"] = img;
 	return img;
-}
+}*/

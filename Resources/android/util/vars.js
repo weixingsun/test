@@ -1,31 +1,5 @@
-if (!Array.prototype.remove) {
-  Array.prototype.remove = function(val) {
-    var i = this.indexOf(val);
-    return i>-1 ? this.splice(i, 1) : [];
-  };
-  Array.prototype.removeAt = function(i) {
-    return i>-1 ? this.splice(i, 1) : [];
-  };
-}
-String.prototype.startWith=function(str){  
-    if(str==null||str==""||this.length==0||str.length>this.length)  
-      return false;  
-    if(this.substr(0,str.length)==str)  
-      return true;  
-    else  
-      return false;  
-    return true;  
-};
-String.prototype.endWith=function(str){  
-    if(str==null||str==""||this.length==0||str.length>this.length)  
-      return false;  
-    if(this.substring(this.length-str.length)==str)  
-      return true;  
-    else  
-      return false;  
-    return true;  
-};
-var GOOGLE_API_KEY = 'AIzaSyApl-_heZUCRD6bJ5TltYPn4gcSCy1LY3A';
+
+
 function isGoogleMap(){
 	//var str = Ti.App.Properties.getString('map_type');
 	return map_type.startWith('google');

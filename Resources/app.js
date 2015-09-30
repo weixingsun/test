@@ -4,18 +4,17 @@ initACRA();
 crash();
 
 if(Ti.Platform.osname = "android"){
-	Ti.include('util/vars.js');
-	Ti.include('util/gps.js');
-	Ti.include('util/views.js');
-	Ti.include('util/routeview.js');
-	Ti.include('util/placeview.js');
-	Ti.include('util/net.js');
-	Ti.include('util/event.js');
-	Ti.include('util/nav.js');
-	Ti.include('util/poi.js');
-	Ti.include('util/audio.js');
-	Ti.include('util/saved.js');
-	//////////////////////////////////////////////////////////////////////////
+	Ti.include('map.js');
+	Ti.include('tool.js');
+	Ti.include('net.js');
+	Ti.include('views.js');
+	Ti.include('places.js');
+	Ti.include('audio.js');
+	var net = new Net();
+	var places = new Places();
+	var views  = new Views();
+	var audio = new Audio();
+	audio.init();
 	if(Ti.Network.networkType == Ti.Network.NETWORK_NONE){
 		var mapPath="map/nz.map";
 		if(Ti.Filesystem.isExternalStoragePresent()){
@@ -27,13 +26,18 @@ if(Ti.Platform.osname = "android"){
 		if(file.exists()){
 			Ti.API.info('use offline map');
 			Ti.include('mapsforge.js');
+			var map = new Mapsforge();
 		}else{
 			Ti.API.info('use online google map');
 			Ti.include('googlemap.js');
+			var map = new GoogleMap();
 		}
+		map.init();
 	}else{
 		Ti.API.info('use online google map');
 		Ti.include('googlemap.js');
+		var map = new GoogleMap();
+		map.init();
 	}
 }else{
 	//iOS

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources>
+	<string name="crash">Crash me!</string>
+	<string name="acra_crash_toast_text">应用崩溃啦！</string>
+	<!--string name="acra_crash_dialog_title">ACRATest has crashed</string-->
+	<!--string name="acra_crash_dialog_text">An unexpected error occurred forcing the application to stop. Please help us fix this by sending us error data, all you have to do is click OK.</string-->
+	<!--string name="acra_crash_dialog_comment_prompt">You might add your comments about the problem below:</string-->
+	<!--string name="acra_crash_dialog_ok_toast">Thank you !</string-->
+</resources>
