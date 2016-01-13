@@ -219,7 +219,7 @@ Views.prototype.createAndroidSearchBar=function (){
 		var searchFunc = function() {
 		    if(e.source.value.length>1){
 	        	//searchAddressGoogle(e.source.value,'nz');
-	        	that.searchOfflinePOI(e.source.value,'nz');
+	        	places.searchOfflinePOI(e.source.value,'nz');
 	        }else{
 	        	that.hideSearchList();
 	        }
@@ -231,7 +231,7 @@ Views.prototype.createAndroidSearchBar=function (){
 		var searchFunc = function() {
 		    if(e.source.value.length>1){
 	        	//searchAddressGoogle(e.source.value,'nz');
-	        	that.searchOfflinePOI(e.source.value,'nz');
+	        	places.searchOfflinePOI(e.source.value,'nz');
 	        }else{
 	        	that.hideSearchList();
 	        }
@@ -246,7 +246,7 @@ Views.prototype.delaySearch = function (e) {
 	var searchFunc = function() {
 	    if(e.source.value.length>1){
         	//searchAddressGoogle(e.source.value,'nz');
-        	that.searchOfflinePOI(e.source.value,'nz');
+        	places.searchOfflinePOI(e.source.value,'nz');
         }else{
         	that.hideSearchList();
         }
@@ -258,27 +258,7 @@ Views.prototype.hideSearchList=function (){
 		this.searchList.hide();
 	}
 };
-Views.prototype.searchOfflinePOI = function(name,country){
-	var that=this;
-	var uname = name.replace(/'/g, "''"); //.replace(/\\/g, "\\\\");
-	var me = map.getCurrentPos();
-	var table = 'poi';
-	var columns = 'lat,lng,pname';	//,admin,country_code
-	var where = "pname match '*"+uname+"*'";
-	var diffLat = me[0]+"-lat";
-	var diffLng = me[1]+"-lng";
-	var order = "("+diffLat+")*("+diffLat+")+("+diffLng+")*("+diffLng+")  asc limit 0,20";
-	var strSQL = "select "+columns+" from "+table+" where "+where+" order by "+order;
-	var poiFile = "/"+Ti.App.id+"/poi/"+country+".db";
-	//return selectDB(country,sql,callback);
-	var data ={sql:strSQL,db:poiFile,};
-	map.navimodule.queryFTS(data, function(result) {
-	  //Ti.API.info('search records='+JSON.stringify(result.rows));
-	  that.fillSearchList(result.rows,"Offline");
-	  that.showSearchList();
-	  if(result.rows.length<1) net.searchNameAddressGoogle(name,country);
-	});
-};
+
 Views.prototype.fillSearchList=function (list,source){
 	//if(this.searchList!==0)
     	//this.win.remove(this.searchList);

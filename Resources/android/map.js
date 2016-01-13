@@ -90,6 +90,7 @@ Map.prototype.initGPS=function(){
 			    if (!e.error) {
 			        that.saveGpsData(e);
 				    var me = [e.coords.latitude,e.coords.longitude];
+					var cctv = places.searchOfflineCctv(me);
 				    if(map.type===1)
 				    	that.addMyLocMarker(me,e.coords.accuracy);
 				    if(that.nodes.length>0 && that.mode>0){
@@ -253,3 +254,4 @@ Map.prototype.addNodeMarkers=function(){
 	}
 	this.nodeMarkerIds=tempMarkerIds;
 };
+

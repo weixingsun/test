@@ -1,10 +1,46 @@
 function Places(){
-	this.searchBar;
-	this.popView=0;
+	this.searchResult;
+};
+Places.prototype.showAllSavedPlaceMarkers=function (data){
+	this.deleteSavedPlaceMarkerDB('1=1');
+	var dbPlaces = this.selectAllPlacesDB();
+	if(dbPlaces!=null){
+		for(var i=0;i<dbPlaces.length;i++){
+		    var id=Ti.App.Android.R.drawable.star_red_24;
+		    var pp = [dbPlaces[i].lat,dbPlaces[i].lng];//.toFixed(6)
+		    //var name = 'saved_'+dbPlaces[i].lat+'_'+dbPlaces[i].lng;
+		    var mkid=map.addMarker(pp,id);
+		    var item={lat:pp[0],lng:pp[1],id:mkid};
+			this.addSavedPlaceMarkerDB(item);
+		}
+	}
 };
 Places.prototype.isSavedPlacesDB=function(latlng){
 	if(this.selectASavedPlaceDB(latlng) !== null) return true;
 	return false;
+};
+/*Places.prototype.allCctvCSV=function(latlng){
+	var f = Ti.Filesystem.getFile(Ti.Filesystem.resourcesDirectory,'raw','nz_cctv.csv');
+	var csv = f.read();
+	var points = [];
+	var alllines = csv.toString().split("\n");
+	for (var c=0;c<alllines.length;c++) {
+		var data = alllines[c].split(",");
+		if (data.length > 1) {
+			var entry = {'lat':data[1],'lng':data[0],'speed':[2],'name':data[3]};
+			points[c]=entry;
+		}
+	}
+	return points;
+};*/
+Places.prototype.selectASavedPlaceMarkerDB=function (latlng){
+	var table = 'saved_marker_id';
+	var columns = 'lat,lng,id';
+	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
+	var records = this.selectDB('wx_map',table,columns,where);
+	//Ti.API.info('selectASavedPlaceMarkerDB()'+strlatlng+' db_record='+JSON.stringify(records));
+	if(records!=null && records.length>0) return records[0];
+	return null;
 };
 Places.prototype.selectASavedPlaceDB=function (latlng){
 	var table = 'saved_places';
@@ -15,7 +51,12 @@ Places.prototype.selectASavedPlaceDB=function (latlng){
 	if(records!=null && records.length>0) return records[0];
 	return null;
 };
-
+Places.prototype.selectAllPlacesDB = function (){
+	var table = 'saved_places';
+	var columns = 'lat,lng,name';
+	var where = '1=1';
+	return this.selectDB('wx_map',table,columns,where);
+};
 Places.prototype.selectDB = function (dbname,table,columns,where){
 	var db;
 	var data =[];
@@ -41,6 +82,20 @@ Places.prototype.selectDB = function (dbname,table,columns,where){
 	}
 	return data;
 };
+
+Places.prototype.deleteSavedPlaceMarkerDB = function (where){
+	this.deleteDB('saved_marker_id',where);
+};
+Places.prototype.removeSavedPlaceMarker =function(place){
+	var marker = this.selectASavedPlaceMarkerDB(place);
+	var where = "lat='"+marker.lat+"' and lng='"+marker.lng+"'";
+	this.deleteSavedPlaceMarkerDB(where);
+	map.removeMarker(marker.id);
+};
+Places.prototype.removeSavedPlaceDB =function(place){
+	var where = "lat='"+place.lat+"' and lng='"+place.lng+"'";
+	this.deleteDB('saved_places',where);
+};
 Places.prototype.deleteDB = function (table,where){
 	var db;
 	try{
@@ -48,30 +103,13 @@ Places.prototype.deleteDB = function (table,where){
 		//var param = [place.lat,place.lng];
 		//db.execute('delete from '+table+' where lat=? and lng=?',param);
 		var sql = 'delete from '+table+' where '+where;
-		Ti.API.info('deleteDB()sql:'+sql);
+		//Ti.API.info('deleteDB()sql:'+sql);
 		db.execute(sql);
 	}finally{
 		if(db!==null) db.close();
 	}
 };
-Places.prototype.selectASavedPlaceMarkerDB=function (latlng){
-	var table = 'saved_marker_id';
-	var columns = 'lat,lng,id';
-	var where = "lat='"+latlng[0]+"' and lng='"+latlng[1]+"'";
-	var records = this.selectDB('wx_map',table,columns,where);
-	//Ti.API.info('selectASavedPlaceMarkerDB()'+strlatlng+' db_record='+JSON.stringify(records));
-	if(records!=null && records.length>0) return records[0];
-	return null;
-};
-Places.prototype.selectAllPlacesDB = function (){
-	var table = 'saved_places';
-	var columns = 'lat,lng,name';
-	var where = '1=1';
-	return this.selectDB('wx_map',table,columns,where);
-};
-Places.prototype.deleteSavedPlaceMarkerDB = function (where){
-	this.deleteDB('saved_marker_id',where);
-};
+
 Places.prototype.addSavedPlaceMarkerDB = function (placeMarker){	//{lat:0,lng:0,id:'0'}
 	var tbl_col = 'saved_marker_id(lat,lng,id) values(?,?,?)';
 	var param = [placeMarker.lat,placeMarker.lng, placeMarker.id];
@@ -83,20 +121,6 @@ Places.prototype.addSavedPlaceMarker = function (latlng){
     var mkid=map.addMarker(latlng,img);
     var placeMarker = {lat:latlng[0],lng:latlng[1],id:mkid};
     this.addSavedPlaceMarkerDB(placeMarker);
-};
-Places.prototype.showAllSavedPlaceMarkers=function (data){
-	this.deleteSavedPlaceMarkerDB('1=1');
-	var dbPlaces = this.selectAllPlacesDB();
-	if(dbPlaces!=null){
-		for(var i=0;i<dbPlaces.length;i++){
-		    var id=Ti.App.Android.R.drawable.star_red_24;
-		    var pp = [dbPlaces[i].lat,dbPlaces[i].lng];//.toFixed(6)
-		    //var name = 'saved_'+dbPlaces[i].lat+'_'+dbPlaces[i].lng;
-		    var mkid=map.addMarker(pp,id);
-		    var item={lat:pp[0],lng:pp[1],id:mkid};
-			this.addSavedPlaceMarkerDB(item);
-		}
-	}
 };
 Places.prototype.addSavedPlaceDB = function (place){
 	var tbl_col = 'saved_places(lat,lng,name) values(?,?,?)';
@@ -114,16 +138,6 @@ Places.prototype.insertDB = function (table_columns,values){	//{lat:0,lng:0,name
 	//Ti.API.info('insertDB():'+table_columns+' value:'+values);
 };
 
-Places.prototype.removeSavedPlaceDB =function(place){
-	var where = "lat='"+place.lat+"' and lng='"+place.lng+"'";
-	this.deleteDB('saved_places',where);
-};
-Places.prototype.removeSavedPlaceMarker =function(place){
-	var marker = this.selectASavedPlaceMarkerDB(place);
-	var where = "lat='"+marker.lat+"' and lng='"+marker.lng+"'";
-	this.deleteSavedPlaceMarkerDB(where);
-	map.removeMarker(marker.id);
-};
 Places.prototype.createSavedPlaceTable = function (){
 	var db = Ti.Database.open('wx_map');
 	db.execute('CREATE TABLE IF NOT EXISTS saved_places(lat varchar(20), lng varchar(20), name varchar(100));');
@@ -172,4 +186,45 @@ Places.prototype.getTapRange =function (zoom){
 		case 5:  return 40000;
 		case 4:  return 50000;
 	}
+};
+Places.prototype.makePoiSql = function(addressName,country){
+	var uname = addressName.replace(/'/g, "''"); //.replace(/\\/g, "\\\\");
+	var me = map.getCurrentPos();
+	var table = 'poi';
+	var columns = 'lat,lng,pname';	//,admin,country_code
+	var where = "pname match '*"+uname+"*'";
+	var diffLat = me[0]+"-lat";
+	var diffLng = me[1]+"-lng";
+	var order = "("+diffLat+")*("+diffLat+")+("+diffLng+")*("+diffLng+")  asc limit 0,20";
+	var strSQL = "select "+columns+" from "+table+" where "+where+" order by "+order;
+};
+Places.prototype.searchOfflinePOI = function(name,country){
+	var that=this;
+	var strSQL=this.makePoiSql(name,country);
+	var poiFile = "/"+Ti.App.id+"/poi/"+country+".db";
+	//return selectDB(country,sql,callback);
+	var data ={sql:strSQL,db:poiFile,};
+	map.navimodule.queryFTS(data, function(result) {
+	  //Ti.API.info('search records='+JSON.stringify(result.rows));
+	  views.fillSearchList(result.rows,"Offline");
+	  views.showSearchList();
+	  if(result.rows.length<1) net.searchNameAddressGoogle(name,country);
+	});
+};
+Places.prototype.searchOfflineCctv = function (latlng){
+	var that=this;
+	var rangeLatLng = 0.1;
+	var country = 'nz';
+	var str_lat = " lat between "+(latlng[0]-rangeLatLng)+" and "+(latlng[0]+rangeLatLng);
+	var str_lng = " and lng between "+(latlng[1]-rangeLatLng)+" and "+(latlng[1]-rangeLatLng);
+	var strSQL = "select lat,lng,speed from cctv where "+str_lat+str_lng;
+	var poiFile = "/"+Ti.App.id+"/poi/"+country+".db";
+	var data ={sql:strSQL,db:poiFile,};
+	map.navimodule.queryFTS(data, function(result) {
+	  Ti.API.info('cctv search:'+JSON.stringify(result.rows));
+	  //if(records!=null){} //voice hint
+	  that.searchResult=result;
+	});
+	if(that.searchResult!=null) return that.searchResult;
+	return null;
 };

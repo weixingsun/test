@@ -1,5 +1,7 @@
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/android/support/v7/appcompat/Manifest.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/android/support/v7/appcompat/R.java"
+"C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/android/support/v7/cardview/Manifest.java"
+"C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/android/support/v7/cardview/R.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/com/google/android/gms/Manifest.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/com/google/android/gms/R.java"
 "C:/Users/SUN/Documents/Appcelerator_Studio_Workspace/test/build/android/gen/sun/wsn/app/map/AssetCryptImpl.java"

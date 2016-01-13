@@ -31,5 +31,9 @@ function distance(lat1, lon1, lat2, lon2) {
      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
      (1 - Math.cos((lon2 - lon1) * Math.PI / 180))/2;
   var m = R * 2 * Math.asin(Math.sqrt(a))*1000;
-  return m.toFixed(0);
+  //return m.toFixed(0);
+  return Math.floor(m);//////////////////////////
+}
+function getK(num){
+	return Math.floor(num/1000);
 }
