@@ -1,1 +1,1 @@
-Titanium.Network.networkType==Titanium.Network.NETWORK_NONE;
+/Users/aimeewang/Documents/Appcelerator_Studio_Workspace/test/Resources/android/util/net.js
