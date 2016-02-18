@@ -5,7 +5,7 @@
     <version>1.0</version>
     <publisher>SUN</publisher>
     <url>http://sun.vhostall.com</url>
-    <description/>
+    <description>offline map/navigation</description>
     <copyright>2015 by SUN</copyright>
     <icon>park_512.png</icon>
     <fullscreen>false</fullscreen>
@@ -69,7 +69,7 @@
         <target device="android">true</target>
         <target device="mobileweb">true</target>
     </deployment-targets>
-    <sdk-version>5.1.1.GA</sdk-version>
+    <sdk-version>5.1.2.GA</sdk-version>
     <property name="appc-app-id" type="string">5595b7bd82b25cfe6d27ff09</property>
     <property name="acs-authbase-url-development" type="string">https://secure-identity.cloud.appcelerator.com</property>
     <property name="acs-base-url-development" type="string">https://api.cloud.appcelerator.com</property>

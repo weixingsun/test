@@ -196,14 +196,15 @@ Places.prototype.makePoiSql = function(addressName,country){
 	var diffLat = me[0]+"-lat";
 	var diffLng = me[1]+"-lng";
 	var order = "("+diffLat+")*("+diffLat+")+("+diffLng+")*("+diffLng+")  asc limit 0,20";
-	var strSQL = "select "+columns+" from "+table+" where "+where+" order by "+order;
+	return "select "+columns+" from "+table+" where "+where+" order by "+order;
 };
 Places.prototype.searchOfflinePOI = function(name,country){
 	var that=this;
-	var strSQL=this.makePoiSql(name,country);
+	var strSQL=that.makePoiSql(name,country);
 	var poiFile = "/"+Ti.App.id+"/poi/"+country+".db";
 	//return selectDB(country,sql,callback);
 	var data ={sql:strSQL,db:poiFile,};
+	//Ti.API.info('searchOfflinePOI():sql'+strSQL+' dbFile:'+poiFile +'json='+JSON.stringify(data));
 	map.navimodule.queryFTS(data, function(result) {
 	  //Ti.API.info('search records='+JSON.stringify(result.rows));
 	  views.fillSearchList(result.rows,"Offline");

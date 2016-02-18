@@ -1,1 +1,1 @@
-function initACRA(){var e=require("ti.acra");e.init({mailTo:"sun.app.service@gmail.com",resToastTextKey:"acra_crash_toast_text",customReportContent:[e.ReportField_STACK_TRACE,e.ReportField_LOGCAT],mode:e.ReportingInteractionMode_TOAST,logcatArguments:["-t","300","-v","time"]})}function crash(){var e=Ti.UI.createLabel({color:"black",text:L("crash"),borderColor:"red",height:"auto",width:"auto"});e.setVisible(0)}
+/Users/aimeewang/Documents/Appcelerator_Studio_Workspace/test/Resources/android/util/acra.js
