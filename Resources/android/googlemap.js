@@ -54,7 +54,7 @@ GoogleMap.prototype.addGmapActionListeners=function (){
 		//addMyGoogleMarker('dest',dest[0],dest[1],Ti.App.Android.R.drawable.marker_tap,false);
 		//navi(navimodule,me,dest);
 	});
-	//regionchanged
+	//load complete
 	this.mapView.addEventListener('complete', function(e){
 		Ti.API.info('map load complete');
 		//appEventListeners();
@@ -65,6 +65,28 @@ GoogleMap.prototype.addGmapActionListeners=function (){
 		//installOfflinePoiDB();
 		//complete:e={"type":"complete","source":{"bubbleParent":true,"enabled":true,"region":{"latitude":-43.53449409,"longitude":172.60395921,"latitudeDelta":0.1,"longitudeDelta":0.1},"maxZoomLevel":21,"minZoomLevel":3,"backgroundRepeat":false,"height":"100%","left":0,"compassEnabled":true,"children":[],"rect":{"height":887,"y":0,"x":0,"width":600},"visible":true,"width":"100%","size":{"height":887,"y":0,"width":600,"x":0},"keepScreenOn":false,"userLocation":true,"animate":true,"apiName":"Ti.Map","top":0,"mapType":1,"_events":{"click":{},"longpress":{},"complete":{}}},"bubbles":true,"cancelBubble":false}
     });
+    //regionchanged
+    var updateMapTimeout;
+	this.mapView.addEventListener('regionchanged', function(ee) {
+	    if (updateMapTimeout) clearTimeout(updateMapTimeout);
+	    var center = [ee.latitude,ee.longitude];
+		var msg = "["+ee.latitude+","+ee.longitude+"]" +"delta["+ee.latitudeDelta+","+ee.longitudeDelta+"]";
+	    /*
+	    region={
+			latitude: ee.latitude,
+			longitude: ee.longitude,
+			animate:true,
+			latitudeDelta:ee.latitudeDelta,
+			longitudeDelta:ee.longitudeDelta
+		};*/
+		updateMapTimeout = setTimeout(function() {
+	        //update your map
+	        Ti.API.info('regionchanged: '+msg);
+	        //lat-latitudeDelta/2 ~ lat+latitudeDelta/2
+	        //lon-longitudeDelta/2 ~ lon+longitudeDelta/2
+	        places.searchOfflineCctv(center);
+	    }, 50);//50-200
+	});
 };
 GoogleMap.prototype.changeDestination=function(point){
 	views.hidePopView();
